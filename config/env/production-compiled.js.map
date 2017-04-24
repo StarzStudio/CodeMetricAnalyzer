@@ -1,0 +1,1 @@
+{"version":3,"sources":["production.js"],"names":[],"mappings":";;AAAA,OAAO,OAAP,GAAiB;AACb,mBAAe,0BADF;AAEb,QAAI,+BAFS;AAGb,UAAM;AAHO,CAAjB","file":"production-compiled.js","sourcesContent":["module.exports = {\n    sessionSecret: 'developmentSessionSecret',\n    db: 'mongodb://localhost/mean-book',\n    port: 80\n}"]}
