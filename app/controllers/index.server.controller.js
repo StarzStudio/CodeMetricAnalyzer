@@ -1,5 +1,6 @@
 var path = require("path");
 
+
 exports.render = function(req, res) {
 
     if (req.session.lastVisit) {
