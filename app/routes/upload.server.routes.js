@@ -17,11 +17,12 @@ module.exports = function(app) {
         console.log(userIP);
         makeUserSpecDir(userIP);
         for (var i = 0; i < req.files.length; i++) {
-            // 图片会放在uploads目录并且没有后缀，需要自己转存，用到fs模块
-            // 转存，fs.rename(oldPath, newPath,callback);
-            //console.log(req.files[i]);
+            // files will be put into path: uploadCppPath with a uuid name and without extension
+            // need to rename file using fs module
+            // fs.rename(oldPath, newPath,callback);
+            console.log(req.files[i]);
             var newPath = `${uploadCppPath}/${userIP}/`  + req.files[i].originalname;
-            //console.log(newPath);
+            console.log(newPath);
             fs.rename(req.files[i].path, newPath, function(err) {
                 if (err) {
                     throw err;
