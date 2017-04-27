@@ -73,7 +73,7 @@ public:
 private:
 
 	// given file path, read in its content
-	void replaceSymbol(File cppFileContent) ;
+	void replaceSymbol(File& cppFileContent) ;
 	void HTMLgenerator::removeFile (const std::string& in_filename);
 
  	File readFileContent(File in_fileName) {

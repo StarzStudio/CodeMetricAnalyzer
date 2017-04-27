@@ -33,9 +33,9 @@ module.exports = function () {
         secret: config.sessionSecret
     }));
 
-    app.set('views', path.join(__dirname, '/app/views'));
+    app.set('views', './app/views');
     app.set('view engine', 'ejs');
-    
+    console.log(app.get('views'));
     app.use(passport.initialize());
     app.use(passport.session());
 
@@ -44,6 +44,6 @@ module.exports = function () {
 
 
     app.use(express.static('./public'));
-
+    app.use(express.static('./userUploadFiles/cppFiles'));
     return app;
 };

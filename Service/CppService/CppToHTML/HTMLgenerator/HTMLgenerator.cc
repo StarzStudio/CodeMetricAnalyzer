@@ -19,21 +19,22 @@ void HTMLgenerator::transferFileType(File in_fileName) {
 		return;
 	}
 	replaceSymbol(cppFileContent);
-	std::vector<File> placeholder = { in_fileName, cppFileContent };
+	File shortName = FileSystem::Path::getName(in_fileName);
+	std::vector<File> placeholder = { shortName, cppFileContent };
 	File htmlFileContent = injectPlaceHolderIntoTemplate(placeholder);
 	File htmlFileName = getHTMLFileName(in_fileName);
 	storeFileContent(htmlFileName, htmlFileContent);
 	//removeFile(in_fileName);
 }
 
-void HTMLgenerator::replaceSymbol(File cppFileContent) {
-	replaceSymbol(cppFileContent, "\n", "<br>");
-	replaceSymbol(cppFileContent, " ", "&nbsp");
-	replaceSymbol(cppFileContent, "<", "&lt");
+void HTMLgenerator::replaceSymbol(File& cppFileContent) {
+    replaceSymbol(cppFileContent, "&", "&amp");
+    replaceSymbol(cppFileContent, "<", "&lt");
 	replaceSymbol(cppFileContent, ">", "&gt");
+	replaceSymbol(cppFileContent, "\n", "<br>");
 	replaceSymbol(cppFileContent, "\"", "&quot");
-	replaceSymbol(cppFileContent, "&", "&amp");
 	replaceSymbol(cppFileContent, "\t", "&nbsp&nbsp&nbsp&nbsp");
+	replaceSymbol(cppFileContent, " ", "&nbsp");
 }
 
 //void HTMLgenerator::removeFile (const std::string& in_filename) {
@@ -49,9 +50,10 @@ inline void HTMLgenerator::storeFileContent(File in_htmlFileName, File in_htmlCo
 		FileSystem::Directory::create(_htmlDestFolder);
 	}
 	
-	FileSystem::Directory::setCurrentDirectory(_htmlDestFolder);
+
 	File fileName = FileSystem::Path::getName(in_htmlFileName);
-	std::ofstream htmlFile(fileName);
+	File newFilePath =  FileSystem::Path::fileSpec(_htmlDestFolder, fileName);
+	std::ofstream htmlFile(newFilePath);
 	htmlFile << in_htmlContent;
 	htmlFile.close();
 }

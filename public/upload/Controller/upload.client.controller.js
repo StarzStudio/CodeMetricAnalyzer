@@ -8,6 +8,7 @@ angular.module('upload', []).
            fileInfo.name = f;
             $scope.fileList.push(fileInfo);
         }
+    $scope.finished = false;
 });
 
 const getCppFilePaths = function() {

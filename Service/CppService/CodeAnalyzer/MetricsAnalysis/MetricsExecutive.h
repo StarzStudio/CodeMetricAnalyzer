@@ -134,7 +134,7 @@ private:
     MetricExecutive analyzer(path, patterns);
 
    // test Analyze for a given Directory
-   std::ofstream metricsResult("metricsResult.html");
+   std::ofstream metricsResult("./userUploadFiles/cppFiles/localhost/metricsResult.cpp");
 	
    analyzer.analyze();
    std::unordered_map<std::string, MetricInfo> metrics =  analyzer.metricInfos();

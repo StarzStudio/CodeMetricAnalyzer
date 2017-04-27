@@ -15,10 +15,10 @@ exports.render = function(req, res) {
 
 
     updateSession(req);
-
-    var indexFilePath = path.resolve('public/views/upload.html');
-    // console.log(indexFilePath);
-    res.sendFile(indexFilePath);
+    res.render('upload');
+    // var indexFilePath = path.resolve('public/views/upload.html');
+    // // console.log(indexFilePath);
+    // res.sendFile(indexFilePath);
 
 };
 
@@ -27,6 +27,7 @@ exports.receiveFiles = function (req, res, next) {
         if (err) {
             console.log("error happened when multer is processing");
             console.log(err);
+            res.status(500).end();
             return ;
         }
 
@@ -40,19 +41,19 @@ exports.receiveFiles = function (req, res, next) {
             renameFile(req.files[i], userIP, newFilePaths);
         }
 
-
         var destHTMLPath =  uploadCppPath + "/" + userIP;
         var searchPath =  destHTMLPath;
-        let result  = generateHTML(templateHTMLPath, destHTMLPath, searchPath);
-        if (result) {
-            analyzeCodeMetrics( ".");
-        }
+
+        analyzeCodeMetrics( searchPath);
+        generateHTML(templateHTMLPath, destHTMLPath, searchPath);
+
+
 
         // delete all the cpp files in the end
         deleteFiles(newFilePaths);
 
         // send success status code back
-        res.redirect('cppLists');
+        exports.render(req, res);
 
     })
 
@@ -61,6 +62,7 @@ exports.receiveFiles = function (req, res, next) {
 
 const analyzeCodeMetrics = function (path) {
     var isFinished = metricAnalyzer(path);
+
 }
 const makeUserSpecDir = function(userIP) {
     let path =__dirname + `/../../${uploadCppPath}/${userIP}`;
@@ -71,6 +73,7 @@ const makeUserSpecDir = function(userIP) {
             if (err) {
                 console.log("error in mkdir")
                 throw err;
+                res.status(500).end();
             }
             console.log(`mkdir for /${userIP} success!`);
         })
@@ -88,6 +91,9 @@ const deleteFiles = function(newFilePaths) {
     for (let path of newFilePaths) {
         fs.unlinkSync(path);
     }
+    let metricsResultFile = __dirname + `/../../${uploadCppPath}/localhost/`  + 'metricsResult'
+    fs.renameSync(metricsResultFile + ".cpp.html" , metricsResultFile + ".html");
+    fs.unlinkSync(metricsResultFile + ".cpp");
 
 }
 

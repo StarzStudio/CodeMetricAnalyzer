@@ -3,173 +3,9 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>/home/xing/development/web/CodeMetricAnalyzer/userUploadFiles/cppFiles/localhost/testBadFile1.cpp</title>
+    <title>testBadFile1.cpp</title>
 </head>
 <body>
-    <div>// Executive.cpp : Defines the entry point for the console application.
-//
-
-#include "Executive.h"
-#include <string>
-
-
-void LargeComplexityFunctest1 () {
-
-	if () {
-int i;
-	}
-if () {
-	int i;
-	}
-	if () {
-int i;
-	}
-if () {
-	int i;
-	}
-	if () {
-int i;
-	}
-if () {
-	int i;
-	}
-	if () {
-int i;
-	}
-if () {
-	int i;
-	}
-	if () {
-int i;
-	}
-if () {
-	int i;
-	}
-	if () {
-int i;
-	}
-if () {
-	int i;
-	}
-	if () {
-int i;
-	}
-
-}
-
-void ManyLineFunctest1 () {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
-	
-int main(int argc, char **argv)
-{
-	std::string templateFile (argv[1]);
-
-	std::string destHTMLFolder(argv[2]);
-	std::string searchPath(argv[3]);
-	std::vector<std::string> searchPatterns;
-	for  (int i = 4; i < argc; i++) {
-		searchPatterns.push_back(std::string(argv[i]));
-	}
-	FileManager::IFileMgr *pFileMgr = new FileManager::FileMgr(searchPath);
-	HTMLgenerator g( templateFile, destHTMLFolder);
-	pFileMgr->regForFiles(&g);
-	for (auto p : searchPatterns) {
-		pFileMgr->addPattern(p);
-	}
-	pFileMgr->search();
-	return 0;
-}
-</div>
+    <div>//&nbspExecutive.cpp&nbsp:&nbspDefines&nbspthe&nbspentry&nbsppoint&nbspfor&nbspthe&nbspconsole&nbspapplication.<br>//<br><br>#include&nbsp&quotExecutive.h&quot<br>#include&nbsp&ltstring&gt<br><br><br>void&nbspLargeComplexityFunctest1&nbsp()&nbsp{<br><br>&nbsp&nbsp&nbsp&nbspif&nbsp()&nbsp{<br>int&nbspi;<br>&nbsp&nbsp&nbsp&nbsp}<br>if&nbsp()&nbsp{<br>&nbsp&nbsp&nbsp&nbspint&nbspi;<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbspif&nbsp()&nbsp{<br>int&nbspi;<br>&nbsp&nbsp&nbsp&nbsp}<br>if&nbsp()&nbsp{<br>&nbsp&nbsp&nbsp&nbspint&nbspi;<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbspif&nbsp()&nbsp{<br>int&nbspi;<br>&nbsp&nbsp&nbsp&nbsp}<br>if&nbsp()&nbsp{<br>&nbsp&nbsp&nbsp&nbspint&nbspi;<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbspif&nbsp()&nbsp{<br>int&nbspi;<br>&nbsp&nbsp&nbsp&nbsp}<br>if&nbsp()&nbsp{<br>&nbsp&nbsp&nbsp&nbspint&nbspi;<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbspif&nbsp()&nbsp{<br>int&nbspi;<br>&nbsp&nbsp&nbsp&nbsp}<br>if&nbsp()&nbsp{<br>&nbsp&nbsp&nbsp&nbspint&nbspi;<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbspif&nbsp()&nbsp{<br>int&nbspi;<br>&nbsp&nbsp&nbsp&nbsp}<br>if&nbsp()&nbsp{<br>&nbsp&nbsp&nbsp&nbspint&nbspi;<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbspif&nbsp()&nbsp{<br>int&nbspi;<br>&nbsp&nbsp&nbsp&nbsp}<br><br>}<br><br>void&nbspManyLineFunctest1&nbsp()&nbsp{<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>}<br>&nbsp&nbsp&nbsp&nbsp<br>int&nbspmain(int&nbspargc,&nbspchar&nbsp**argv)<br>{<br>&nbsp&nbsp&nbsp&nbspstd::string&nbsptemplateFile&nbsp(argv[1]);<br><br>&nbsp&nbsp&nbsp&nbspstd::string&nbspdestHTMLFolder(argv[2]);<br>&nbsp&nbsp&nbsp&nbspstd::string&nbspsearchPath(argv[3]);<br>&nbsp&nbsp&nbsp&nbspstd::vector&ltstd::string&gt&nbspsearchPatterns;<br>&nbsp&nbsp&nbsp&nbspfor&nbsp&nbsp(int&nbspi&nbsp=&nbsp4;&nbspi&nbsp&lt&nbspargc;&nbspi++)&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspsearchPatterns.push_back(std::string(argv[i]));<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbspFileManager::IFileMgr&nbsp*pFileMgr&nbsp=&nbspnew&nbspFileManager::FileMgr(searchPath);<br>&nbsp&nbsp&nbsp&nbspHTMLgenerator&nbspg(&nbsptemplateFile,&nbspdestHTMLFolder);<br>&nbsp&nbsp&nbsp&nbsppFileMgr-&gtregForFiles(&ampg);<br>&nbsp&nbsp&nbsp&nbspfor&nbsp(auto&nbspp&nbsp:&nbspsearchPatterns)&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsppFileMgr-&gtaddPattern(p);<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbsppFileMgr-&gtsearch();<br>&nbsp&nbsp&nbsp&nbspreturn&nbsp0;<br>}<br></div>
 </body>
 </html>

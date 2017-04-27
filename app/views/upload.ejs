@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="Store and show metrics information for your cpp files">
+    <meta name="author" content="Xing Zhou">
+
+
+    <link href="./lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./CSS/upload.css" rel="stylesheet">
+
+    <title>cpp metrics analyzer</title>
+
+    <!-- Custom CSS -->
+
+
+
+
+
+</head>
+
+<!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand page-scroll" href="#page-top">Top</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                <li class="hidden">
+                    <a class="page-scroll" href="#page-top"></a>
+                </li>
+
+                <li>
+                    <a class="page-scroll" href="./localhost/metricsResult.html">Metrics</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#dependency">Dependency</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<!-- Intro Section -->
+<section id="intro" class="intro-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>C++ Code Analyzer</h1>
+                <p><strong>Usage Instructions:</strong> upload all the *.h, *.cpp files in a C++ project, the server will store and display all the file content, anaylze and show the metrics and dependency relationship information for you</p>
+                <br><br><br><br>
+                <input type="file" name="uploadCppFiles" id="file_input" multiple />
+            </div>
+            <br><br>
+            <button type="button" onclick="uploadFiles()">Submit</button>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- metrics Section -->
+<section id="metrics" class="metrics-section">
+<div class="container">
+<div class="row">
+<div class="col-lg-12"  ng-app="codeAnalyzer" ng-controller="upload">
+
+        <div>
+            <h1>C++ File list:</h1>
+            <ul>
+                <li><a href="./localhost/testBadFile1.cpp.html" class="file-link">file</a></li>
+                <li><a href="./localhost/testBadFile2.cpp.html" class="file-link">file</a></li>
+                <li><a href="./localhost/testGoodFile1.h.html" class="file-link">file</a></li>
+                <li><a href="./localhost/testGoodFile2.h.html" class="file-link">file</a></li>
+            </ul>
+        </div>
+
+
+</div>
+</div>
+</div>
+</section>
+
+<!--&lt;!&ndash; dependency Section &ndash;&gt;-->
+<!--<section id="dependency" class="dependency-section">-->
+<!--<div class="container">-->
+<!--<div class="row">-->
+<!--<div class="col-lg-12">-->
+<!--<h1>Contact Section</h1>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</section>-->
+
+<!-- jQuery -->
+<script src="./lib/jquery/dist/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="./lib/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- Scrolling Nav JavaScript -->
+<script src="./JS/jquery.easing.min.js"></script>
+<script src="./JS/upload.client.js"></script>
+<script type="text/javascript" src="./lib/angular/angular.js"></script>
+<!--<script type="text/javascript" src="./lib/angular-route/angular-route.js"></script>-->
+<!--<script type="text/javascript" src="./upload//Controller/upload.client.controller.js"></script>-->
+
+<!--<script type="text/javascript" src="application.js"></script>-->
+
+<script>
+//    var app = angular.module('codeAnalyzer', []);
+//    app.controller('upload', function($scope) {
+//        $scope.finished = "no";
+//        $scope.fileList = [];
+//        let files = getCppFilePaths();
+//        for (let f of files) {
+//            let fileInfo = {};
+//            fileInfo.name = f;
+//            $scope.fileList.push(fileInfo);
+//        }
+//
+//    })
+//
+//    const getCppFilePaths = function() {
+//        fs.readdir(__dirname + "/../../../userUploadFiles/cppFiles/localhost", function(err, files) {
+//            if (err) {
+//                console.log(err);
+//                return;
+//            }
+//
+//            let results = [];
+//            files.forEach(function (filename) {
+//                results.push(filename);
+//            });
+//            return results;
+//        });
+//    }
+
+</script>
+</body>
+
+</html>
+
+

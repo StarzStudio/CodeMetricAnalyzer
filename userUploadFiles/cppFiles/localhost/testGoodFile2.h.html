@@ -3,59 +3,9 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>/home/xing/development/web/CodeMetricAnalyzer/userUploadFiles/cppFiles/localhost/testGoodFile2.h</title>
+    <title>testGoodFile2.h</title>
 </head>
 <body>
-    <div>#ifndef EXECUTIVE_H
-#define EXECUTIVE_H
-
-
-#include "../HTMLgenerator/HTMLgenerator.h"
-#include "../FileMgr/FileMgr.h"
-#include <node.h>
-#include <v8.h>
-using namespace v8;
-
-
-void generateHTML2222222222(const FunctionCallbackInfo<Value>& args) {
-
-    // get tempalte html file
-	String::Utf8Value _templateFile(args[0]->ToString()); //convert to std::string
-	std::string templateFile = std::string(*_templateFile); 
-
-    // get destination path to store html files
-	String::Utf8Value _destHTMLFolder(args[1]->ToString()); //convert to std::string
- 	std::string destHTMLFolder = std::string(*_destHTMLFolder); 
-    
-    // start path for file manager to search cpp files 
-	String::Utf8Value _searchPath(args[2]->ToString()); //convert to std::string
-	std::string searchPath  = std::string(*_searchPath); 
-
-	// provide patterns for file manager
-	std::vector<std::string> searchPatterns = {"*.h", "*.cpp"};
-
-	FileManager::IFileMgr *pFileMgr = new FileManager::FileMgr(searchPath);
-	HTMLgenerator g( templateFile, destHTMLFolder);
-	pFileMgr->regForFiles(&g);
-	for (auto p : searchPatterns) {
-		pFileMgr->addPattern(p);
-	}
-	pFileMgr->search();
-
-    bool isComplete = true;
-    args.GetReturnValue().Set(isComplete);
-}
-
-
-void Init(Local<Object> exports, Local<Object> module) {
-  NODE_SET_METHOD(module, "exports", generateHTML);
-}
-
-NODE_MODULE(generateHTML, Init)
-
-
-
-#endif
-</div>
+    <div>#ifndef&nbspEXECUTIVE_H<br>#define&nbspEXECUTIVE_H<br><br><br>#include&nbsp&quot../HTMLgenerator/HTMLgenerator.h&quot<br>#include&nbsp&quot../FileMgr/FileMgr.h&quot<br>#include&nbsp&ltnode.h&gt<br>#include&nbsp&ltv8.h&gt<br>using&nbspnamespace&nbspv8;<br><br><br>void&nbspgenerateHTML2222222222(const&nbspFunctionCallbackInfo&ltValue&gt&amp&nbspargs)&nbsp{<br><br>&nbsp&nbsp&nbsp&nbsp//&nbspget&nbsptempalte&nbsphtml&nbspfile<br>&nbsp&nbsp&nbsp&nbspString::Utf8Value&nbsp_templateFile(args[0]-&gtToString());&nbsp//convert&nbspto&nbspstd::string<br>&nbsp&nbsp&nbsp&nbspstd::string&nbsptemplateFile&nbsp=&nbspstd::string(*_templateFile);&nbsp<br><br>&nbsp&nbsp&nbsp&nbsp//&nbspget&nbspdestination&nbsppath&nbspto&nbspstore&nbsphtml&nbspfiles<br>&nbsp&nbsp&nbsp&nbspString::Utf8Value&nbsp_destHTMLFolder(args[1]-&gtToString());&nbsp//convert&nbspto&nbspstd::string<br>&nbsp&nbsp&nbsp&nbsp&nbspstd::string&nbspdestHTMLFolder&nbsp=&nbspstd::string(*_destHTMLFolder);&nbsp<br>&nbsp&nbsp&nbsp&nbsp<br>&nbsp&nbsp&nbsp&nbsp//&nbspstart&nbsppath&nbspfor&nbspfile&nbspmanager&nbspto&nbspsearch&nbspcpp&nbspfiles&nbsp<br>&nbsp&nbsp&nbsp&nbspString::Utf8Value&nbsp_searchPath(args[2]-&gtToString());&nbsp//convert&nbspto&nbspstd::string<br>&nbsp&nbsp&nbsp&nbspstd::string&nbspsearchPath&nbsp&nbsp=&nbspstd::string(*_searchPath);&nbsp<br><br>&nbsp&nbsp&nbsp&nbsp//&nbspprovide&nbsppatterns&nbspfor&nbspfile&nbspmanager<br>&nbsp&nbsp&nbsp&nbspstd::vector&ltstd::string&gt&nbspsearchPatterns&nbsp=&nbsp{&quot*.h&quot,&nbsp&quot*.cpp&quot};<br><br>&nbsp&nbsp&nbsp&nbspFileManager::IFileMgr&nbsp*pFileMgr&nbsp=&nbspnew&nbspFileManager::FileMgr(searchPath);<br>&nbsp&nbsp&nbsp&nbspHTMLgenerator&nbspg(&nbsptemplateFile,&nbspdestHTMLFolder);<br>&nbsp&nbsp&nbsp&nbsppFileMgr-&gtregForFiles(&ampg);<br>&nbsp&nbsp&nbsp&nbspfor&nbsp(auto&nbspp&nbsp:&nbspsearchPatterns)&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsppFileMgr-&gtaddPattern(p);<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbsppFileMgr-&gtsearch();<br><br>&nbsp&nbsp&nbsp&nbspbool&nbspisComplete&nbsp=&nbsptrue;<br>&nbsp&nbsp&nbsp&nbspargs.GetReturnValue().Set(isComplete);<br>}<br><br><br>void&nbspInit(Local&ltObject&gt&nbspexports,&nbspLocal&ltObject&gt&nbspmodule)&nbsp{<br>&nbsp&nbspNODE_SET_METHOD(module,&nbsp&quotexports&quot,&nbspgenerateHTML);<br>}<br><br>NODE_MODULE(generateHTML,&nbspInit)<br><br><br><br>#endif<br></div>
 </body>
 </html>
