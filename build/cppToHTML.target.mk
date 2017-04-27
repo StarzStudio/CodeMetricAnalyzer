@@ -22,6 +22,7 @@ CFLAGS_Debug := \
 	-Wno-unused-parameter \
 	-m64 \
 	-std=c++14 \
+	-fpermissive \
 	-g \
 	-O0
 
@@ -57,6 +58,7 @@ CFLAGS_Release := \
 	-Wno-unused-parameter \
 	-m64 \
 	-std=c++14 \
+	-fpermissive \
 	-O3 \
 	-fno-omit-frame-pointer
 

@@ -84,7 +84,7 @@ public:
     {
       pEvtHandler->execute(f);
     }
-    std::cout << f.c_str() << std::endl;
+    std::cout << "  traverse file: " << f.c_str() << std::endl;
   }
   //----< applications can overload this or reg for dirEvt >-------
 
@@ -115,6 +115,8 @@ public:
 
   void find(const std::string &path)
   {
+     std::cout << "file manager is search relative path: " << path.c_str() << std::endl;
+     	std::cout << "Filemanager current path: " << FileSystem::Directory::getCurrentDirectory().c_str() << std::endl;
     std::string fpath = FileSystem::Path::getFullFileSpec(path);
     std::cout << "file manager is search path: " << fpath.c_str() << std::endl;
     dir(fpath);

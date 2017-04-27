@@ -18,6 +18,7 @@
             			],
             			'cflags' : [
             			    '-std=c++14',
+            			    '-fpermissive'
             			],
             			'cflags!' : [
             			    '-fno-exceptions'

@@ -7,7 +7,7 @@ const templateHTMLPath = "./Service/CppService/CppToHTML/HTMLgenerator/template.
 const multer  = require('multer');
 
 const uploadCppPath = "userUploadFiles/cppFiles";
-const upload = multer({ dest: `${uploadCppPath}`}).any();
+const upload = multer({ dest: __dirname}).any();
 
 
 exports.render = function(req, res) {
@@ -25,31 +25,39 @@ exports.receiveFiles = function (req, res, next) {
     upload(req,res, function(err) {
         if (err) {
             console.log("error happened when multer is processing");
+            console.log(err);
             return ;
         }
+
+        var userIP = req.hostname;
+        makeUserSpecDir(userIP);
+
+        for (let i = 0; i < req.files.length; i++) {
+
+            // files will be put into path: uploadCppPath with a uuid name and without extension
+            // need to rename file using fs module
+            renameFile(req.files[i], userIP);
+        }
+
+        var destHTMLPath = "./" + uploadCppPath + "/" + userIP;
+        var searchPath =  destHTMLPath;
+        generateHTML(templateHTMLPath, destHTMLPath, searchPath);
+
+        // send success status code back
+        res.status(200).end();
+
     })
 
-    var userIP = req.hostname;
-    console.log(userIP);
-    makeUserSpecDir(userIP);
-    for (let i = 0; i < req.files.length; i++) {
-        // files will be put into path: uploadCppPath with a uuid name and without extension
-        // need to rename file using fs module
-        renameFile(req.files[i], userIP);
-    }
 
-    var destHTMLPath = "./" + uploadCppPath + "/" + userIP;
-    var searchPath = "./" + destHTMLPath;
-    generateHTML(templateHTMLPath, destHTMLPath, searchPath);
-
-    // send success status code back
-    res.send(200);
 };
 
 
 const makeUserSpecDir = function(userIP) {
-    if (!fs.existsSync(`${uploadCppPath}/${userIP}`)) {
-        fs.mkdir(`${uploadCppPath}/${userIP}`, function(err) {
+    let path =__dirname + `/../../${uploadCppPath}/${userIP}`;
+    console.log(`user's storage path: ${path}`);
+    if (!fs.existsSync(path)) {
+        console.log("user's storage path didn't exist before");
+        fs.mkdir( path, function(err) {
             if (err) {
                 console.log("error in mkdir")
                 throw err;
@@ -61,10 +69,11 @@ const makeUserSpecDir = function(userIP) {
 
 // fs.rename(oldPath, newPath,callback);
 const renameFile = function (file, userIP) {
-    var newPath = `${uploadCppPath}/${userIP}/`  + file.originalname;
+    var newPath =  __dirname + `/../../${uploadCppPath}/${userIP}/`  + file.originalname;
 
     fs.rename(file.path, newPath, function(err) {
         if (err) {
+            console.log(`error in rename file`);
             throw err;
         }
         console.log(`rename file done!`);
@@ -74,7 +83,7 @@ const renameFile = function (file, userIP) {
 const generateHTML = function(templateHTMLPath, destHTMLPath, searchPath) {
 
     var isFinished = htmlGenerator(templateHTMLPath, destHTMLPath, searchPath);
-    console.log(isFinished);
+
 }
 
 function updateSession(req) {

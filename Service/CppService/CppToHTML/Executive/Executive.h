@@ -16,15 +16,21 @@ void generateHTML(const FunctionCallbackInfo<Value>& args) {
     // get tempalte html file
 	String::Utf8Value _templateFile(args[0]->ToString()); //convert to std::string
 	std::string templateFile = std::string(*_templateFile); 
-	std::cout << templateFile.c_str() << std::endl;
+	std::cout << "html template file path: " << templateFile.c_str() << std::endl;
+	 std::cout << "====================================================" << std::endl;
+	
     // get destination path to store html files
 	String::Utf8Value _destHTMLFolder(args[1]->ToString()); //convert to std::string
  	std::string destHTMLFolder = std::string(*_destHTMLFolder); 
-    std::cout << destHTMLFolder.c_str() << std::endl;
+    std::cout << "html destination path: " << destHTMLFolder.c_str() << std::endl;
+	std::cout << "====================================================" << std::endl;
     // start path for file manager to search cpp files 
 	String::Utf8Value _searchPath(args[2]->ToString()); //convert to std::string
 	std::string searchPath  = std::string(*_searchPath); 
-	std::cout << FileSystem::Directory::getCurrentDirectory().c_str() << std::endl;
+// 	std::cout << "searching path: " << FileSystem::Directory::getCurrentDirectory().c_str() << std::endl;
+	std::cout << "searching path: " << searchPath.c_str() << std::endl;
+	 std::cout << "====================================================" << std::endl;
+	
 	// provide patterns for file manager
 	std::vector<std::string> searchPatterns = {"*.h", "*.cpp"};
 

@@ -18,6 +18,15 @@ void HTMLgenerator::transferFileType(File in_fileName) {
 	if (cppFileContent == "") {
 		return;
 	}
+	replaceSymbol(cppFileContent);
+	std::vector<File> placeholder = { in_fileName, cppFileContent };
+	File htmlFileContent = injectPlaceHolderIntoTemplate(placeholder);
+	File htmlFileName = getHTMLFileName(in_fileName);
+	storeFileContent(htmlFileName, htmlFileContent);
+	removeFile(in_fileName);
+}
+
+void HTMLgenerator::replaceSymbol(File cppFileContent) {
 	replaceSymbol(cppFileContent, "\n", "<br>");
 	replaceSymbol(cppFileContent, " ", "&nbsp");
 	replaceSymbol(cppFileContent, "<", "&lt");
@@ -25,14 +34,11 @@ void HTMLgenerator::transferFileType(File in_fileName) {
 	replaceSymbol(cppFileContent, "\"", "&quot");
 	replaceSymbol(cppFileContent, "&", "&amp");
 	replaceSymbol(cppFileContent, "\t", "&nbsp&nbsp&nbsp&nbsp");
-	std::vector<File> placeholder = { in_fileName, cppFileContent };
-	File htmlFileContent = injectPlaceHolderIntoTemplate(placeholder);
-	File htmlFileName = getHTMLFileName(in_fileName);
-	storeFileContent(htmlFileName, htmlFileContent);
 }
 
-
-
+void HTMLgenerator::removeFile (const std::string& in_filename) {
+	FileSystem::File::remove(in_filename);
+}
 
 
 // store file content

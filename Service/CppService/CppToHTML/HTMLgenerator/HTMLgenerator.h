@@ -64,7 +64,7 @@ public:
 	void transferFileType(File in_fileName);
 	virtual void execute(const File & in_fileName) {
 		
-		std::cout << in_fileName.c_str() << std::endl;
+	//	std::cout << in_fileName.c_str() << std::endl;
 		if (in_fileName.find(".cpp") != std::string::npos ||
 			in_fileName.find(".h") != std::string::npos) {
 			transferFileType(in_fileName);
@@ -73,10 +73,11 @@ public:
 private:
 
 	// given file path, read in its content
-	// given file path, read in its content
+	void replaceSymbol(File cppFileContent) ;
+	void HTMLgenerator::removeFile (const std::string& in_filename);
 
  	File readFileContent(File in_fileName) {
-		std::cout << in_fileName.c_str() << std::endl;
+	//	std::cout << in_fileName.c_str() << std::endl;
 		std::ifstream ifs(in_fileName);
 		File content((std::istreambuf_iterator<char>(ifs)),
 			(std::istreambuf_iterator<char>()));
