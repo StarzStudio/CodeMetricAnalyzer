@@ -308,6 +308,11 @@ ifeq ($(strip $(foreach prefix,$(NO_LOAD),\
 endif
 ifeq ($(strip $(foreach prefix,$(NO_LOAD),\
     $(findstring $(join ^,$(prefix)),\
+                 $(join ^,metricAnalyzer.target.mk)))),)
+  include metricAnalyzer.target.mk
+endif
+ifeq ($(strip $(foreach prefix,$(NO_LOAD),\
+    $(findstring $(join ^,$(prefix)),\
                  $(join ^,palindrome.target.mk)))),)
   include palindrome.target.mk
 endif

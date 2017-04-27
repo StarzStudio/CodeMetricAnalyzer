@@ -5,8 +5,144 @@
 #include <string>
 
 
+void LargeComplexityFunctest2 () {
+
+	if () {
+int i;
+	}
+if () {
+	int i;
+	}
+	if () {
+int i;
+	}
+if () {
+	int i;
+	}
+	if () {
+int i;
+	}
+if () {
+	int i;
+	}
+	if () {
+int i;
+	}
+if () {
+	int i;
+	}
+	if () {
+int i;
+	}
+if () {
+	int i;
+	}
+	if () {
+int i;
+	}
+if () {
+	int i;
+	}
+	if () {
+int i;
+	}
+
+}
+
+void ManyLineFunctest2 () {
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+	
 int main(int argc, char **argv)
 {
 	std::string templateFile (argv[1]);

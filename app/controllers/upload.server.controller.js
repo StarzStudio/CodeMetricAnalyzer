@@ -2,7 +2,8 @@
 
 const path = require("path");
 const fs = require('fs');
-const htmlGenerator = require('../../build/Release/cppToHTML.node')
+const htmlGenerator = require(__dirname + '/../../build/Release/cppToHTML.node');
+const metricAnalyzer = require(__dirname + '/../../build/Release/metricAnalyzer.node');
 const templateHTMLPath = "./Service/CppService/CppToHTML/HTMLgenerator/template.htm";
 const multer  = require('multer');
 
@@ -31,17 +32,24 @@ exports.receiveFiles = function (req, res, next) {
 
         var userIP = req.hostname;
         makeUserSpecDir(userIP);
-
+        var newFilePaths = [];
         for (let i = 0; i < req.files.length; i++) {
 
             // files will be put into path: uploadCppPath with a uuid name and without extension
             // need to rename file using fs module
-            renameFile(req.files[i], userIP);
+            renameFile(req.files[i], userIP, newFilePaths);
         }
 
-        var destHTMLPath = "./" + uploadCppPath + "/" + userIP;
+
+        var destHTMLPath =  uploadCppPath + "/" + userIP;
         var searchPath =  destHTMLPath;
-        generateHTML(templateHTMLPath, destHTMLPath, searchPath);
+        let result  = generateHTML(templateHTMLPath, destHTMLPath, searchPath);
+        if (result) {
+            analyzeCodeMetrics( ".");
+        }
+
+        // delete all the cpp files in the end
+        deleteFiles(newFilePaths);
 
         // send success status code back
         res.status(200).end();
@@ -51,7 +59,10 @@ exports.receiveFiles = function (req, res, next) {
 
 };
 
-
+const analyzeCodeMetrics = function (path) {
+    var isFinished = metricAnalyzer(path);
+    console.log("analyze code: ${isFinished}");
+}
 const makeUserSpecDir = function(userIP) {
     let path =__dirname + `/../../${uploadCppPath}/${userIP}`;
     console.log(`user's storage path: ${path}`);
@@ -68,22 +79,23 @@ const makeUserSpecDir = function(userIP) {
 }
 
 // fs.rename(oldPath, newPath,callback);
-const renameFile = function (file, userIP) {
+const renameFile = function (file, userIP, newFilePaths) {
     var newPath =  __dirname + `/../../${uploadCppPath}/${userIP}/`  + file.originalname;
+    fs.renameSync(file.path, newPath);
+    newFilePaths.push(newPath);
+}
 
-    fs.rename(file.path, newPath, function(err) {
-        if (err) {
-            console.log(`error in rename file`);
-            throw err;
-        }
-        console.log(`rename file done!`);
-    })
+const deleteFiles = function(newFilePaths) {
+    for (let path of newFilePaths) {
+        fs.unlinkSync(path);
+    }
+
 }
 
 const generateHTML = function(templateHTMLPath, destHTMLPath, searchPath) {
 
-    var isFinished = htmlGenerator(templateHTMLPath, destHTMLPath, searchPath);
-
+    let isFinished = htmlGenerator(templateHTMLPath, destHTMLPath, searchPath);
+    return isFinished;
 }
 
 function updateSession(req) {

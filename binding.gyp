@@ -27,6 +27,34 @@
             			    '-fno-exceptions'
             			]
 
+         },
+         {
+             "target_name": "metricAnalyzer",
+             "sources": [
+                    "Service/CppService/CodeAnalyzer/MetricsAnalysis/MetricsExecutive.cpp",
+                  "Service/CppService/CodeAnalyzer/ASTNode/ASTNode.cpp",
+                  "Service/CppService/CodeAnalyzer/FileSystem/FileSystem.cpp",
+                   "Service/CppService/CodeAnalyzer/Parser/Parser.cpp",
+                    "Service/CppService/CodeAnalyzer/Parser/Parser.cpp",
+                     "Service/CppService/CodeAnalyzer/Parser/ConfigureParser.cpp",
+                      "Service/CppService/CodeAnalyzer/Parser/ActionsAndRules.cpp",
+                   "Service/CppService/CodeAnalyzer/SemiExp/SemiExp.cpp",
+                   "Service/CppService/CodeAnalyzer/Tokenizer/Tokenizer.cpp",
+                   "Service/CppService/CodeAnalyzer/ScopeStack/ScopeStack.cpp",
+                   "Service/CppService/CodeAnalyzer/MetricsAnalysis/MetricsAnalysis.cpp",
+                   "Service/CppService/CodeAnalyzer/Utilities/Utilities.cpp",
+             ],
+             'cflags' : [
+                 '-std=c++14',
+                '-fpermissive'
+             ],
+             'cflags!' : [
+                 '-fno-exceptions'
+              ],
+              'cflags_cc!' : [
+                  '-fno-exceptions'
+            	]
+
          }
 	]
 

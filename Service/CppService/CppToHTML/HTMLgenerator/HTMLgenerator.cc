@@ -23,7 +23,7 @@ void HTMLgenerator::transferFileType(File in_fileName) {
 	File htmlFileContent = injectPlaceHolderIntoTemplate(placeholder);
 	File htmlFileName = getHTMLFileName(in_fileName);
 	storeFileContent(htmlFileName, htmlFileContent);
-	removeFile(in_fileName);
+	//removeFile(in_fileName);
 }
 
 void HTMLgenerator::replaceSymbol(File cppFileContent) {
@@ -36,9 +36,9 @@ void HTMLgenerator::replaceSymbol(File cppFileContent) {
 	replaceSymbol(cppFileContent, "\t", "&nbsp&nbsp&nbsp&nbsp");
 }
 
-void HTMLgenerator::removeFile (const std::string& in_filename) {
-	FileSystem::File::remove(in_filename);
-}
+//void HTMLgenerator::removeFile (const std::string& in_filename) {
+//	FileSystem::File::remove(in_filename);
+//}
 
 
 // store file content
