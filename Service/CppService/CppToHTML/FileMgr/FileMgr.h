@@ -84,7 +84,7 @@ public:
     {
       pEvtHandler->execute(f);
     }
-    //std::cout << f.c_str() << std::endl;
+    std::cout << f.c_str() << std::endl;
   }
   //----< applications can overload this or reg for dirEvt >-------
 
@@ -116,14 +116,14 @@ public:
   void find(const std::string &path)
   {
     std::string fpath = FileSystem::Path::getFullFileSpec(path);
-
+    std::cout << "file manager is search path: " << fpath.c_str() << std::endl;
     dir(fpath);
     for (auto patt : patterns_)
     {
       std::vector<std::string> files = FileSystem::Directory::getFiles(fpath, patt);
       for (auto f : files)
       {
-        File _file = FileSystem::Path::fileSpec(path, f);
+        File _file = FileSystem::Path::fileSpec(fpath, f);
         file(_file);
       }
     }

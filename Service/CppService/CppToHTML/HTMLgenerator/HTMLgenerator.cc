@@ -14,13 +14,17 @@ using File = std::string;
 
 // transfer from cpp source text to html content
 void HTMLgenerator::transferFileType(File in_fileName) {
-	File cppFileContent = readFileContent(in_fileName);
+	File cppFileContent = this->readFileContent(in_fileName);
 	if (cppFileContent == "") {
 		return;
 	}
 	replaceSymbol(cppFileContent, "\n", "<br>");
 	replaceSymbol(cppFileContent, " ", "&nbsp");
-	replaceSymbol(cppFileContent, "\t", "&nbsp&nbsp");
+	replaceSymbol(cppFileContent, "<", "&lt");
+	replaceSymbol(cppFileContent, ">", "&gt");
+	replaceSymbol(cppFileContent, "\"", "&quot");
+	replaceSymbol(cppFileContent, "&", "&amp");
+	replaceSymbol(cppFileContent, "\t", "&nbsp&nbsp&nbsp&nbsp");
 	std::vector<File> placeholder = { in_fileName, cppFileContent };
 	File htmlFileContent = injectPlaceHolderIntoTemplate(placeholder);
 	File htmlFileName = getHTMLFileName(in_fileName);
@@ -29,15 +33,7 @@ void HTMLgenerator::transferFileType(File in_fileName) {
 
 
 
-// given file path, read in its content
 
-inline File HTMLgenerator::readFileContent(File in_fileName) {
-	
-	std::ifstream ifs(in_fileName);
-	File content((std::istreambuf_iterator<char>(ifs)),
-		(std::istreambuf_iterator<char>()));
-	return content;
-}
 
 // store file content
 
@@ -46,6 +42,7 @@ inline void HTMLgenerator::storeFileContent(File in_htmlFileName, File in_htmlCo
 	if (!FileSystem::Directory::exists(_htmlDestFolder)) {
 		FileSystem::Directory::create(_htmlDestFolder);
 	}
+	
 	FileSystem::Directory::setCurrentDirectory(_htmlDestFolder);
 	File fileName = FileSystem::Path::getName(in_htmlFileName);
 	std::ofstream htmlFile(fileName);

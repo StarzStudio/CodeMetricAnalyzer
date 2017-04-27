@@ -3,7 +3,7 @@
 
 /////////////////////////////////////////////////////////////////////
 // HTMLgenerator.h - generater html file for a .h or .cpp file     //
-// ver 1.2                                                         //
+// ver 1.3                                                         //
 // platform: Win 10												   //		
 // Xing Zhou, work.xingzhou@gmail.com, Syracuse University         //
 // Application: MEAN stack using C++ to analyze code metrics       //
@@ -20,6 +20,9 @@
 * 
 * Maintenance History :
 *--------------------
+* ver 1.3 : 26 Apr 2016
+* -move readFileContent() into head file, otherwise nodejs runtime will raise undefine symbol: readFileContent
+* ?don't know why
 * ver 1.2 : 25 Apr 2016
 * -Fix Bug: storeFileContent issue: 
 			must specify the correct folder by using FileSystem::Dirtory::create and 
@@ -60,6 +63,8 @@ public:
 	// transfer from cpp source text to html content
 	void transferFileType(File in_fileName);
 	virtual void execute(const File & in_fileName) {
+		
+		std::cout << in_fileName.c_str() << std::endl;
 		if (in_fileName.find(".cpp") != std::string::npos ||
 			in_fileName.find(".h") != std::string::npos) {
 			transferFileType(in_fileName);
@@ -68,7 +73,15 @@ public:
 private:
 
 	// given file path, read in its content
-	File readFileContent(File in_fileName);
+	// given file path, read in its content
+
+ 	File readFileContent(File in_fileName) {
+		std::cout << in_fileName.c_str() << std::endl;
+		std::ifstream ifs(in_fileName);
+		File content((std::istreambuf_iterator<char>(ifs)),
+			(std::istreambuf_iterator<char>()));
+		return content;
+	}
 	// store file content
 	void storeFileContent(File in_htmlFileName, File in_htmlContent);
 	// inject placeholder into html template

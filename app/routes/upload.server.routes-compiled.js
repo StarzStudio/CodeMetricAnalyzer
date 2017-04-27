@@ -3,7 +3,7 @@
 var multer = require('multer');
 var fs = require('fs');
 
-var uploadCppPath = "userUploadFiles/userUploadCpp";
+var uploadCppPath = "userUploadFiles/cppFiles";
 var upload = multer({ dest: '' + uploadCppPath });
 
 module.exports = function (app) {

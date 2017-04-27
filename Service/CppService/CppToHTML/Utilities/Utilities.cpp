@@ -17,10 +17,10 @@
 using namespace Utilities;
 
 std::function<void(const std::string&)> Title =
-[](auto src) { StringHelper::Title(src, '='); };
+[](const std::string src) ->void { StringHelper::Title(src, '='); };
 
 std::function<void(const std::string&)> title =
-[](auto src) { StringHelper::Title(src, '-'); };
+[](const std::string src) ->void { StringHelper::Title(src, '-'); };
 
 void StringHelper::title(const std::string& src)
 {

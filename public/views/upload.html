@@ -8,9 +8,9 @@
     <meta name="description" content="Store and show metrics information for your cpp files">
     <meta name="author" content="Xing Zhou">
 
-    <script src="../JS/upload.client.js"></script>
-    <link href="../lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/upload.css" rel="stylesheet">
+
+    <link href="./lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./CSS/upload.css" rel="stylesheet">
     
     <title>cpp metrics analyzer</title>
 
@@ -68,7 +68,7 @@
                 <h1>C++ Code Analyzer</h1>
                 <p><strong>Usage Instructions:</strong> upload all the *.h, *.cpp files in a C++ project, the server will store and display all the file content, anaylze and show the metrics and dependency relationship information for you</p>
                 <br><br><br><br>
-                <input type="file" name="uploadFiles" id="file_input" multiple />
+                <input type="file" name="uploadCppFiles" id="file_input" multiple />
                            </div>
                 <br><br>
                 <button type="button" onclick="uploadFiles()">Submit</button>
@@ -101,13 +101,14 @@
 </section>
 
 <!-- jQuery -->
-<script src="../lib/jquery/dist/jquery.min.js"></script>
+<script src="./lib/jquery/dist/jquery.min.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
-<script src="../lib/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="./lib/bootstrap/dist/js/bootstrap.min.js"></script>
 
 <!-- Scrolling Nav JavaScript -->
-<script src="js/jquery.easing.min.js"></script>
+<script src="./JS/jquery.easing.min.js"></script>
+<script src="./JS/upload.client.js"></script>
 
 </body>
 

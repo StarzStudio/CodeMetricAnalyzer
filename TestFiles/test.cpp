@@ -4,10 +4,13 @@
 #include "Executive.h"
 #include <string>
 
+
+
+
 int main(int argc, char **argv)
 {
 	std::string templateFile (argv[1]);
-	
+
 	std::string destHTMLFolder(argv[2]);
 	std::string searchPath(argv[3]);
 	std::vector<std::string> searchPatterns;
