@@ -143,7 +143,7 @@ private:
         // std::cout << "name : " << it->first << " metricinfor : func: " << std::endl;
         if (it->second.overlinedFunctions.size() > 0 || 
             it->second.overComplexityFunctions.size() > 0 ) {
-            std::cout << "File: " << it->first << " need to be improved." << std::endl;
+            std::cout << "\n\nFile: " << it->first << " need to be improved." << std::endl;
 			analyzer.analyzer.metricsResultBuf <<  "File: " << it->first << " need to be improved.\n" ;
         }
          if (it->second.overlinedFunctions.size() > 0 ) {

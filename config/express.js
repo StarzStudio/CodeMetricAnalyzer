@@ -6,7 +6,8 @@ var express = require('express'),
     methodOverride = require('method-override'),
     session = require('express-session'),
     passport = require('passport'),
-    fs = require('fs');
+    fs = require('fs'),
+    path = require('path');
 
 module.exports = function () {
     var app = express();
@@ -32,7 +33,7 @@ module.exports = function () {
         secret: config.sessionSecret
     }));
 
-    app.set('views', './app/views');
+    app.set('views', path.join(__dirname, '/app/views'));
     app.set('view engine', 'ejs');
     
     app.use(passport.initialize());

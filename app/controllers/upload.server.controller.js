@@ -52,7 +52,7 @@ exports.receiveFiles = function (req, res, next) {
         deleteFiles(newFilePaths);
 
         // send success status code back
-        res.status(200).end();
+        res.redirect('cppLists');
 
     })
 
@@ -61,7 +61,6 @@ exports.receiveFiles = function (req, res, next) {
 
 const analyzeCodeMetrics = function (path) {
     var isFinished = metricAnalyzer(path);
-    console.log("analyze code: ${isFinished}");
 }
 const makeUserSpecDir = function(userIP) {
     let path =__dirname + `/../../${uploadCppPath}/${userIP}`;
