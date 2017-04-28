@@ -15,14 +15,14 @@ exports.render = function(req, res) {
 
 
     updateSession(req);
-    res.render('upload');
-    // var indexFilePath = path.resolve('public/views/upload.html');
-    // // console.log(indexFilePath);
-    // res.sendFile(indexFilePath);
+    res.render('upload'); // send .ejs file to the client
+
 
 };
 
 exports.receiveFiles = function (req, res, next) {
+
+    // multer process in the below block
     upload(req,res, function(err) {
         if (err) {
             console.log("error happened when multer is processing");
@@ -32,11 +32,11 @@ exports.receiveFiles = function (req, res, next) {
         }
 
         var userIP = req.hostname;
-        makeUserSpecDir(userIP);
+        makeUserSpecDir(userIP);               // generate a dir for each user
         var newFilePaths = [];
         for (let i = 0; i < req.files.length; i++) {
 
-            // files will be put into path: uploadCppPath with a uuid name and without extension
+            // files will be put into path: uploadCppPath with a uuid name and without suffix
             // need to rename file using fs module
             renameFile(req.files[i], userIP, newFilePaths);
         }
@@ -44,12 +44,13 @@ exports.receiveFiles = function (req, res, next) {
         var destHTMLPath =  uploadCppPath + "/" + userIP;
         var searchPath =  destHTMLPath;
 
+        // call c++ services
         analyzeCodeMetrics( searchPath);
         generateHTML(templateHTMLPath, destHTMLPath, searchPath);
 
 
 
-        // delete all the cpp files in the end
+        // delete all the cpp files eventually
         deleteFiles(newFilePaths);
 
         // send success status code back
