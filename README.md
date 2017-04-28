@@ -68,8 +68,8 @@ This will run the node server at port 3000
 
 #### Code Metrics:
 
-![Code Metrics](/READMESource/images/MetricsOutput.jpg)
+![Code Metrics](/READMESource/images/MetricsOutput.png)
 
 #### Dependency Metrics:
 
-![Code Metrics](/READMESource/images/DependencyOutput.jpg)
+![Dependency Graph](/READMESource/images/DependencyOutput.png)
