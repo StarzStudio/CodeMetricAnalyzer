@@ -5,6 +5,7 @@ using namespace v8;
 
 void IsPalindrome(const FunctionCallbackInfo<Value>& info) 
 {
+	
   String::Utf8Value sentence(info[0]->ToString()); //convert to std::string
   std::string input = std::string(*sentence); 
   bool isPal = true;

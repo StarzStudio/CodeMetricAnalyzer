@@ -1,0 +1,4 @@
+void Parser::addRule(IRule* pRule)
+{
+  rules.push_back(pRule);
+}

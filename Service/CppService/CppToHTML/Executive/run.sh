@@ -1,0 +1,1 @@
+./a.out "../HTMLgenerator/template.htm" "../htmlFolder" ".." "*.h" "*.cpp"
