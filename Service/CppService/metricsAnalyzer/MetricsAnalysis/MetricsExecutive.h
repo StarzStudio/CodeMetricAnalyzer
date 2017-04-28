@@ -71,11 +71,14 @@ ver 1.0 : 04 Mar 16
 #include <string>
 #include <unordered_map>
 #include "sys/types.h"
+
+#ifdef NODE_ENV
+
 #include <node.h>
 #include <v8.h>
-
 using namespace v8;
 
+#endif
 
 
 class MetricExecutive 
@@ -117,6 +120,7 @@ private:
 };
 
 
+#ifdef NODE_ENV
 
 
  void analyzeMatrics(const FunctionCallbackInfo<Value>& args) {
@@ -178,6 +182,6 @@ void Init(Local<Object> exports, Local<Object> module) {
 }
 
 NODE_MODULE(analyzeMatrics, Init)
-
+#endif
 
 #endif
