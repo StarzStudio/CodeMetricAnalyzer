@@ -1,5 +1,5 @@
 {
-  "name" : "MEAN",
+  "name" : "analyzer",
   "version" : "0.0.7",
   "dependencies": {
      "angular": "~1.5.6"

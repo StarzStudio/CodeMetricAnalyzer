@@ -9,6 +9,7 @@ DEFS_Debug := \
 	'-DV8_DEPRECATION_WARNINGS=1' \
 	'-D_LARGEFILE_SOURCE' \
 	'-D_FILE_OFFSET_BITS=64' \
+	'-DNODE_ENV' \
 	'-DBUILDING_NODE_EXTENSION' \
 	'-DDEBUG' \
 	'-D_DEBUG'
@@ -47,6 +48,7 @@ DEFS_Release := \
 	'-DV8_DEPRECATION_WARNINGS=1' \
 	'-D_LARGEFILE_SOURCE' \
 	'-D_FILE_OFFSET_BITS=64' \
+	'-DNODE_ENV' \
 	'-DBUILDING_NODE_EXTENSION'
 
 # Flags passed to all source files.
@@ -77,17 +79,17 @@ INCS_Release := \
 	-I/home/xing/.node-gyp/7.8.0/deps/v8/include
 
 OBJS := \
-	$(obj).target/$(TARGET)/Service/CppService/CodeAnalyzer/MetricsAnalysis/MetricsExecutive.o \
-	$(obj).target/$(TARGET)/Service/CppService/CodeAnalyzer/ASTNode/ASTNode.o \
-	$(obj).target/$(TARGET)/Service/CppService/CodeAnalyzer/FileSystem/FileSystem.o \
-	$(obj).target/$(TARGET)/Service/CppService/CodeAnalyzer/Parser/Parser.o \
-	$(obj).target/$(TARGET)/Service/CppService/CodeAnalyzer/Parser/ConfigureParser.o \
-	$(obj).target/$(TARGET)/Service/CppService/CodeAnalyzer/Parser/ActionsAndRules.o \
-	$(obj).target/$(TARGET)/Service/CppService/CodeAnalyzer/SemiExp/SemiExp.o \
-	$(obj).target/$(TARGET)/Service/CppService/CodeAnalyzer/Tokenizer/Tokenizer.o \
-	$(obj).target/$(TARGET)/Service/CppService/CodeAnalyzer/ScopeStack/ScopeStack.o \
-	$(obj).target/$(TARGET)/Service/CppService/CodeAnalyzer/MetricsAnalysis/MetricsAnalysis.o \
-	$(obj).target/$(TARGET)/Service/CppService/CodeAnalyzer/Utilities/Utilities.o
+	$(obj).target/$(TARGET)/Service/CppService/metricsAnalyzer/MetricsAnalysis/MetricsExecutive.o \
+	$(obj).target/$(TARGET)/Service/CppService/metricsAnalyzer/ASTNode/ASTNode.o \
+	$(obj).target/$(TARGET)/Service/CppService/metricsAnalyzer/FileSystem/FileSystem.o \
+	$(obj).target/$(TARGET)/Service/CppService/metricsAnalyzer/Parser/Parser.o \
+	$(obj).target/$(TARGET)/Service/CppService/metricsAnalyzer/Parser/ConfigureParser.o \
+	$(obj).target/$(TARGET)/Service/CppService/metricsAnalyzer/Parser/ActionsAndRules.o \
+	$(obj).target/$(TARGET)/Service/CppService/metricsAnalyzer/SemiExp/SemiExp.o \
+	$(obj).target/$(TARGET)/Service/CppService/metricsAnalyzer/Tokenizer/Tokenizer.o \
+	$(obj).target/$(TARGET)/Service/CppService/metricsAnalyzer/ScopeStack/ScopeStack.o \
+	$(obj).target/$(TARGET)/Service/CppService/metricsAnalyzer/MetricsAnalysis/MetricsAnalysis.o \
+	$(obj).target/$(TARGET)/Service/CppService/metricsAnalyzer/Utilities/Utilities.o
 
 # Add to the list of files we specially track dependencies for.
 all_deps += $(OBJS)

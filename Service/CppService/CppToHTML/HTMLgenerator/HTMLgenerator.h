@@ -74,7 +74,7 @@ private:
 
 	// given file path, read in its content
 	void replaceSymbol(File& cppFileContent) ;
-	void HTMLgenerator::removeFile (const std::string& in_filename);
+	//void HTMLgenerator::removeFile (const std::string& in_filename);
 
  	File readFileContent(File in_fileName) {
 	//	std::cout << in_fileName.c_str() << std::endl;

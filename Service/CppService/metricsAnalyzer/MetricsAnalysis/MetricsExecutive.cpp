@@ -137,6 +137,7 @@ void MetricExecutive::analyze()
 //----< test stub >------------------------------------------------------
 
 #ifdef TEST_METRICSEXECUTIVE
+
 int main(int argc, char ** argv)
 {
     std::cout << "\n  Testing Metrics Executive tool which analyzes a set of packages";
@@ -144,8 +145,18 @@ int main(int argc, char ** argv)
     std::cout << "\n  =====================================================  \n";
 
     // create analyzer
-	std::vector<std::string> patterns = { "*.h", "*.cpp" };
-    MetricExecutive analyzer(argv[1], patterns);
+    if (argc < 2) {
+        std::cout << "  Please provide paras. \n  example: ./a.out path pattern1 [pattern2, ...]" << std::endl;
+        return -1;
+    }
+    std::vector<std::string> patterns;
+    std::string path = argv[1];
+    for (int i = 2; i < argc; i ++) {
+     patterns.push_back(argv[i]);
+    }
+
+    MetricExecutive analyzer(path, patterns);
+
 
     // test find files meeting a specific pattern given a path name
   //  analyzer.addPattern("1s");

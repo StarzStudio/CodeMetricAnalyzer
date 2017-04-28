@@ -1,6 +1,6 @@
 {
-  "name": "MEAN",
-  "version": "0.0.3",
+  "name": "analyzer",
+  "version": "0.1.0",
   "gypfile": true,
   "dependencies": {
     "babel-cli": "^6.23.0",

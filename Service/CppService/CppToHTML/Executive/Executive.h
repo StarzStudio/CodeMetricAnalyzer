@@ -5,10 +5,15 @@
 #include "../HTMLgenerator/HTMLgenerator.h"
 #include "../FileMgr/FileMgr.h"
 #include "sys/types.h"
+#include "../FileSystem/FileSystem.h"
+
+
+#ifdef NODE_ENV
+
 #include <node.h>
 #include <v8.h>
-#include "../FileSystem/FileSystem.h"
 using namespace v8;
+
 
 
 void generateHTML(const FunctionCallbackInfo<Value>& args) {
@@ -53,6 +58,6 @@ void Init(Local<Object> exports, Local<Object> module) {
 
 NODE_MODULE(generateHTML, Init)
 
-
+#endif
 
 #endif
