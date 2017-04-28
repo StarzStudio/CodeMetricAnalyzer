@@ -12,7 +12,7 @@ Email: work.xingzhou@gmail.com
 ## Structure
 
 
-![overview](/READMESource/images/CodeAnalyzerOverviewStructure.js)
+![overview](/READMESource/images/CodeAnalyzerOverviewStructure.jpg)
 
 This project consists of two parts:
 
@@ -68,8 +68,8 @@ This will run the node server at port 3000
 
 #### Code Metrics:
 
-![Code Metrics](/READMESource/images/MetricsOutput.js)
+![Code Metrics](/READMESource/images/MetricsOutput.jpg)
 
 #### Dependency Metrics:
 
-![Code Metrics](/READMESource/images/DependencyOutput.js)
+![Code Metrics](/READMESource/images/DependencyOutput.jpg)
