@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 
 <head>
 
@@ -10,7 +10,7 @@
 
 
     <link href="./lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="./CSS/upload.css" rel="stylesheet">
+    <link href="./upload/CSS/upload.css" rel="stylesheet">
 
     <title>cpp metrics analyzer</title>
 
@@ -24,7 +24,7 @@
 
 <!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
 
-<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+<body  ng-app="codeAnalyzer" id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 
 <!-- Navigation -->
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -36,7 +36,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand page-scroll" href="#page-top">Top</a>
+            <a class="navbar-brand page-scroll" data-target="home" href="#!/">Home</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -44,14 +44,14 @@
             <ul class="nav navbar-nav">
                 <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
                 <li class="hidden">
-                    <a class="page-scroll" href="#page-top"></a>
+                    <a class="page-scroll" data-target="home" href="#!/">home</a>
                 </li>
 
                 <li>
-                    <a class="page-scroll" href="./localhost/metricsResult.html">Metrics</a>
+                    <a class="page-scroll" data-target="metrics" href="#!metrics">Metrics</a>
                 </li>
                 <li>
-                    <a class="page-scroll" href="#dependency">Dependency</a>
+                    <a class="page-scroll" data-target="dependency" href="#!dependency">Dependency</a>
                 </li>
             </ul>
         </div>
@@ -60,45 +60,36 @@
     <!-- /.container -->
 </nav>
 
+
+<section ng-view></section>
 <!-- Intro Section -->
-<section id="intro" class="intro-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1>C++ Code Analyzer</h1>
-                <p><strong>Usage Instructions:</strong> upload all the *.h, *.cpp files in a C++ project, the server will store and display all the file content, anaylze and show the metrics and dependency relationship information for you</p>
-                <br><br><br><br>
-                <input type="file" name="uploadCppFiles" id="file_input" multiple />
-            </div>
-            <br><br>
-            <button type="button" onclick="uploadFiles()">Submit</button>
-        </div>
-    </div>
-</section>
+
 
 
 
 <!-- metrics Section -->
-<section id="metrics" class="metrics-section">
-<div class="container">
-<div class="row">
-<div class="col-lg-12"  ng-app="codeAnalyzer" ng-controller="upload">
+<!--<section id="metrics" class="metrics-section">-->
+<!--<div class="container">-->
+<!--<div class="row">-->
+<!--<div class="col-lg-12"  ng-app="codeAnalyzer" ng-controller="upload">-->
 
-        <div>
-            <h1>C++ File list:</h1>
-            <ul>
-                <li><a href="./localhost/testBadFile1.cpp.html" class="file-link">testBadFile1.cpp</a></li>
-                <li><a href="./localhost/testBadFile2.cpp.html" class="file-link">testBadFile2.cpp</a></li>
-                <li><a href="./localhost/testGoodFile1.h.html" class="file-link">testGoodFile1.h</a></li>
-                <li><a href="./localhost/testGoodFile2.h.html" class="file-link">testGoodFile2.h</a></li>
-            </ul>
-        </div>
+        <!--<div>-->
+            <!--<h1>C++ File list:</h1>-->
+            <!--<ul>-->
+                <!--<li><a href="./localhost/testBadFile1.cpp.html" class="file-link">testBadFile1.cpp</a></li>-->
+                <!--<li><a href="./localhost/testBadFile2.cpp.html" class="file-link">testBadFile2.cpp</a></li>-->
+                <!--<li><a href="./localhost/testGoodFile1.h.html" class="file-link">testGoodFile1.h</a></li>-->
+                <!--<li><a href="./localhost/testGoodFile2.h.html" class="file-link">testGoodFile2.h</a></li>-->
+            <!--</ul>-->
+        <!--</div>-->
 
 
-</div>
-</div>
-</div>
-</section>
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</section>-->
+
+
 
 <!--&lt;!&ndash; dependency Section &ndash;&gt;-->
 <!--<section id="dependency" class="dependency-section">-->
@@ -117,14 +108,19 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="./lib/bootstrap/dist/js/bootstrap.min.js"></script>
 
-<!-- Scrolling Nav JavaScript -->
-<script src="./JS/jquery.easing.min.js"></script>
-<script src="./JS/upload.client.js"></script>
-<!--<script type="text/javascript" src="./lib/angular/angular.js"></script>-->
-<!--<script type="text/javascript" src="./lib/angular-route/angular-route.js"></script>-->
-<!--<script type="text/javascript" src="./upload//Controller/upload.client.controller.js"></script>-->
+<script src="./upload/JS/jquery.easing.min.js"></script>
+<script src="./upload/JS/upload.client.js"></script>
 
-<!--<script type="text/javascript" src="application.js"></script>-->
+<script type="text/javascript" src="./lib/angular/angular.js"></script>
+<script type="text/javascript" src="./lib/angular-route/angular-route.js"></script>
+<script type="text/javascript" src="application.js"></script>
+
+
+<script type="text/javascript" src="./upload/upload.client.module.js"></script>
+<script type="text/javascript" src="./upload/controller/upload.client.controller.js"></script>
+<script type="text/javascript" src="./upload/config/upload.client.routes.js"></script>
+
+
 
 <script>
 //    var app = angular.module('codeAnalyzer', []);

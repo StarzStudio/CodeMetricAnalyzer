@@ -2300,9 +2300,9 @@ function setupModuleLoader(window) {
            * @ngdoc method
            * @name angular.Module#controller
            * @module ng
-           * @param {string|Object} name Controller name, or an object map of controllers where the
+           * @param {string|Object} name controller name, or an object map of controllers where the
            *    keys are the names and the values are the constructors.
-           * @param {Function} constructor Controller constructor function.
+           * @param {Function} constructor controller constructor function.
            * @description
            * See {@link ng.$controllerProvider#register $controllerProvider.register()}.
            */
@@ -3194,7 +3194,7 @@ function jqLiteAddNodes(root, elements) {
 
 
 function jqLiteController(element, name) {
-  return jqLiteInheritedData(element, '$' + (name || 'ngController') + 'Controller');
+  return jqLiteInheritedData(element, '$' + (name || 'ngController') + 'controller');
 }
 
 function jqLiteInheritedData(element, name, value) {
@@ -8680,7 +8680,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
         if (transcludeControllers) {
           for (var controllerName in transcludeControllers) {
-            $linkNode.data('$' + controllerName + 'Controller', transcludeControllers[controllerName].instance);
+            $linkNode.data('$' + controllerName + 'controller', transcludeControllers[controllerName].instance);
           }
         }
 
@@ -9471,7 +9471,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
               // If the controller constructor has a return value, overwrite the instance
               // from setupControllers
               controller.instance = controllerResult;
-              $element.data('$' + controllerDirective.name + 'Controller', controllerResult);
+              $element.data('$' + controllerDirective.name + 'controller', controllerResult);
               if (controller.bindingInfo.removeWatches) {
                 controller.bindingInfo.removeWatches();
               }
@@ -9480,7 +9480,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             }
           } else {
             controller.instance = controller();
-            $element.data('$' + controllerDirective.name + 'Controller', controller.instance);
+            $element.data('$' + controllerDirective.name + 'controller', controller.instance);
             controller.bindingInfo =
               initializeDirectiveBindings(controllerScope, attrs, controller.instance, bindings, controllerDirective);
           }
@@ -9624,13 +9624,13 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
         }
 
         if (!value) {
-          var dataName = '$' + name + 'Controller';
+          var dataName = '$' + name + 'controller';
           value = inheritType ? $element.inheritedData(dataName) : $element.data(dataName);
         }
 
         if (!value && !optional) {
           throw $compileMinErr('ctreq',
-              'Controller \'{0}\', required by directive \'{1}\', can\'t be found!',
+              'controller \'{0}\', required by directive \'{1}\', can\'t be found!',
               name, directiveName);
         }
       } else if (isArray(require)) {
@@ -9671,7 +9671,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
         // Instead, we save the controllers for the element in a local hash and attach to .data
         // later, once we have the actual element.
         elementControllers[directive.name] = controllerInstance;
-        $element.data('$' + directive.name + 'Controller', controllerInstance.instance);
+        $element.data('$' + directive.name + 'controller', controllerInstance.instance);
       }
       return elementControllers;
     }
@@ -10465,7 +10465,7 @@ function $ControllerProvider() {
   /**
    * @ngdoc method
    * @name $controllerProvider#has
-   * @param {string} name Controller name to check.
+   * @param {string} name controller name to check.
    */
   this.has = function(name) {
     return controllers.hasOwnProperty(name);
@@ -10474,9 +10474,9 @@ function $ControllerProvider() {
   /**
    * @ngdoc method
    * @name $controllerProvider#register
-   * @param {string|Object} name Controller name, or an object map of controllers where the keys are
+   * @param {string|Object} name controller name, or an object map of controllers where the keys are
    *    the names and the values are the constructors.
-   * @param {Function|Array} constructor Controller constructor fn (optionally decorated with DI
+   * @param {Function|Array} constructor controller constructor fn (optionally decorated with DI
    *    annotations in the array notation).
    */
   this.register = function(name, constructor) {

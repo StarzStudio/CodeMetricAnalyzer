@@ -21,7 +21,7 @@ exports.render = function(req, res) {
 };
 
 exports.receiveFiles = function (req, res, next) {
-
+    console.log("hello");
     // multer process in the below block
     upload(req,res, function(err) {
         if (err) {
@@ -62,8 +62,7 @@ exports.receiveFiles = function (req, res, next) {
 };
 
 const analyzeCodeMetrics = function (path) {
-    var isFinished = metricAnalyzer(path);
-
+    metricAnalyzer(path);
 }
 const makeUserSpecDir = function(userIP) {
     let path =__dirname + `/../../${uploadCppPath}/${userIP}`;

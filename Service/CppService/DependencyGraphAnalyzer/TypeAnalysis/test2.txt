@@ -1,0 +1,27 @@
+namespace ns1 
+{
+ void global1()
+{
+}
+class x1
+{
+	int func1() {}
+};
+ void global2()
+{
+}
+class contextForType
+{
+   
+    void setGlobal(bool signal)
+    {
+        global = signal;
+    } 
+    bool isGlobal()
+    {
+        return global;
+    }
+   
+  
+};
+}

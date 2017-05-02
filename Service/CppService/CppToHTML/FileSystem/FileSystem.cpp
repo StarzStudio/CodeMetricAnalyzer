@@ -232,6 +232,7 @@ bool File::exists(const std::string& file)
   test.close();
   return retval;
 }
+#ifdef OS_Linux
 //----< copy file >----------------------------------------------------
 
 bool File::copy(const std::string& src, const std::string& dst, bool failIfExists)
@@ -260,6 +261,7 @@ bool File::copy(const std::string& src, const std::string& dst, bool failIfExist
   ::close (write_fd);
   return true;
 }
+#endif // OS_Linux
 //----< remove file >--------------------------------------------------
 
 bool File::remove(const std::string& file)
@@ -301,6 +303,7 @@ std::string FileInfo::intToString(long i)
   out << std::setw(2) << i;
   return out.str();
 }
+#ifdef OS_Linux
 //----< return file date >---------------------------------------------
 
 std::string FileInfo::date(dateFormat df) const
@@ -320,6 +323,7 @@ std::string FileInfo::date(dateFormat df) const
     return timeStr;
   return dateStr + " " + timeStr;
 }
+#endif
 //----< return file size >---------------------------------------------
 
 size_t FileInfo::size() const
