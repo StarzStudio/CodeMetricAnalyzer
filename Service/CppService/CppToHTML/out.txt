@@ -1,0 +1,20 @@
+FileSystem/FileSystem.cpp:30:7: warning: comparison of unsigned expression < 0 is always false [-Wtautological-compare]
+  if(i<0 || bytes_.size() <= i)
+     ~^~
+FileSystem/FileSystem.cpp:38:7: warning: comparison of unsigned expression < 0 is always false [-Wtautological-compare]
+  if(i<0 || bytes_.size() <= i)
+     ~^~
+FileSystem/FileSystem.cpp:476:10: warning: unused variable 'end' [-Wunused-variable]
+  size_t end = fileSpec.length() - pos;
+         ^
+FileSystem/FileSystem.cpp:497:8: warning: comparison of 0 <= unsigned expression is always true [-Wtautological-compare]
+  if(0 <= pos && pos < fileSpec.length())
+     ~ ^  ~~~
+FileSystem/FileSystem.cpp:578:10: warning: unused variable 'mode' [-Wunused-variable]
+  mode_t mode = S_IRUSR;
+         ^
+In file included from FileSystem/FileSystem.cpp:12:
+FileSystem/FileSystem.h:233:10: warning: private field 'buffer' is not used [-Wunused-private-field]
+    char buffer[BufSize];
+         ^
+6 warnings generated.

@@ -33,7 +33,6 @@ void HTMLgenerator::replaceSymbol(File& cppFileContent) {
 	replaceSymbol(cppFileContent, ">", "&gt");
 
 	replaceSymbol(cppFileContent, "\"", "&quot");
-	replaceSymbol(cppFileContent, "\t", "&nbsp&nbsp&nbsp&nbsp");
 
 }
 
@@ -65,10 +64,10 @@ inline File HTMLgenerator::injectPlaceHolderIntoTemplate(std::vector<File> in_pl
 	File fileName = in_placeholder[0];
 	File fileContent = in_placeholder[1];
 
-	size_t posOfFileName = htmlContent.find(std::string("<title>")) + 7;
+	size_t posOfFileName = htmlContent.find(std::string("</title>"));
 	htmlContent.insert(posOfFileName, fileName);
 
-	size_t posOfFileContent = htmlContent.find(std::string("<div>")) + 5;
+	size_t posOfFileContent = htmlContent.find(std::string("</code>"));
 	htmlContent.insert(posOfFileContent, fileContent);
 	return htmlContent;
 }

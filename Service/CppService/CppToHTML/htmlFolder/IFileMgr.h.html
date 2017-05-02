@@ -6,6 +6,56 @@
     <title>IFileMgr.h</title>
 </head>
 <body>
-    <div>#ifndef&nbspIFILEMGR_H<br>#define&nbspIFILEMGR_H<br>/////////////////////////////////////////////////////////////////////<br>//&nbspIFileMgr.h&nbsp-&nbspinterface&nbspfor&nbspfinding&nbspfiles&nbspmatching&nbspspecified&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsppatterns&nbspon&nbspa&nbspspecified&nbsppath&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspver&nbsp3.0&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspJim&nbspFawcett,&nbspMidtermCodeSupplement,&nbspSpring&nbsp2016&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>/////////////////////////////////////////////////////////////////////<br><br>#include&nbsp&ltstring&gt<br><br>namespace&nbspFileManager<br>{<br>&nbsp&nbspstruct&nbspIFileEventHandler<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspvirtual&nbspvoid&nbspexecute(const&nbspstd::string&amp&nbspfileSpec)&nbsp=&nbsp0;<br>&nbsp&nbsp};<br><br>&nbsp&nbspstruct&nbspIDirEventHandler<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspvirtual&nbspvoid&nbspexecute(const&nbspstd::string&amp&nbspdirSpec)&nbsp=&nbsp0;<br>&nbsp&nbsp};<br><br>&nbsp&nbspstruct&nbspIDoneEventHandler<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspvirtual&nbspvoid&nbspexecute(size_t&nbspnumFilesProcessed)&nbsp=&nbsp0;<br>&nbsp&nbsp};<br><br>&nbsp&nbspstruct&nbspIFileMgr<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspvirtual&nbsp~IFileMgr()&nbsp{}<br>&nbsp&nbsp&nbsp&nbspvirtual&nbspvoid&nbspaddPattern(const&nbspstd::string&amp&nbsppatt)&nbsp=&nbsp0;<br>&nbsp&nbsp&nbsp&nbspvirtual&nbspvoid&nbspsearch()&nbsp=&nbsp0;<br>&nbsp&nbsp&nbsp&nbspvirtual&nbspvoid&nbspfind(const&nbspstd::string&amp&nbsppath)&nbsp=&nbsp0;<br>&nbsp&nbsp&nbsp&nbspvirtual&nbspvoid&nbspregForFiles(IFileEventHandler*&nbsppEventHandler)&nbsp=&nbsp0;<br>&nbsp&nbsp&nbsp&nbspvirtual&nbspvoid&nbspregForDirs(IDirEventHandler*&nbsppEventHandler)&nbsp=&nbsp0;<br>&nbsp&nbsp&nbsp&nbspvirtual&nbspvoid&nbspregForDone(IDoneEventHandler*&nbsppEventHandler)&nbsp=&nbsp0;<br>&nbsp&nbsp&nbsp&nbspstatic&nbspIFileMgr*&nbspgetInstance();<br>&nbsp&nbsp};<br><br>}<br><br>#endif</div>
+    <div>
+        <pre>
+            <code class="cpp">#ifndef IFILEMGR_H
+#define IFILEMGR_H
+/////////////////////////////////////////////////////////////////////
+// IFileMgr.h - interface for finding files matching specified     //
+//              patterns on a specified path                       //
+// ver 3.0                                                         //
+// Jim Fawcett, MidtermCodeSupplement, Spring 2016                 //
+/////////////////////////////////////////////////////////////////////
+
+#include &ltstring&gt
+
+namespace FileManager
+{
+  struct IFileEventHandler
+  {
+    virtual void execute(const std::string&amp fileSpec) = 0;
+  };
+
+  struct IDirEventHandler
+  {
+    virtual void execute(const std::string&amp dirSpec) = 0;
+  };
+
+  struct IDoneEventHandler
+  {
+    virtual void execute(size_t numFilesProcessed) = 0;
+  };
+
+  struct IFileMgr
+  {
+    virtual ~IFileMgr() {}
+    virtual void addPattern(const std::string&amp patt) = 0;
+    virtual void search() = 0;
+    virtual void find(const std::string&amp path) = 0;
+    virtual void regForFiles(IFileEventHandler* pEventHandler) = 0;
+    virtual void regForDirs(IDirEventHandler* pEventHandler) = 0;
+    virtual void regForDone(IDoneEventHandler* pEventHandler) = 0;
+    static IFileMgr* getInstance();
+  };
+
+}
+
+#endif</code>
+        </pre>
+    </div>
+<!--load highlight.js-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/monokai-sublime.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>

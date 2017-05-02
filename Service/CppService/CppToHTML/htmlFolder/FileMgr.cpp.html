@@ -6,6 +6,87 @@
     <title>FileMgr.cpp</title>
 </head>
 <body>
-    <div>/////////////////////////////////////////////////////////////////////<br>//&nbspFileMgr.cpp&nbsp-&nbspfind&nbspfiles&nbspmatching&nbspspecified&nbsppatterns&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspon&nbspa&nbspspecified&nbsppath&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspver&nbsp2.2&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspJim&nbspFawcett,&nbspCSE687&nbsp-&nbspObject&nbspOriented&nbspDesign,&nbspSpring&nbsp2016&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>/////////////////////////////////////////////////////////////////////<br><br>#include&nbsp&quotFileMgr.h&quot<br>#include&nbsp&ltiostream&gt<br><br>using&nbspnamespace&nbspFileManager;<br><br>IFileMgr*&nbspFileMgr::pInstance_;<br><br>IFileMgr*&nbspIFileMgr::getInstance()<br>{<br>&nbsp&nbspreturn&nbspFileMgr::getInstance();<br>}<br><br>#ifdef&nbspTEST_FILEMGR<br><br>using&nbspnamespace&nbspFileManager;<br><br>struct&nbspFileHandler&nbsp:&nbspIFileEventHandler<br>{<br>&nbsp&nbspvoid&nbspexecute(const&nbspstd::string&amp&nbspfileSpec)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp--&nbsp&nbsp&nbsp&quot&nbsp&lt&lt&nbspfileSpec;<br>&nbsp&nbsp}<br>};<br><br>struct&nbspDirHandler&nbsp:&nbspIDirEventHandler<br>{<br>&nbsp&nbspvoid&nbspexecute(const&nbspstd::string&amp&nbspdirSpec)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp++&nbsp&quot&nbsp&lt&lt&nbspdirSpec;<br>&nbsp&nbsp}<br>};<br><br>struct&nbspDoneHandler&nbsp:&nbspIDoneEventHandler<br>{<br>&nbsp&nbspvoid&nbspexecute(size_t&nbspnumFilesProcessed)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n\n&nbsp&nbspProcessed&nbsp&quot&nbsp&lt&lt&nbspnumFilesProcessed&nbsp&lt&lt&nbsp&quot&nbspfiles&quot;<br>&nbsp&nbsp}<br>};<br>int&nbspmain()<br>{<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspTesting&nbspFileMgr&quot;<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp=================&quot;<br><br>&nbsp&nbspstd::string&nbsppath&nbsp=&nbspFileSystem::Path::getFullFileSpec(&quot..&quot);<br>&nbsp&nbspIFileMgr*&nbsppFmgr&nbsp=&nbspFileMgrFactory::create(path);<br><br>&nbsp&nbspFileHandler&nbspfh;<br>&nbsp&nbspDirHandler&nbspdh;<br>&nbsp&nbspDoneHandler&nbspdnh;<br><br>&nbsp&nbsppFmgr-&gtregForFiles(&ampfh);<br>&nbsp&nbsppFmgr-&gtregForDirs(&ampdh);<br>&nbsp&nbsppFmgr-&gtregForDone(&ampdnh);<br><br>&nbsp&nbsppFmgr-&gtaddPattern(&quot*.h&quot);<br>&nbsp&nbsppFmgr-&gtaddPattern(&quot*.cpp&quot);<br>&nbsp&nbsp//pFmgr-&gtaddPattern(&quot*.log&quot);<br><br>&nbsp&nbsppFmgr-&gtsearch();<br><br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n\n&quot;<br>&nbsp&nbspreturn&nbsp0;<br>&nbsp&nbsp<br>}<br>#endif<br></div>
+    <div>
+        <pre>
+            <code class="cpp">/////////////////////////////////////////////////////////////////////
+// FileMgr.cpp - find files matching specified patterns            //
+//               on a specified path                               //
+// ver 2.2                                                         //
+// Jim Fawcett, CSE687 - Object Oriented Design, Spring 2016       //
+/////////////////////////////////////////////////////////////////////
+
+#include &quotFileMgr.h&quot
+#include &ltiostream&gt
+
+using namespace FileManager;
+
+IFileMgr* FileMgr::pInstance_;
+
+IFileMgr* IFileMgr::getInstance()
+{
+  return FileMgr::getInstance();
+}
+
+#ifdef TEST_FILEMGR
+
+using namespace FileManager;
+
+struct FileHandler : IFileEventHandler
+{
+  void execute(const std::string&amp fileSpec)
+  {
+    std::cout &lt&lt &quot\n  --   &quot &lt&lt fileSpec;
+  }
+};
+
+struct DirHandler : IDirEventHandler
+{
+  void execute(const std::string&amp dirSpec)
+  {
+    std::cout &lt&lt &quot\n  ++ &quot &lt&lt dirSpec;
+  }
+};
+
+struct DoneHandler : IDoneEventHandler
+{
+  void execute(size_t numFilesProcessed)
+  {
+    std::cout &lt&lt &quot\n\n  Processed &quot &lt&lt numFilesProcessed &lt&lt &quot files&quot;
+  }
+};
+int main()
+{
+  std::cout &lt&lt &quot\n  Testing FileMgr&quot;
+  std::cout &lt&lt &quot\n =================&quot;
+
+  std::string path = FileSystem::Path::getFullFileSpec(&quot..&quot);
+  IFileMgr* pFmgr = FileMgrFactory::create(path);
+
+  FileHandler fh;
+  DirHandler dh;
+  DoneHandler dnh;
+
+  pFmgr-&gtregForFiles(&ampfh);
+  pFmgr-&gtregForDirs(&ampdh);
+  pFmgr-&gtregForDone(&ampdnh);
+
+  pFmgr-&gtaddPattern(&quot*.h&quot);
+  pFmgr-&gtaddPattern(&quot*.cpp&quot);
+  //pFmgr-&gtaddPattern(&quot*.log&quot);
+
+  pFmgr-&gtsearch();
+
+  std::cout &lt&lt &quot\n\n&quot;
+  return 0;
+  
+}
+#endif
+</code>
+        </pre>
+    </div>
+<!--load highlight.js-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/monokai-sublime.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test springy.js</title>
+
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" ' +
+            'src="./lib/jquery/dist/jquery.min.js"><\/script>')</script>
+    <script src="../public/upload/JS/springy.js"></script>
+    <script src="../public/upload/JS/springyui.js"></script>
+</head>
+<body>
+
+<script>
+    var graph = new Springy.Graph();
+
+    var Client = graph.newNode({
+        label: 'Client',
+        ondoubleclick: function() { console.log("Hello!"); }
+    });
+
+    var FileMgr = graph.newNode({label: 'FileMgr'});
+    var TextSearch = graph.newNode({label: 'TextSearch'});
+    var FileSystem = graph.newNode({label: 'FileSystem'});
+    var BlockingQueue = graph.newNode({label: 'BlockingQueue'});
+
+    graph.newEdge(Client, FileMgr, {color: '#00A0B0'});
+    graph.newEdge(Client, TextSearch, {color: '#6A4A3C'});
+    graph.newEdge(FileMgr, TextSearch, {color: '#CC333F'});
+    graph.newEdge(FileMgr, FileSystem, {color: '#EB6841'});
+    graph.newEdge(TextSearch, BlockingQueue, {color: '#EDC951'});
+
+
+    jQuery(function(){
+        var springy = window.springy = jQuery('#springydemo').springy({
+            graph: graph,
+            nodeSelected: function(node){
+                console.log('Node selected: ' + JSON.stringify(node.data));
+            }
+        });
+    });
+</script>
+
+<canvas id="springydemo" width="640" height="480" />
+</body>
+</html>
