@@ -9,7 +9,8 @@ bodyParser = require('body-parser'),
     methodOverride = require('method-override'),
     session = require('express-session'),
     passport = require('passport'),
-    fs = require('fs');
+    fs = require('fs'),
+    path = require('path');
 
 module.exports = function () {
     var app = express();
@@ -43,9 +44,10 @@ module.exports = function () {
 
     require('../app/routes/upload.server.routes.js')(app);
     require('../app/routes/users.server.routes.js')(app);
+    require('../app/routes/index.server.routes.js')(app);
 
     app.use(express.static('./public'));
-
+    app.use(express.static('./userUploadFiles/cppFiles'));
     return app;
 };
 

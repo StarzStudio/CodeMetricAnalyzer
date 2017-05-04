@@ -4,10 +4,10 @@ module.exports = function(app) {
     //app.get('/', uploadFileController.render);
 
 
-    app.get('/', uploadController.render);
+    app.get('/upload', uploadController.render);
 
 
-    app.post('/', uploadController.receiveFiles) ;
+    app.post('/upload', uploadController.receiveFiles) ;
 
 
 

@@ -12,7 +12,6 @@ var upload = multer({ dest: __dirname }).any();
 
 exports.render = function (req, res) {
 
-    updateSession(req);
     res.render('upload'); // send .ejs file to the client
 
 };
@@ -115,12 +114,5 @@ var generateHTML = function generateHTML(templateHTMLPath, destHTMLPath, searchP
     var isFinished = htmlGenerator(templateHTMLPath, destHTMLPath, searchPath);
     return isFinished;
 };
-
-function updateSession(req) {
-    if (req.session.lastVisit) {
-        console.log(req.session.lastVisit);
-    }
-    req.session.lastVisit = new Date();
-}
 
 //# sourceMappingURL=upload.server.controller-compiled.js.map
