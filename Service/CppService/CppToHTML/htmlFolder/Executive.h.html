@@ -6,6 +6,77 @@
     <title>Executive.h</title>
 </head>
 <body>
-    <div>#ifndef&nbspEXECUTIVE_H<br>#define&nbspEXECUTIVE_H<br><br><br>#include&nbsp&quot../HTMLgenerator/HTMLgenerator.h&quot<br>#include&nbsp&quot../FileMgr/FileMgr.h&quot<br>#include&nbsp&quotsys/types.h&quot<br>#include&nbsp&quot../FileSystem/FileSystem.h&quot<br><br><br>#ifdef&nbspNODE_ENV<br><br>#include&nbsp&ltnode.h&gt<br>#include&nbsp&ltv8.h&gt<br>using&nbspnamespace&nbspv8;<br><br><br><br>void&nbspgenerateHTML(const&nbspFunctionCallbackInfo&ltValue&gt&amp&nbspargs)&nbsp{<br><br>&nbsp&nbsp&nbsp&nbsp//&nbspget&nbsptempalte&nbsphtml&nbspfile<br>&nbsp&nbsp&nbsp&nbspString::Utf8Value&nbsp_templateFile(args[0]-&gtToString());&nbsp//convert&nbspto&nbspstd::string<br>&nbsp&nbsp&nbsp&nbspstd::string&nbsptemplateFile&nbsp=&nbspstd::string(*_templateFile);&nbsp<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quothtml&nbsptemplate&nbspfile&nbsppath:&nbsp&quot&nbsp&lt&lt&nbsptemplateFile.c_str()&nbsp&lt&lt&nbspstd::endl;<br>&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot====================================================&quot&nbsp&lt&lt&nbspstd::endl;<br>&nbsp&nbsp&nbsp&nbsp<br>&nbsp&nbsp&nbsp&nbsp//&nbspget&nbspdestination&nbsppath&nbspto&nbspstore&nbsphtml&nbspfiles<br>&nbsp&nbsp&nbsp&nbspString::Utf8Value&nbsp_destHTMLFolder(args[1]-&gtToString());&nbsp//convert&nbspto&nbspstd::string<br>&nbsp&nbsp&nbsp&nbsp&nbspstd::string&nbspdestHTMLFolder&nbsp=&nbspstd::string(*_destHTMLFolder);&nbsp<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quothtml&nbspdestination&nbsppath:&nbsp&quot&nbsp&lt&lt&nbspdestHTMLFolder.c_str()&nbsp&lt&lt&nbspstd::endl;<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot====================================================&quot&nbsp&lt&lt&nbspstd::endl;<br>&nbsp&nbsp&nbsp&nbsp//&nbspstart&nbsppath&nbspfor&nbspfile&nbspmanager&nbspto&nbspsearch&nbspcpp&nbspfiles&nbsp<br>&nbsp&nbsp&nbsp&nbspString::Utf8Value&nbsp_searchPath(args[2]-&gtToString());&nbsp//convert&nbspto&nbspstd::string<br>&nbsp&nbsp&nbsp&nbspstd::string&nbspsearchPath&nbsp&nbsp=&nbspstd::string(*_searchPath);&nbsp<br>//&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quotsearching&nbsppath:&nbsp&quot&nbsp&lt&lt&nbspFileSystem::Directory::getCurrentDirectory().c_str()&nbsp&lt&lt&nbspstd::endl;<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quotsearching&nbsppath:&nbsp&quot&nbsp&lt&lt&nbspsearchPath.c_str()&nbsp&lt&lt&nbspstd::endl;<br>&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot====================================================&quot&nbsp&lt&lt&nbspstd::endl;<br>&nbsp&nbsp&nbsp&nbsp<br>&nbsp&nbsp&nbsp&nbsp//&nbspprovide&nbsppatterns&nbspfor&nbspfile&nbspmanager<br>&nbsp&nbsp&nbsp&nbspstd::vector&ltstd::string&gt&nbspsearchPatterns&nbsp=&nbsp{&quot*.h&quot,&nbsp&quot*.cpp&quot};<br><br>&nbsp&nbsp&nbsp&nbspFileManager::IFileMgr&nbsp*pFileMgr&nbsp=&nbspnew&nbspFileManager::FileMgr(searchPath);<br>&nbsp&nbsp&nbsp&nbsp&nbspHTMLgenerator&nbspg(&nbsptemplateFile,&nbspdestHTMLFolder);<br>&nbsp&nbsp&nbsp&nbsppFileMgr-&gtregForFiles(&ampg);<br>&nbsp&nbsp&nbsp&nbspfor&nbsp(auto&nbspp&nbsp:&nbspsearchPatterns)&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsppFileMgr-&gtaddPattern(p);<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbsppFileMgr-&gtsearch();<br><br>&nbsp&nbsp&nbsp&nbspbool&nbspisComplete&nbsp=&nbsptrue;<br>&nbsp&nbsp&nbsp&nbspargs.GetReturnValue().Set(isComplete);<br>}<br><br><br>void&nbspInit(Local&ltObject&gt&nbspexports,&nbspLocal&ltObject&gt&nbspmodule)&nbsp{<br>&nbsp&nbspNODE_SET_METHOD(module,&nbsp&quotexports&quot,&nbspgenerateHTML);<br>}<br><br>NODE_MODULE(generateHTML,&nbspInit)<br><br>#endif<br><br>#endif<br></div>
+    <div>
+        <pre>
+            <code class="cpp">#ifndef EXECUTIVE_H
+#define EXECUTIVE_H
+
+
+#include &quot../HTMLgenerator/HTMLgenerator.h&quot
+#include &quot../FileMgr/FileMgr.h&quot
+#include &quotsys/types.h&quot
+#include &quot../FileSystem/FileSystem.h&quot
+
+
+#ifdef NODE_ENV
+
+#include &ltnode.h&gt
+#include &ltv8.h&gt
+using namespace v8;
+
+
+
+void generateHTML(const FunctionCallbackInfo&ltValue&gt&amp args) {
+
+    // get tempalte html file
+	String::Utf8Value _templateFile(args[0]-&gtToString()); //convert to std::string
+	std::string templateFile = std::string(*_templateFile); 
+	std::cout &lt&lt &quothtml template file path: &quot &lt&lt templateFile.c_str() &lt&lt std::endl;
+	 std::cout &lt&lt &quot====================================================&quot &lt&lt std::endl;
+	
+    // get destination path to store html files
+	String::Utf8Value _destHTMLFolder(args[1]-&gtToString()); //convert to std::string
+ 	std::string destHTMLFolder = std::string(*_destHTMLFolder); 
+    std::cout &lt&lt &quothtml destination path: &quot &lt&lt destHTMLFolder.c_str() &lt&lt std::endl;
+	std::cout &lt&lt &quot====================================================&quot &lt&lt std::endl;
+    // start path for file manager to search cpp files 
+	String::Utf8Value _searchPath(args[2]-&gtToString()); //convert to std::string
+	std::string searchPath  = std::string(*_searchPath); 
+// 	std::cout &lt&lt &quotsearching path: &quot &lt&lt FileSystem::Directory::getCurrentDirectory().c_str() &lt&lt std::endl;
+	std::cout &lt&lt &quotsearching path: &quot &lt&lt searchPath.c_str() &lt&lt std::endl;
+	 std::cout &lt&lt &quot====================================================&quot &lt&lt std::endl;
+	
+	// provide patterns for file manager
+	std::vector&ltstd::string&gt searchPatterns = {&quot*.h&quot, &quot*.cpp&quot};
+
+	FileManager::IFileMgr *pFileMgr = new FileManager::FileMgr(searchPath);
+ 	HTMLgenerator g( templateFile, destHTMLFolder);
+	pFileMgr-&gtregForFiles(&ampg);
+	for (auto p : searchPatterns) {
+		pFileMgr-&gtaddPattern(p);
+	}
+	pFileMgr-&gtsearch();
+
+    bool isComplete = true;
+    args.GetReturnValue().Set(isComplete);
+}
+
+
+void Init(Local&ltObject&gt exports, Local&ltObject&gt module) {
+  NODE_SET_METHOD(module, &quotexports&quot, generateHTML);
+}
+
+NODE_MODULE(generateHTML, Init)
+
+#endif
+
+#endif
+</code>
+        </pre>
+    </div>
+<!--load highlight.js-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/monokai-sublime.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>

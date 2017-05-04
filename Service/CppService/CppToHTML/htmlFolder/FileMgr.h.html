@@ -6,6 +6,194 @@
     <title>FileMgr.h</title>
 </head>
 <body>
-    <div>#ifndef&nbspFILEMGR_H<br>#define&nbspFILEMGR_H<br><br>/////////////////////////////////////////////////////////////////////<br>//&nbspFileMgr.h&nbsp-&nbsprecursively&nbspgo&nbspthrough&nbspall&nbspthe&nbspfiles&nbspin&nbspa&nbspdir&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspver&nbsp1.2&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspplatform:&nbspWin&nbsp10&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspXing&nbspZhou,&nbspwork.xingzhou@gmail.com,&nbspSyracuse&nbspUniversity&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspApplication:&nbspMEAN&nbspstack&nbspusing&nbspC++&nbspto&nbspanalyze&nbspcode&nbspmetrics&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>/////////////////////////////////////////////////////////////////////<br>/*<br>*&nbspPackage&nbspOperations:<br>*&nbsp-------------------<br>*&nbspThis&nbsppackage&nbspprovides&nbspa&nbspclass,&nbspFileMgr,&nbspand&nbspobject&nbspfactory&nbspfunction,<br>*&nbspCreate().&nbsp&nbspIt's&nbspmission&nbspis&nbspto&nbspsearch&nbspthe&nbspdirectory&nbsptree,&nbsprooted&nbspat<br>*&nbspa&nbspspecified&nbsppath,&nbsplooking&nbspfor&nbspfiles&nbspthat&nbspmatch&nbspa&nbspset&nbspof&nbspspecified<br>*&nbsppatterns.<br>*<br>*&nbspIt&nbspprovides&nbspvirtual&nbspfunctions&nbspfile(...),&nbspdir(...),&nbspand&nbspdone(),&nbspwhich<br>*&nbspan&nbspapplication&nbspcan&nbspoverride&nbspto&nbspprovide&nbspapplication&nbspspecific&nbspprocessing<br>*&nbspfor&nbspthe&nbspevents:&nbspfile&nbspfound,&nbspdirectory&nbspfound,&nbspand&nbspfinished&nbspprocessing.<br>*<br>*&nbspThe&nbsppackage&nbspalso&nbspprovides&nbspinterface&nbsphooks&nbspthat&nbspserve&nbspthe&nbspsame&nbsppurpose<br>*&nbspbut&nbspallow&nbspmultiple&nbspreceivers&nbspfor&nbspthose&nbspevents.<br>*<br>*&nbspRequired&nbspFiles:<br>*&nbsp---------------<br>*&nbsp&nbsp&nbspFileMgr.h,&nbspFileMgr.cpp,&nbspIFileMgr.h,&nbsp<br>*&nbsp&nbsp&nbspFileSystem(Linux).h,&nbspFileSystem(Linux).cpp<br>*<br>*<br>*&nbspMaintenance&nbspHistory:<br>*&nbsp--------------------<br>*&nbspver&nbsp3.0&nbsp:&nbsp24&nbspApr&nbsp2017<br>*&nbsp-&nbspmanage&nbspthe&nbsplinux&nbspversion:&nbsp<br>*&nbsp&nbsp&nbsp-&nbspshall&nbspadd&nbspa&nbsp'/'&nbspafter&nbspeach&nbspdir&nbspwhen&nbsptraverse&nbspfor&nbsplinux<br>*&nbsp&nbsp&nbsp&nbsp&nbspin&nbspwindows,&nbspadd&nbsp'\\'<br>*/<br><br>#include&nbsp&quotIFileMgr.h&quot<br>#include&nbsp&quot../FileSystem/FileSystem.h&quot<br><br>namespace&nbspFileManager<br>{<br>class&nbspFileMgr&nbsp:&nbsppublic&nbspIFileMgr<br>{<br>public:<br>&nbsp&nbspusing&nbsppatterns&nbsp=&nbspstd::vector&ltstd::string&gt;<br>&nbsp&nbspusing&nbspFile&nbsp=&nbspstd::string;<br>&nbsp&nbspusing&nbspDir&nbsp=&nbspstd::string;<br>&nbsp&nbspusing&nbspfileSubscribers&nbsp=&nbspstd::vector&ltIFileEventHandler&nbsp*&gt;<br>&nbsp&nbspusing&nbspdirSubscribers&nbsp=&nbspstd::vector&ltIDirEventHandler&nbsp*&gt;<br>&nbsp&nbspusing&nbspdoneSubscribers&nbsp=&nbspstd::vector&ltIDoneEventHandler&nbsp*&gt;<br><br>&nbsp&nbspvirtual&nbsp~FileMgr()&nbsp{}<br><br>&nbsp&nbsp//----&lt&nbspset&nbspdefault&nbspfile&nbsppattern&nbsp&gt-------------------------------<br><br>&nbsp&nbspFileMgr(const&nbspstd::string&nbsp&amppath)&nbsp:&nbsppath_(path)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsppatterns_.push_back(&quot*.*&quot);<br>&nbsp&nbsp&nbsp&nbsppInstance_&nbsp=&nbspthis;<br>&nbsp&nbsp}<br>&nbsp&nbsp//----&lt&nbspreturn&nbspinstance&nbspof&nbspFileMgr&nbsp&gt-----------------------------<br><br>&nbsp&nbspstatic&nbspIFileMgr&nbsp*getInstance()<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspreturn&nbsppInstance_;<br>&nbsp&nbsp}<br>&nbsp&nbsp//----&lt&nbspadd&nbspfile&nbsppattern,&nbspremoving&nbspdefault&nbspon&nbspfirst&nbspcall&nbsp&gt-------<br><br>&nbsp&nbspvoid&nbspaddPattern(const&nbspstd::string&nbsp&amppatt)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspif&nbsp(patterns_.size()&nbsp==&nbsp1&nbsp&amp&amp&nbsppatterns_[0]&nbsp==&nbsp&quot*.*&quot)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsppatterns_.pop_back();<br>&nbsp&nbsp&nbsp&nbsppatterns_.push_back(patt);<br>&nbsp&nbsp}<br>&nbsp&nbsp//----&lt&nbspapplications&nbspcan&nbspoverload&nbspthis&nbspor&nbspreg&nbspfor&nbspfileEvt&nbsp&gt------<br><br>&nbsp&nbspvirtual&nbspvoid&nbspfile(const&nbspFile&nbsp&ampf)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp++numFilesProcessed;<br>&nbsp&nbsp&nbsp&nbspfor&nbsp(auto&nbsppEvtHandler&nbsp:&nbspfileSubscribers_)<br>&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsppEvtHandler-&gtexecute(f);<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot&nbsp&nbsptraverse&nbspfile:&nbsp&quot&nbsp&lt&lt&nbspf.c_str()&nbsp&lt&lt&nbspstd::endl;<br>&nbsp&nbsp}<br>&nbsp&nbsp//----&lt&nbspapplications&nbspcan&nbspoverload&nbspthis&nbspor&nbspreg&nbspfor&nbspdirEvt&nbsp&gt-------<br><br>&nbsp&nbspvirtual&nbspvoid&nbspdir(const&nbspDir&nbsp&ampfpath)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspfor&nbsp(auto&nbsppEvtHandler&nbsp:&nbspdirSubscribers_)<br>&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsppEvtHandler-&gtexecute(fpath);<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp}<br>&nbsp&nbsp//----&lt&nbspapplications&nbspcan&nbspoverload&nbspthis&nbspor&nbspreg&nbspfor&nbspdoneEvt&nbsp&gt------<br><br>&nbsp&nbspvirtual&nbspvoid&nbspdone()<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspfor&nbsp(auto&nbsppEvtHandler&nbsp:&nbspdoneSubscribers_)<br>&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsppEvtHandler-&gtexecute(numFilesProcessed);<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp}<br>&nbsp&nbsp//----&lt&nbspstart&nbspsearch&nbspon&nbsppreviously&nbspspecified&nbsppath&nbsp&gt--------------<br><br>&nbsp&nbspvoid&nbspsearch()<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspfind(path_);<br>&nbsp&nbsp&nbsp&nbspdone();<br>&nbsp&nbsp}<br>&nbsp&nbsp//----&lt&nbspsearch&nbspcurrent&nbsppath&nbspincluding&nbspsubdirectories&nbsp&gt-----------<br><br>&nbsp&nbspvoid&nbspfind(const&nbspstd::string&nbsp&amppath)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quotfile&nbspmanager&nbspis&nbspsearch&nbsprelative&nbsppath:&nbsp&quot&nbsp&lt&lt&nbsppath.c_str()&nbsp&lt&lt&nbspstd::endl;<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quotFilemanager&nbspcurrent&nbsppath:&nbsp&quot&nbsp&lt&lt&nbspFileSystem::Directory::getCurrentDirectory().c_str()&nbsp&lt&lt&nbspstd::endl;<br>&nbsp&nbsp&nbsp&nbspstd::string&nbspfpath&nbsp=&nbspFileSystem::Path::getFullFileSpec(path);<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quotfile&nbspmanager&nbspis&nbspsearch&nbsppath:&nbsp&quot&nbsp&lt&lt&nbspfpath.c_str()&nbsp&lt&lt&nbspstd::endl;<br>&nbsp&nbsp&nbsp&nbspdir(fpath);<br>&nbsp&nbsp&nbsp&nbspfor&nbsp(auto&nbsppatt&nbsp:&nbsppatterns_)<br>&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::vector&ltstd::string&gt&nbspfiles&nbsp=&nbspFileSystem::Directory::getFiles(fpath,&nbsppatt);<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspfor&nbsp(auto&nbspf&nbsp:&nbspfiles)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspFile&nbsp_file&nbsp=&nbspFileSystem::Path::fileSpec(fpath,&nbspf);<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspfile(_file);<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbspstd::vector&ltstd::string&gt&nbspdirs&nbsp=&nbspFileSystem::Directory::getDirectories(fpath);<br>&nbsp&nbsp&nbsp&nbspfor&nbsp(auto&nbspd&nbsp:&nbspdirs)<br>&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspif&nbsp(d&nbsp==&nbsp&quot.&quot&nbsp||&nbspd&nbsp==&nbsp&quot..&quot)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspcontinue;<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::string&nbspdpath&nbsp=&nbspfpath&nbsp+&nbsp&quot/&quot&nbsp+&nbspd;<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspfind(dpath);<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp}<br>&nbsp&nbsp//----&lt&nbspapplications&nbspuse&nbspthis&nbspto&nbspregister&nbspfor&nbspnotification&nbsp&gt-----<br><br>&nbsp&nbspvoid&nbspregForFiles(IFileEventHandler&nbsp*pHandler)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspfileSubscribers_.push_back(pHandler);<br>&nbsp&nbsp}<br>&nbsp&nbsp//----&lt&nbspapplications&nbspuse&nbspthis&nbspto&nbspregister&nbspfor&nbspnotification&nbsp&gt-----<br><br>&nbsp&nbspvoid&nbspregForDirs(IDirEventHandler&nbsp*pHandler)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspdirSubscribers_.push_back(pHandler);<br>&nbsp&nbsp}<br>&nbsp&nbsp//----&lt&nbspapplications&nbspuse&nbspthis&nbspto&nbspregister&nbspfor&nbspnotification&nbsp&gt-----<br><br>&nbsp&nbspvoid&nbspregForDone(IDoneEventHandler&nbsp*pHandler)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspdoneSubscribers_.push_back(pHandler);<br>&nbsp&nbsp}<br><br>private:<br>&nbsp&nbspstd::string&nbsppath_;<br>&nbsp&nbsppatterns&nbsppatterns_;<br>&nbsp&nbspsize_t&nbspnumFilesProcessed&nbsp=&nbsp0;<br>&nbsp&nbspfileSubscribers&nbspfileSubscribers_;<br>&nbsp&nbspdirSubscribers&nbspdirSubscribers_;<br>&nbsp&nbspdoneSubscribers&nbspdoneSubscribers_;<br>&nbsp&nbspstatic&nbspIFileMgr&nbsp*pInstance_;<br>};<br><br>struct&nbspFileMgrFactory<br>{<br>&nbsp&nbspstatic&nbspIFileMgr&nbsp*create(const&nbspstd::string&nbsp&amppath);<br>};<br><br>inline&nbspIFileMgr&nbsp*FileMgrFactory::create(const&nbspstd::string&nbsp&amppath)<br>{<br>&nbsp&nbspreturn&nbspnew&nbspFileMgr(path);<br>}<br>}<br>#endif<br></div>
+    <div>
+        <pre>
+            <code class="cpp">#ifndef FILEMGR_H
+#define FILEMGR_H
+
+/////////////////////////////////////////////////////////////////////
+// FileMgr.h - recursively go through all the files in a dir       //
+// ver 1.2                                                         //
+// platform: Win 10												                         //
+// Xing Zhou, work.xingzhou@gmail.com, Syracuse University         //
+// Application: MEAN stack using C++ to analyze code metrics       //
+/////////////////////////////////////////////////////////////////////
+/*
+* Package Operations:
+* -------------------
+* This package provides a class, FileMgr, and object factory function,
+* Create().  It's mission is to search the directory tree, rooted at
+* a specified path, looking for files that match a set of specified
+* patterns.
+*
+* It provides virtual functions file(...), dir(...), and done(), which
+* an application can override to provide application specific processing
+* for the events: file found, directory found, and finished processing.
+*
+* The package also provides interface hooks that serve the same purpose
+* but allow multiple receivers for those events.
+*
+* Required Files:
+* ---------------
+*   FileMgr.h, FileMgr.cpp, IFileMgr.h, 
+*   FileSystem(Linux).h, FileSystem(Linux).cpp
+*
+*
+* Maintenance History:
+* --------------------
+* ver 3.0 : 24 Apr 2017
+* - manage the linux version: 
+*   - shall add a '/' after each dir when traverse for linux
+*     in windows, add '\\'
+*/
+
+#include &quotIFileMgr.h&quot
+#include &quot../FileSystem/FileSystem.h&quot
+
+namespace FileManager
+{
+class FileMgr : public IFileMgr
+{
+public:
+  using patterns = std::vector&ltstd::string&gt;
+  using File = std::string;
+  using Dir = std::string;
+  using fileSubscribers = std::vector&ltIFileEventHandler *&gt;
+  using dirSubscribers = std::vector&ltIDirEventHandler *&gt;
+  using doneSubscribers = std::vector&ltIDoneEventHandler *&gt;
+
+  virtual ~FileMgr() {}
+
+  //----&lt set default file pattern &gt-------------------------------
+
+  FileMgr(const std::string &amppath) : path_(path)
+  {
+    patterns_.push_back(&quot*.*&quot);
+    pInstance_ = this;
+  }
+  //----&lt return instance of FileMgr &gt-----------------------------
+
+  static IFileMgr *getInstance()
+  {
+    return pInstance_;
+  }
+  //----&lt add file pattern, removing default on first call &gt-------
+
+  void addPattern(const std::string &amppatt)
+  {
+    if (patterns_.size() == 1 &amp&amp patterns_[0] == &quot*.*&quot)
+      patterns_.pop_back();
+    patterns_.push_back(patt);
+  }
+  //----&lt applications can overload this or reg for fileEvt &gt------
+
+  virtual void file(const File &ampf)
+  {
+    ++numFilesProcessed;
+    for (auto pEvtHandler : fileSubscribers_)
+    {
+      pEvtHandler-&gtexecute(f);
+    }
+    std::cout &lt&lt &quot  traverse file: &quot &lt&lt f.c_str() &lt&lt std::endl;
+  }
+  //----&lt applications can overload this or reg for dirEvt &gt-------
+
+  virtual void dir(const Dir &ampfpath)
+  {
+    for (auto pEvtHandler : dirSubscribers_)
+    {
+      pEvtHandler-&gtexecute(fpath);
+    }
+  }
+  //----&lt applications can overload this or reg for doneEvt &gt------
+
+  virtual void done()
+  {
+    for (auto pEvtHandler : doneSubscribers_)
+    {
+      pEvtHandler-&gtexecute(numFilesProcessed);
+    }
+  }
+  //----&lt start search on previously specified path &gt--------------
+
+  void search()
+  {
+    find(path_);
+    done();
+  }
+  //----&lt search current path including subdirectories &gt-----------
+
+  void find(const std::string &amppath)
+  {
+     std::cout &lt&lt &quotfile manager is search relative path: &quot &lt&lt path.c_str() &lt&lt std::endl;
+     	std::cout &lt&lt &quotFilemanager current path: &quot &lt&lt FileSystem::Directory::getCurrentDirectory().c_str() &lt&lt std::endl;
+    std::string fpath = FileSystem::Path::getFullFileSpec(path);
+    std::cout &lt&lt &quotfile manager is search path: &quot &lt&lt fpath.c_str() &lt&lt std::endl;
+    dir(fpath);
+    for (auto patt : patterns_)
+    {
+      std::vector&ltstd::string&gt files = FileSystem::Directory::getFiles(fpath, patt);
+      for (auto f : files)
+      {
+        File _file = FileSystem::Path::fileSpec(fpath, f);
+        file(_file);
+      }
+    }
+    std::vector&ltstd::string&gt dirs = FileSystem::Directory::getDirectories(fpath);
+    for (auto d : dirs)
+    {
+      if (d == &quot.&quot || d == &quot..&quot)
+        continue;
+      std::string dpath = fpath + &quot/&quot + d;
+      find(dpath);
+    }
+  }
+  //----&lt applications use this to register for notification &gt-----
+
+  void regForFiles(IFileEventHandler *pHandler)
+  {
+    fileSubscribers_.push_back(pHandler);
+  }
+  //----&lt applications use this to register for notification &gt-----
+
+  void regForDirs(IDirEventHandler *pHandler)
+  {
+    dirSubscribers_.push_back(pHandler);
+  }
+  //----&lt applications use this to register for notification &gt-----
+
+  void regForDone(IDoneEventHandler *pHandler)
+  {
+    doneSubscribers_.push_back(pHandler);
+  }
+
+private:
+  std::string path_;
+  patterns patterns_;
+  size_t numFilesProcessed = 0;
+  fileSubscribers fileSubscribers_;
+  dirSubscribers dirSubscribers_;
+  doneSubscribers doneSubscribers_;
+  static IFileMgr *pInstance_;
+};
+
+struct FileMgrFactory
+{
+  static IFileMgr *create(const std::string &amppath);
+};
+
+inline IFileMgr *FileMgrFactory::create(const std::string &amppath)
+{
+  return new FileMgr(path);
+}
+}
+#endif
+</code>
+        </pre>
+    </div>
+<!--load highlight.js-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/monokai-sublime.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>

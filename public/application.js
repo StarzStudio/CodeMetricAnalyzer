@@ -4,7 +4,7 @@
 
 const mainApplicationModuleName = 'codeAnalyzer';
 const mainApplicationModule = angular.module(mainApplicationModuleName,
-    ['ngRoute', 'upload']);
+    ['ngRoute', 'index']);
 
 //To mark your application routes as single-page application routes, you will
 //need to use a routing scheme called Hashbangs. Hashbangs are implemented by
@@ -25,14 +25,17 @@ mainApplicationModule.config(['$routeProvider',
               .when('/', {
                  templateUrl: '/upload/views/FileList.client.view.html'
               })
-              .when('/metrics', {
-                 templateUrl: '/upload/views/metrics.client.view.html'
+              .when('/projects', {
+                 templateUrl: './projects/projects.client.html'
+              })
+              .when('/projects/projectDetail', {
+                  templateUrl: './projectDetail/projectDetail.client.html'
               })
               .otherwise({
                  redirectTo: '/'
               });
        }
-    ]);
+]);
 
 angular.element(document).ready(function () {
    angular.bootstrap(document,[mainApplicationModuleName]);

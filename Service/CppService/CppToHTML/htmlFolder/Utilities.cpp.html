@@ -6,6 +6,123 @@
     <title>Utilities.cpp</title>
 </head>
 <body>
-    <div>///////////////////////////////////////////////////////////////////////<br>//&nbspUtilities.cpp&nbsp-&nbspsmall,&nbspgenerally&nbspusefule,&nbsphelper&nbspclasses&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspver&nbsp1.1&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspLanguage:&nbsp&nbsp&nbsp&nbspC++,&nbspVisual&nbspStudio&nbsp2016&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspPlatform:&nbsp&nbsp&nbsp&nbsp&nbsp&nbspMac&nbspBook&nbspPro,&nbspOS&nbspX&nbspEI&nbspCaptain&nbsp10.11&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspApplication:&nbsp&nbsp&nbspDependency&nbspanalysis,&nbsp687&nbspOOD&nbspProject3&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspAuthor:&nbsp&nbsp&nbsp&nbsp&nbsp&nbspXing&nbspZhou,&nbspSyracuse&nbspUniversity,&nbspSoftware&nbspEngineering&nbsp//<br>//&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspxzhou118@syr.edu&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspsource:&nbsp&nbsp&nbsp&nbsp&nbsp&nbspJim&nbspFawcett,&nbspSyracuse&nbspUniversity,&nbspCST&nbsp4-187&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspjfawcett@twcny.rr.com&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>///////////////////////////////////////////////////////////////////////<br><br>#include&nbsp&ltcctype&gt<br>#include&nbsp&ltiostream&gt<br>#include&nbsp&quotUtilities.h&quot<br><br>using&nbspnamespace&nbspUtilities;<br><br>std::function&ltvoid(const&nbspstd::string&amp)&gt&nbspTitle&nbsp=<br>[](const&nbspstd::string&nbspsrc)&nbsp-&gtvoid&nbsp{&nbspStringHelper::Title(src,&nbsp'=');&nbsp};<br><br>std::function&ltvoid(const&nbspstd::string&amp)&gt&nbsptitle&nbsp=<br>[](const&nbspstd::string&nbspsrc)&nbsp-&gtvoid&nbsp{&nbspStringHelper::Title(src,&nbsp'-');&nbsp};<br><br>void&nbspStringHelper::title(const&nbspstd::string&amp&nbspsrc)<br>{<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&quot&nbsp&lt&lt&nbspsrc;<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&quot&nbsp&lt&lt&nbspstd::string(src.size()&nbsp+&nbsp2,&nbsp'-');<br>}<br><br>void&nbspStringHelper::Title(const&nbspstd::string&amp&nbspsrc,&nbspchar&nbspunderline)<br>{<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&quot&nbsp&lt&lt&nbspsrc;<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&quot&nbsp&lt&lt&nbspstd::string(src.size()&nbsp+&nbsp2,&nbspunderline);<br>}<br><br>std::vector&ltstd::string&gt&nbspStringHelper::split(const&nbspstd::string&amp&nbspsrc)<br>{<br>&nbsp&nbsp&nbsp&nbspstd::vector&ltstd::string&gt&nbspaccum;<br>&nbsp&nbsp&nbsp&nbspstd::string&nbsptemp;<br>&nbsp&nbsp&nbsp&nbspsize_t&nbspindex&nbsp=&nbsp0;<br>&nbsp&nbsp&nbsp&nbspdo<br>&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspwhile&nbsp((isspace(src[index])&nbsp||&nbspsrc[index]&nbsp==&nbsp',')&nbsp&amp&amp&nbspsrc[index]&nbsp!=&nbsp'\n')<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp++index;<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspif&nbsp(temp.size()&nbsp&gt&nbsp0)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspaccum.push_back(temp);<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsptemp.clear();<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspif&nbsp(src[index]&nbsp!=&nbsp'\0')<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsptemp&nbsp+=&nbspsrc[index];<br>&nbsp&nbsp&nbsp&nbsp}&nbspwhile&nbsp(index++&nbsp&lt&nbspsrc.size());<br>&nbsp&nbsp&nbsp&nbspif&nbsp(temp.size()&nbsp&gt&nbsp0)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspaccum.push_back(temp);<br>&nbsp&nbsp&nbsp&nbspreturn&nbspaccum;<br>}<br><br>void&nbspUtilities::putline()<br>{<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&quot;<br>}<br><br>#ifdef&nbspTEST_UTILITIES<br><br>int&nbspmain()<br>{<br>&nbsp&nbsp&nbsp&nbspTitle(&quotTesting&nbspUtilities&nbspPackage&quot);<br>&nbsp&nbsp&nbsp&nbspputline();<br><br>&nbsp&nbsp&nbsp&nbsptitle(&quottest&nbspStringHelper::split(std::string)&quot);<br><br>&nbsp&nbsp&nbsp&nbspstd::string&nbsptest&nbsp=&nbsp&quota,&nbsp\n,&nbspbc,&nbspde,&nbspefg,&nbspi,&nbspj&nbspk&nbsplm&nbspnopq&nbsprst&quot;<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsptest&nbspstring&nbsp=&nbsp&quot&nbsp&lt&lt&nbsptest;<br><br>&nbsp&nbsp&nbsp&nbspstd::vector&ltstd::string&gt&nbspresult&nbsp=&nbspStringHelper::split(test);<br><br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&quot;<br>&nbsp&nbsp&nbsp&nbspfor&nbsp(auto&nbspitem&nbsp:&nbspresult)<br>&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspif&nbsp(item&nbsp==&nbsp&quot\n&quot)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&quot&nbsp&lt&lt&nbsp&quotnewline&quot;<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&quot&nbsp&lt&lt&nbspitem;<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&quot;<br><br>&nbsp&nbsp&nbsp&nbsptitle(&quottest&nbspstd::string&nbspConverter&ltT&gt::toString(T)&quot);<br><br>&nbsp&nbsp&nbsp&nbspstd::string&nbspconv1&nbsp=&nbspConverter&ltdouble&gt::toString(3.1415927);<br>&nbsp&nbsp&nbsp&nbspstd::string&nbspconv2&nbsp=&nbspConverter&ltint&gt::toString(73);<br>&nbsp&nbsp&nbsp&nbspstd::string&nbspconv3&nbsp=&nbspConverter&ltstd::string&gt::toString(&quota_test_string&nbspplus&nbspmore&quot);<br><br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspConverting&nbspfrom&nbspvalues&nbspto&nbspstrings:&nbsp&quot;<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbspconv1&nbsp&lt&lt&nbsp&quot,&nbsp&quot&nbsp&lt&lt&nbspconv2&nbsp&lt&lt&nbsp&quot,&nbsp&quot&nbsp&lt&lt&nbspconv3;<br>&nbsp&nbsp&nbsp&nbspputline();<br><br>&nbsp&nbsp&nbsp&nbsptitle(&quottest&nbspT&nbspConverter&ltT&gt::toValue(std::string)&quot);<br><br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspConverting&nbspfrom&nbspstrings&nbspto&nbspvalues:&nbsp&quot;<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbspConverter&ltdouble&gt::toValue(conv1)&nbsp&lt&lt&nbsp&quot,&nbsp&quot;<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbspConverter&ltint&gt::toValue(conv2)&nbsp&lt&lt&nbsp&quot,&nbsp&quot;<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbspConverter&ltstd::string&gt::toValue(conv3);<br><br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n\n&quot;<br>&nbsp&nbsp&nbsp&nbspreturn&nbsp0;<br>}<br>#endif</div>
+    <div>
+        <pre>
+            <code class="cpp">///////////////////////////////////////////////////////////////////////
+// Utilities.cpp - small, generally usefule, helper classes          //
+// ver 1.1                                                           //
+// Language:    C++, Visual Studio 2016                              //
+// Platform:      Mac Book Pro, OS X EI Captain 10.11                //
+// Application:   Dependency analysis, 687 OOD Project3              //
+// Author:      Xing Zhou, Syracuse University, Software Engineering //
+//              xzhou118@syr.edu                                     //
+// source:      Jim Fawcett, Syracuse University, CST 4-187          //
+//              jfawcett@twcny.rr.com                                //
+///////////////////////////////////////////////////////////////////////
+
+#include &ltcctype&gt
+#include &ltiostream&gt
+#include &quotUtilities.h&quot
+
+using namespace Utilities;
+
+std::function&ltvoid(const std::string&amp)&gt Title =
+[](const std::string src) -&gtvoid { StringHelper::Title(src, '='); };
+
+std::function&ltvoid(const std::string&amp)&gt title =
+[](const std::string src) -&gtvoid { StringHelper::Title(src, '-'); };
+
+void StringHelper::title(const std::string&amp src)
+{
+    std::cout &lt&lt &quot\n  &quot &lt&lt src;
+    std::cout &lt&lt &quot\n &quot &lt&lt std::string(src.size() + 2, '-');
+}
+
+void StringHelper::Title(const std::string&amp src, char underline)
+{
+    std::cout &lt&lt &quot\n  &quot &lt&lt src;
+    std::cout &lt&lt &quot\n &quot &lt&lt std::string(src.size() + 2, underline);
+}
+
+std::vector&ltstd::string&gt StringHelper::split(const std::string&amp src)
+{
+    std::vector&ltstd::string&gt accum;
+    std::string temp;
+    size_t index = 0;
+    do
+    {
+        while ((isspace(src[index]) || src[index] == ',') &amp&amp src[index] != '\n')
+        {
+            ++index;
+            if (temp.size() &gt 0)
+            {
+                accum.push_back(temp);
+                temp.clear();
+            }
+        }
+        if (src[index] != '\0')
+            temp += src[index];
+    } while (index++ &lt src.size());
+    if (temp.size() &gt 0)
+        accum.push_back(temp);
+    return accum;
+}
+
+void Utilities::putline()
+{
+    std::cout &lt&lt &quot\n&quot;
+}
+
+#ifdef TEST_UTILITIES
+
+int main()
+{
+    Title(&quotTesting Utilities Package&quot);
+    putline();
+
+    title(&quottest StringHelper::split(std::string)&quot);
+
+    std::string test = &quota, \n, bc, de, efg, i, j k lm nopq rst&quot;
+    std::cout &lt&lt &quot\n  test string = &quot &lt&lt test;
+
+    std::vector&ltstd::string&gt result = StringHelper::split(test);
+
+    std::cout &lt&lt &quot\n&quot;
+    for (auto item : result)
+    {
+        if (item == &quot\n&quot)
+            std::cout &lt&lt &quot\n  &quot &lt&lt &quotnewline&quot;
+        else
+            std::cout &lt&lt &quot\n  &quot &lt&lt item;
+    }
+    std::cout &lt&lt &quot\n&quot;
+
+    title(&quottest std::string Converter&ltT&gt::toString(T)&quot);
+
+    std::string conv1 = Converter&ltdouble&gt::toString(3.1415927);
+    std::string conv2 = Converter&ltint&gt::toString(73);
+    std::string conv3 = Converter&ltstd::string&gt::toString(&quota_test_string plus more&quot);
+
+    std::cout &lt&lt &quot\n  Converting from values to strings: &quot;
+    std::cout &lt&lt conv1 &lt&lt &quot, &quot &lt&lt conv2 &lt&lt &quot, &quot &lt&lt conv3;
+    putline();
+
+    title(&quottest T Converter&ltT&gt::toValue(std::string)&quot);
+
+    std::cout &lt&lt &quot\n  Converting from strings to values: &quot;
+    std::cout &lt&lt Converter&ltdouble&gt::toValue(conv1) &lt&lt &quot, &quot;
+    std::cout &lt&lt Converter&ltint&gt::toValue(conv2) &lt&lt &quot, &quot;
+    std::cout &lt&lt Converter&ltstd::string&gt::toValue(conv3);
+
+    std::cout &lt&lt &quot\n\n&quot;
+    return 0;
+}
+#endif</code>
+        </pre>
+    </div>
+<!--load highlight.js-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/monokai-sublime.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>

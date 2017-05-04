@@ -6,6 +6,24 @@
     <title>PlatformMacro.h</title>
 </head>
 <body>
-    <div>#ifdef&nbsp__MACH__<br>#define&nbspOS_MAC&nbsp1<br>#endif&nbsp//&nbsp__MACH__<br><br>#ifdef&nbsp__linux__<br>#define&nbspOS_Linux&nbsp2<br>#endif&nbsp//&nbsp__linux__<br><br>#ifdef&nbsp_WIN32<br>#define&nbspOS_Win&nbsp3<br>#endif&nbsp//&nbsp_WIN32</div>
+    <div>
+        <pre>
+            <code class="cpp">#ifdef __MACH__
+#define OS_MAC 1
+#endif // __MACH__
+
+#ifdef __linux__
+#define OS_Linux 2
+#endif // __linux__
+
+#ifdef _WIN32
+#define OS_Win 3
+#endif // _WIN32</code>
+        </pre>
+    </div>
+<!--load highlight.js-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/monokai-sublime.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>

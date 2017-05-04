@@ -6,6 +6,96 @@
     <title>Utilities.h</title>
 </head>
 <body>
-    <div>#ifndef&nbspUTILITIES_H<br>#define&nbspUTILITIES_H<br>///////////////////////////////////////////////////////////////////////<br>//&nbspUtilities.h&nbsp-&nbspsmall,&nbspgenerally&nbspusefule,&nbsphelper&nbspclasses&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspver&nbsp1.1&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspLanguage:&nbsp&nbsp&nbsp&nbspC++,&nbspVisual&nbspStudio&nbsp2016&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspPlatform:&nbsp&nbsp&nbsp&nbsp&nbsp&nbspMac&nbspBook&nbspPro,&nbspOS&nbspX&nbspEI&nbspCaptain&nbsp10.11&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspApplication:&nbsp&nbsp&nbspDependency&nbspanalysis,&nbsp687&nbspOOD&nbspProject3&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspAuthor:&nbsp&nbsp&nbsp&nbsp&nbsp&nbspXing&nbspZhou,&nbspSyracuse&nbspUniversity,&nbspSoftware&nbspEngineering&nbsp//<br>//&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspxzhou118@syr.edu&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspSource:&nbsp&nbsp&nbsp&nbsp&nbsp&nbspJim&nbspFawcett,&nbspSyracuse&nbspUniversity,&nbspCST&nbsp4-187&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspjfawcett@twcny.rr.com&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>///////////////////////////////////////////////////////////////////////<br>/*<br>*&nbspPackage&nbspOperations:<br>*&nbsp-------------------<br>*&nbspThis&nbsppackage&nbspprovides&nbspclasses&nbspStringHelper&nbspand&nbspConverter&nbspand&nbspa&nbspglobal<br>*&nbspfunction&nbspputline().&nbsp&nbspThis&nbspclass&nbspwill&nbspbe&nbspextended&nbspcontinuously&nbspfor<br>*&nbspawhile&nbspto&nbspprovide&nbspconvenience&nbspfunctions&nbspfor&nbspgeneral&nbspC++&nbspapplications.<br>*<br>*&nbspBuild&nbspProcess:<br>*&nbsp--------------<br>*&nbspRequired&nbspFiles:&nbspUtilities.h,&nbspUtilities.cpp<br>*<br>*&nbspBuild&nbspCommand:&nbspdevenv&nbspProject2.sln&nbsp/rebuild&nbspdebug<br>*<br>*&nbspMaintenance&nbspHistory:<br>*&nbsp--------------------<br>*&nbspver&nbsp1.1&nbsp:&nbsp06&nbspFeb&nbsp2015<br>*&nbsp-&nbspfixed&nbspbug&nbspin&nbspsplit&nbspwhich&nbspturns&nbspa&nbspcomma&nbspseparated&nbspstring&nbspinto<br>*&nbsp&nbsp&nbspa&nbspvector&nbspof&nbsptokens.<br>*&nbsp-&nbspadded&nbspcomments<br>*&nbspver&nbsp1.0&nbsp:&nbsp05&nbspFeb&nbsp2016<br>*&nbsp-&nbspfirst&nbsprelease<br>*<br>*&nbspPlanned&nbspAdditions&nbspand&nbspChanges:<br>*&nbsp------------------------------<br>*&nbsp-&nbspnone&nbspyet<br>*/<br>#include&nbsp&ltstring&gt<br>#include&nbsp&ltvector&gt<br>#include&nbsp&ltsstream&gt<br>#include&nbsp&ltfunctional&gt<br><br>namespace&nbspUtilities<br>{<br>&nbsp&nbsp&nbsp&nbspclass&nbspStringHelper<br>&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsppublic:<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstatic&nbspstd::vector&ltstd::string&gt&nbspsplit(const&nbspstd::string&amp&nbspsrc);<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstatic&nbspvoid&nbspTitle(const&nbspstd::string&amp&nbspsrc,&nbspchar&nbspunderline&nbsp=&nbsp'-');<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstatic&nbspvoid&nbsptitle(const&nbspstd::string&amp&nbspsrc);<br>&nbsp&nbsp&nbsp&nbsp};<br><br>&nbsp&nbsp&nbsp&nbspvoid&nbspputline();<br><br>&nbsp&nbsp&nbsp&nbsptemplate&nbsp&lttypename&nbspT&gt<br>&nbsp&nbsp&nbsp&nbspclass&nbspConverter<br>&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsppublic:<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstatic&nbspstd::string&nbsptoString(const&nbspT&amp&nbspt);<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstatic&nbspT&nbsptoValue(const&nbspstd::string&amp&nbspsrc);<br>&nbsp&nbsp&nbsp&nbsp};<br><br>&nbsp&nbsp&nbsp&nbsptemplate&nbsp&lttypename&nbspT&gt<br>&nbsp&nbsp&nbsp&nbspstd::string&nbspConverter&ltT&gt::toString(const&nbspT&amp&nbspt)<br>&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::ostringstream&nbspout;<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspout&nbsp&lt&lt&nbspt;<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspreturn&nbspout.str();<br>&nbsp&nbsp&nbsp&nbsp}<br><br>&nbsp&nbsp&nbsp&nbsptemplate&lttypename&nbspT&gt<br>&nbsp&nbsp&nbsp&nbspT&nbspConverter&ltT&gt::toValue(const&nbspstd::string&amp&nbspsrc)<br>&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::istringstream&nbspin(src);<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspT&nbspt;<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspin&nbsp&gt&gt&nbspt;<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspreturn&nbspt;<br>&nbsp&nbsp&nbsp&nbsp}<br>}<br>#endif<br></div>
+    <div>
+        <pre>
+            <code class="cpp">#ifndef UTILITIES_H
+#define UTILITIES_H
+///////////////////////////////////////////////////////////////////////
+// Utilities.h - small, generally usefule, helper classes            //
+// ver 1.1                                                           //
+// Language:    C++, Visual Studio 2016                              //
+// Platform:      Mac Book Pro, OS X EI Captain 10.11                //
+// Application:   Dependency analysis, 687 OOD Project3              //
+// Author:      Xing Zhou, Syracuse University, Software Engineering //
+//              xzhou118@syr.edu                                     //
+// Source:      Jim Fawcett, Syracuse University, CST 4-187          //
+//              jfawcett@twcny.rr.com                                //
+///////////////////////////////////////////////////////////////////////
+/*
+* Package Operations:
+* -------------------
+* This package provides classes StringHelper and Converter and a global
+* function putline().  This class will be extended continuously for
+* awhile to provide convenience functions for general C++ applications.
+*
+* Build Process:
+* --------------
+* Required Files: Utilities.h, Utilities.cpp
+*
+* Build Command: devenv Project2.sln /rebuild debug
+*
+* Maintenance History:
+* --------------------
+* ver 1.1 : 06 Feb 2015
+* - fixed bug in split which turns a comma separated string into
+*   a vector of tokens.
+* - added comments
+* ver 1.0 : 05 Feb 2016
+* - first release
+*
+* Planned Additions and Changes:
+* ------------------------------
+* - none yet
+*/
+#include &ltstring&gt
+#include &ltvector&gt
+#include &ltsstream&gt
+#include &ltfunctional&gt
+
+namespace Utilities
+{
+    class StringHelper
+    {
+    public:
+        static std::vector&ltstd::string&gt split(const std::string&amp src);
+        static void Title(const std::string&amp src, char underline = '-');
+        static void title(const std::string&amp src);
+    };
+
+    void putline();
+
+    template &lttypename T&gt
+    class Converter
+    {
+    public:
+        static std::string toString(const T&amp t);
+        static T toValue(const std::string&amp src);
+    };
+
+    template &lttypename T&gt
+    std::string Converter&ltT&gt::toString(const T&amp t)
+    {
+        std::ostringstream out;
+        out &lt&lt t;
+        return out.str();
+    }
+
+    template&lttypename T&gt
+    T Converter&ltT&gt::toValue(const std::string&amp src)
+    {
+        std::istringstream in(src);
+        T t;
+        in &gt&gt t;
+        return t;
+    }
+}
+#endif
+</code>
+        </pre>
+    </div>
+<!--load highlight.js-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/monokai-sublime.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>
