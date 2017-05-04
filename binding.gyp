@@ -1,13 +1,6 @@
 {
 	"targets": [
 		{
-			"target_name": "palindrome",
-			"sources": [ "palindrome.cc" ],
-			"include_dirs": [
-				"<!(node -e \"require('nan')\")"
-			]
-		} ,
-		{
             			"target_name": "cppToHTML",
             			"defines": ["NODE_ENV"],
             			"sources": [
@@ -19,14 +12,20 @@
             			],
             			'cflags' : [
             			    '-std=c++14',
-            			    '-fpermissive'
+            			    '-fpermissive',
+            			    'fexceptions'
             			],
-            			'cflags!' : [
-            			    '-fno-exceptions'
-            			],
-            			'cflags_cc!' : [
-            			    '-fno-exceptions'
-            			]
+            			  'conditions': [
+                                             [ 'OS=="mac"', {
+
+                                               'xcode_settings': {
+
+                                                 'GCC_ENABLE_CPP_EXCEPTIONS': 'YES'
+                                                 },
+
+                                             }],
+                          ],
+
 
          },
          {
@@ -48,14 +47,19 @@
              ],
              'cflags' : [
                  '-std=c++14',
-                '-fpermissive'
+                '-fpermissive',
+                'fexceptions'
              ],
-             'cflags!' : [
-                 '-fno-exceptions'
+              'conditions': [
+                     [ 'OS=="mac"', {
+
+                       'xcode_settings': {
+
+                         'GCC_ENABLE_CPP_EXCEPTIONS': 'YES'
+                         },
+
+                     }],
               ],
-              'cflags_cc!' : [
-                  '-fno-exceptions'
-            	]
 
          }
 	]

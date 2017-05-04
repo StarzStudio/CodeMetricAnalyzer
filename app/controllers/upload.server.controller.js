@@ -13,15 +13,13 @@ const upload = multer({ dest: __dirname}).any();
 
 exports.render = function(req, res) {
 
-
-    updateSession(req);
     res.render('upload'); // send .ejs file to the client
 
 
 };
 
 exports.receiveFiles = function (req, res, next) {
-
+    console.log("hello");
     // multer process in the below block
     upload(req,res, function(err) {
         if (err) {
@@ -62,8 +60,7 @@ exports.receiveFiles = function (req, res, next) {
 };
 
 const analyzeCodeMetrics = function (path) {
-    var isFinished = metricAnalyzer(path);
-
+    metricAnalyzer(path);
 }
 const makeUserSpecDir = function(userIP) {
     let path =__dirname + `/../../${uploadCppPath}/${userIP}`;
@@ -104,9 +101,3 @@ const generateHTML = function(templateHTMLPath, destHTMLPath, searchPath) {
     return isFinished;
 }
 
-function updateSession(req) {
-    if (req.session.lastVisit) {
-        console.log(req.session.lastVisit);
-    }
-    req.session.lastVisit = new Date();
-}

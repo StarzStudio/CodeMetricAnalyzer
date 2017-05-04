@@ -1,0 +1,14 @@
+<section id="upload" class="upload-section" ng-controller="uploadController" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>C++ Code Analyzer</h1>
+                <p><strong>Usage Instructions:</strong> upload all the *.h, *.cpp files in a C++ project, the server will store and display all the file content, anaylze and show the metrics and dependency relationship information for you</p>
+                <br><br><br><br>
+                <input type="file" name="uploadCppFiles" id="file_input" multiple />
+            </div>
+            <br><br>
+            <button type="button" onclick="uploadFiles()">Submit</button>
+        </div>
+    </div>
+</section>

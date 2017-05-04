@@ -1,0 +1,8 @@
+in main()
+{	using namespace ns1;
+	using ss = ns2::n4;
+	n1 x1;
+	n2();
+	ns2::n3 x2;
+	n5 x5;	
+}

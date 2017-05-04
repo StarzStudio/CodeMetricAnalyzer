@@ -10,6 +10,6 @@ var port = config.port;
 
 app.listen(port);
 
-module.exports = app;
+module.exports  = app;
 
 console.log(`Server running at http://localhost:${port}/`);

@@ -1,0 +1,487 @@
+
+#ifndef RULEACTIONFORTYPETABLE_H
+#define RULEACTIONFORTYPETABLE_H
+////////////////////////////////////////////////////////////////////////
+//  RuleActionForTypeTable.h - declares new parsing rules and actions //
+//  ver 2.9                                                           //
+//  Language:      Visual C++ 2016                                    //
+//  Platform:      Mac Book Pro, OS X EI Captain 10.11                //
+//  Application:   Code Analysis, 687 OOD Project2                    //
+//  Author:        Xing Zhou, Syracuse University                     //
+//                 Software Engineering                               //
+//                 xzhou118@syr.edu                                   //
+//  Source:        Jim Fawcett, CST 4-187, Syracuse University        //
+//                 (315) 443-3948, jfawcett@twcny.rr.com              //
+////////////////////////////////////////////////////////////////////////
+/*
+  Module Operations:
+  ==================
+  This module defines several action classes.  Its classes provide
+  specialized services needed for specific applications.  The modules
+  Parser, SemiExpression, and Tokenizer, are intended to be reusable
+  without change.  This module provides a place to put extensions of
+  these facilities and is not expected to be reusable.
+
+  Public Interface:
+  =================
+
+  Build Process:
+  ==============
+  Required files
+    - RuleActionForTable.h, RuleActionForTable.cpp
+
+      ItokCollection.h, SemiExp.h, SemiExp.cpp,
+      tokenizer.h, tokenizer.cpp,
+  Build commands
+    - devenv Project3.sln
+
+  Maintenance History:
+  ====================
+  ver 1.0 : 29 Mar 16
+  - first release
+
+  TODO:
+  - rule should detect wrapper declaration, global function declaration
+  - provide contextForType class to send signal, let all rule class have a pointer to that class
+*/
+
+
+
+      globalOne11(contextForType* _pcontextForType)
+    {
+        pcontextForType = _pcontextForType;
+    }
+
+
+   class contextForType
+{
+    using pTable = ITable<TypeValue>*;
+public:
+    contextForType(pTable table) :global(true), _countScopeSignal(false), _scopeCount(1), _pTable(table) {}
+    void setGlobal(bool signal)
+    {
+        global = signal;
+    }
+    // return true if this is global function
+    bool isGlobal()
+    {
+        return global;
+    }
+    void setNamespace(std::string _namespace)
+    {
+        namespaceCollection.push_back(_namespace);
+    }
+
+    std::vector<std::string>& getNamespace()
+    {
+        return namespaceCollection;
+    }
+    void setCurrentFile(std::string _currentFile)
+    {
+        currentFile = _currentFile;
+    }
+    const std::string& getCurrentFile()
+    {
+        return currentFile;
+    }
+    void setCountScopeSignal(bool signal)
+    {
+        _countScopeSignal = signal;
+    }
+    bool getCountScopeSignal()
+    {
+        return _countScopeSignal;
+    }
+    void increaseScopeCount()
+    {
+        _scopeCount++;
+    }
+    void decreaseScopeCount()
+    {
+        _scopeCount--;
+    }
+    int getScopeCount()
+    {
+        return _scopeCount;
+    }
+    pTable getTable()
+    {
+        return _pTable;
+    }
+private:
+    std::string currentFile;
+    bool global;
+    std::vector<std::string> namespaceCollection;
+    bool _countScopeSignal;
+    int _scopeCount;
+    pTable _pTable;
+};
+
+///////////////////////////////////////////////////////////////
+// rule to detect begin of scope after enter the class scope
+
+class BeginningOfScope : public IRule
+{
+public:
+    BeginningOfScope(contextForType* _pcontextForType)
+    {
+        pcontextForType = _pcontextForType;
+    }
+    bool doTest(ITokCollection*& pTc)
+    {
+        if (pcontextForType->getCountScopeSignal())
+        {
+            pTc->remove("\n");        // This step is necessary for further test
+            if (pTc->find("{") < pTc->length())
+            {
+                doActions(pTc);
+                return true;
+            }
+        }
+        return true;
+    }
+private:
+    contextForType* pcontextForType;
+};
+
+class IncreaseCount : public IAction
+{
+public:
+    IncreaseCount(contextForType* _pcontextForType)
+    {
+        pcontextForType = _pcontextForType;
+    }
+    void doAction(ITokCollection*& pTc)
+    {
+        pcontextForType->increaseScopeCount();
+    }
+private:
+    contextForType* pcontextForType;
+};
+
+///////////////////////////////////////////////////////////////
+// rule to detect end of scope
+
+class EndOfScope : public IRule
+{
+public:
+    EndOfScope(contextForType* _pcontextForType)
+    {
+        pcontextForType = _pcontextForType;
+    }
+    bool doTest(ITokCollection*& pTc)
+    {
+        if (pcontextForType->getCountScopeSignal())
+        {
+            if (pTc->find("}") < pTc->length())
+            {
+                doActions(pTc);
+                return true;
+            }
+        }
+        return true;
+    }
+private:
+    contextForType* pcontextForType;
+};
+///////////////////////////////////////////////////////////////
+// rule to detect begin of scope after enter the class scope
+
+class BeginningOfScope : public IRule
+{
+public:
+    BeginningOfScope(contextForType* _pcontextForType)
+    {
+        pcontextForType = _pcontextForType;
+    }
+    bool doTest(ITokCollection*& pTc)
+    {
+        if (pcontextForType->getCountScopeSignal())
+        {
+            pTc->remove("\n");        // This step is necessary for further test
+            if (pTc->find("{") < pTc->length())
+            {
+                doActions(pTc);
+                return true;
+            }
+        }
+        return true;
+    }
+private:
+    contextForType* pcontextForType;
+};
+
+class IncreaseCount : public IAction
+{
+public:
+    IncreaseCount(contextForType* _pcontextForType)
+    {
+        pcontextForType = _pcontextForType;
+    }
+    void doAction(ITokCollection*& pTc)
+    {
+        pcontextForType->increaseScopeCount();
+    }
+private:
+    contextForType* pcontextForType;
+};
+
+///////////////////////////////////////////////////////////////
+// rule to detect end of scope
+
+class EndOfScope : public IRule
+{
+public:
+    EndOfScope(contextForType* _pcontextForType)
+    {
+        pcontextForType = _pcontextForType;
+    }
+    bool doTest(ITokCollection*& pTc)
+    {
+        if (pcontextForType->getCountScopeSignal())
+        {
+            if (pTc->find("}") < pTc->length())
+            {
+                doActions(pTc);
+                return true;
+            }
+        }
+        return true;
+    }
+private:
+    contextForType* pcontextForType;
+};
+
+}
+class DecreaseCount : public IAction
+{
+public:
+    DecreaseCount(contextForType* _pcontextForType)
+    {
+        pcontextForType = _pcontextForType;
+    }
+
+    void doAction(ITokCollection*& pTc)
+    {
+        pcontextForType->decreaseScopeCount();
+        if (pcontextForType->getScopeCount() == 1 && pcontextForType->getCountScopeSignal() == true)
+        {
+            pcontextForType->setCountScopeSignal(false);
+            pcontextForType->setGlobal(false);
+        }
+    }
+private:
+    contextForType* pcontextForType;
+};
+
+///////////////////////////////////////////////////////////////
+// rule to detect global function definitions
+
+class GlobalFunction : public IRule
+{
+public:
+    GlobalFunction(contextForType* _pcontextForType);
+    bool isSpecialKeyWord(const std::string& tok);
+    bool doTest(ITokCollection*& pTc);
+private:
+    contextForType* pcontextForType;
+};
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////
+// action to make record into type table
+class MakeRecordForGlobalFunc : public IAction
+{
+public:
+
+
+    MakeRecordForGlobalFunc(contextForType* _pcontextForType)
+    {
+        pcontextForType = _pcontextForType;
+    }
+    // return true if this is lambda function
+   
+
+ bool isLambda(ITokCollection*& pTc)
+    {
+        ITokCollection& tc = *pTc;
+        if (tc.find("operator") < tc.length())
+            return false;
+        if (tc.find("[") < tc.length() && tc.find("]") < tc.length())  // has [ or ]
+        {
+            // this case:arrary is parameter ( []), doesn't count
+            if (tc.find("(") < tc.find("[") && tc.find(")") > tc.find("]"))
+                return false;
+            return true;
+        }
+        return false;
+    }
+
+
+
+private:
+    contextForType* pcontextForType;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////
+// action to make record into type table
+class MakeRecordForGlobalFunc : public IAction
+{
+public:
+    MakeRecordForGlobalFunc(contextForType* _pcontextForType)
+    {
+        pcontextForType = _pcontextForType;
+    }
+    // return true if this is lambda function
+    bool isLambda(ITokCollection*& pTc)
+    {
+        ITokCollection& tc = *pTc;
+        if (tc.find("operator") < tc.length())
+            return false;
+        if (tc.find("[") < tc.length() && tc.find("]") < tc.length())  // has [ or ]
+        {
+            // this case:arrary is parameter ( []), doesn't count
+            if (tc.find("(") < tc.find("[") && tc.find(")") > tc.find("]"))
+                return false;
+            return true;
+        }
+        return false;
+    }
+    void doAction(ITokCollection*& pTc)
+    {
+        std::string name = (*pTc)[pTc->find("(") - 1];
+        if (isLambda(pTc))                        // change nane if this is lambda
+            name = (*pTc)[pTc->find("=") - 1];
+        std::string type = "Global Function";
+        std::vector<std::string> namespaceCollection;
+        if (pcontextForType->getNamespace().size() != 0)
+        {
+            namespaceCollection = pcontextForType->getNamespace();
+        }
+        else
+        {
+            namespaceCollection.push_back("N/A");
+        }
+        std::string fileName = pcontextForType->getCurrentFile();
+        TypeValue value(type, namespaceCollection, fileName);
+        pcontextForType->getTable()->addRecord(name, value);
+    }
+private:
+    contextForType* pcontextForType;
+};
+
+////////////////////////////////////////////////////////////////////////////
+// rule to detect type such as: struct, class, enum
+class Type : public IRule
+{
+public:
+    Type(contextForType* _pcontextForType)
+    {
+        pcontextForType = _pcontextForType;
+    }
+    // define special wrapper keyword
+    bool isWrapper(const std::string& tok)
+    {
+        const size_t numKeys = 4;
+        const static std::string keys[numKeys] = {
+             "struct", "class", "enum", "union"
+        };
+        for (int i = 0; i < numKeys; ++i)
+            if (tok == keys[i])
+                return true;
+        return false;
+    }
+
+    bool doTest(ITokCollection*& pTc)
+    {
+        ITokCollection& tc = *pTc;
+        if (tc.find("{") < tc.length())
+        {
+            for (size_t i = 0; i < tc.length(); ++i)
+            {
+                if (isWrapper(tc[i]))
+                {
+                    doActions(pTc);
+                    return true;
+                }
+            }
+        }
+        return true;
+    }
+    contextForType* pcontextForType;
+}; 
+  globaltwo11(contextForType* _pcontextForType)
+    {
+        pcontextForType = _pcontextForType;
+    }
+
+class MakeRecordForType : public IAction
+{
+public:
+    MakeRecordForType(contextForType* _pcontextForType)
+    {
+        pcontextForType = _pcontextForType;
+    }
+    // find out the type of this record
+    std::string findType(ITokCollection*& pTc)
+    {
+        if (pTc->find("union") < pTc->length())
+            return "union";
+        if (pTc->find("enum") < pTc->length())
+            return "enum";
+        if (pTc->find("class") < pTc->length())
+            return "class";
+        if (pTc->find("struct") < pTc->length())
+            return "struct";
+        return "global function";
+    }
+    void doAction(ITokCollection*& pTc)
+    {
+        // start count scope
+        pcontextForType->setCountScopeSignal(true);
+        // indicate this is in type scope, not global environment
+        pcontextForType->setGlobal(false);
+        std::string type = findType(pTc);
+        std::string name = (*pTc)[pTc->find(type) + 1];
+        std::vector<std::string> namespaceCollection;
+        if (pcontextForType->getNamespace().size() != 0)
+        {
+            std::vector<std::string> namespaceCollection = pcontextForType->getNamespace();
+        }
+        std::string fileName = pcontextForType->getCurrentFile();
+        TypeValue value(type, namespaceCollection, fileName);
+        pcontextForType->getTable()->addRecord(name, value);
+    }
+private:
+    contextForType* pcontextForType;
+	enum enum1 { 1, 2, 3}; 
+};
+union u1
+{};
+enum enum2 { 1, 2, 3}; 
+
+struct stru1
+{
+	
+};
+globalthree11(contextForType* _pcontextForType)
+    {
+        pcontextForType = _pcontextForType;
+    }

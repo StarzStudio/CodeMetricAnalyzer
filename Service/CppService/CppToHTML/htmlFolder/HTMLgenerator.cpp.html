@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>HTMLgenerator.cpp</title>
+</head>
+<body>
+    <div>
+        <pre>
+            <code class="cpp">/////////////////////////////////////////////////////////////////////
+// HTMLgenerator.cpp - generater html file for a .h or .cpp file   //
+// ver 1.2                                                         //
+// platform: Win 10												   //		
+// Xing Zhou, work.xingzhou@gmail.com, Syracuse University         //
+// Application: MEAN stack using C++ to analyze code metrics       //
+/////////////////////////////////////////////////////////////////////
+
+#include &quotHTMLgenerator.h&quot
+
+
+using Path = std::string;
+using File = std::string;
+
+// transfer from cpp source text to html content
+void HTMLgenerator::transferFileType(File in_fileName) {
+	File cppFileContent = this-&gtreadFileContent(in_fileName);
+	if (cppFileContent == &quot&quot) {
+		return;
+	}
+	replaceSymbol(cppFileContent);
+	File shortName = FileSystem::Path::getName(in_fileName);
+	std::vector&ltFile&gt placeholder = { shortName, cppFileContent };
+	File htmlFileContent = injectPlaceHolderIntoTemplate(placeholder);
+	File htmlFileName = getHTMLFileName(in_fileName);
+	storeFileContent(htmlFileName, htmlFileContent);
+	//removeFile(in_fileName);
+}
+
+void HTMLgenerator::replaceSymbol(File&amp cppFileContent) {
+  replaceSymbol(cppFileContent, &quot&amp&quot, &quot&ampamp&quot);
+  replaceSymbol(cppFileContent, &quot&lt&quot, &quot&amplt&quot);
+	replaceSymbol(cppFileContent, &quot&gt&quot, &quot&ampgt&quot);
+
+	replaceSymbol(cppFileContent, &quot\&quot&quot, &quot&ampquot&quot);
+
+}
+
+//void HTMLgenerator::removeFile (const std::string&amp in_filename) {
+//	FileSystem::File::remove(in_filename);
+//}
+
+
+// store file content
+
+inline void HTMLgenerator::storeFileContent(File in_htmlFileName, File in_htmlContent) {
+
+	if (!FileSystem::Directory::exists(_htmlDestFolder)) {
+		FileSystem::Directory::create(_htmlDestFolder);
+	}
+	
+
+	File fileName = FileSystem::Path::getName(in_htmlFileName);
+	File newFilePath =  FileSystem::Path::fileSpec(_htmlDestFolder, fileName);
+	std::ofstream htmlFile(newFilePath);
+	htmlFile &lt&lt in_htmlContent;
+	htmlFile.close();
+}
+
+// inject placeholder into html template
+
+inline File HTMLgenerator::injectPlaceHolderIntoTemplate(std::vector&ltFile&gt in_placeholder) {
+	File htmlContent = _templateHTML;
+	File fileName = in_placeholder[0];
+	File fileContent = in_placeholder[1];
+
+	size_t posOfFileName = htmlContent.find(std::string(&quot&lt/title&gt&quot));
+	htmlContent.insert(posOfFileName, fileName);
+
+	size_t posOfFileContent = htmlContent.find(std::string(&quot&lt/code&gt&quot));
+	htmlContent.insert(posOfFileContent, fileContent);
+	return htmlContent;
+}
+
+// change \n to &ltbr&gt , space tpo &ampnbsp
+
+inline void HTMLgenerator::replaceSymbol(File &amp in_FileContent, File in_old, File in_new) {
+
+	size_t p = 0;
+	while (p &lt in_FileContent.size()) {
+		p = in_FileContent.find(std::string(in_old), p);
+		if (p == std::string::npos) break;
+		in_FileContent.replace(p, in_old.size(), in_new);
+		p += in_new.size();
+	}
+}
+
+// transfer cpp file name to html file name 
+
+inline File HTMLgenerator::getHTMLFileName(File cpp_fileName) {
+
+	File htmlFileName = cpp_fileName + &quot.html&quot;
+	return htmlFileName;
+}
+
+
+
+
+#ifdef TEST_HTMLGENERATOR
+
+int main()
+{
+	return 0;
+	
+}
+
+#endif</code>
+        </pre>
+    </div>
+<!--load highlight.js-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/monokai-sublime.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>

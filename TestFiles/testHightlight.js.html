@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test hightlight</title>
+</head>
+<body>
+<div>
+    <pre>
+        <code class="cpp">
+   virtual void file(const File &f)
+  {
+    ++numFilesProcessed;
+    for (auto pEvtHandler : fileSubscribers_)
+    {
+      pEvtHandler->execute(f);
+    }
+    std::cout << "  traverse file: " &lt&lt f.c_str() <<  std::endl;
+  }      </code>
+    </pre>
+</div>
+
+<!--load highlight.js-->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/monokai-sublime.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>

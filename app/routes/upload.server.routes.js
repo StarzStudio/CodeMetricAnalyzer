@@ -3,10 +3,11 @@ module.exports = function(app) {
     var uploadController = require('../controllers/upload.server.controller');
     //app.get('/', uploadFileController.render);
 
-    app.get('/', uploadController.render);
+
+    app.get('/upload', uploadController.render);
 
 
-    app.post('/', uploadController.receiveFiles) ;
+    app.post('/upload', uploadController.receiveFiles) ;
 
 
 

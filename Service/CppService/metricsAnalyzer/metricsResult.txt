@@ -1,6 +1,260 @@
 
   ==============================================================
-  The No.1 file is: MetricsAnalysis.h
+  The No.1 file is: PlatformMacro.h
+  ==============================================================
+  The No.2 file is: ASTNode.h
+  ASTNode:
+        size: 1:
+        complexity: 1:
+
+  ASTNode:
+        size: 1:
+        complexity: 1:
+
+  name:
+        size: 1:
+        complexity: 1:
+
+  setName:
+        size: 1:
+        complexity: 1:
+
+  type:
+        size: 1:
+        complexity: 1:
+
+  setType:
+        size: 1:
+        complexity: 1:
+
+  children:
+        size: 1:
+        complexity: 1:
+
+  addChildren:
+        size: 1:
+        complexity: 1:
+
+  deleteLastChildren:
+        size: 1:
+        complexity: 1:
+
+  setStartLine:
+        size: 1:
+        complexity: 1:
+
+  setEndLine:
+        size: 1:
+        complexity: 1:
+
+  complexity:
+        size: 1:
+        complexity: 1:
+
+  setComplexity:
+        size: 1:
+        complexity: 1:
+
+  addOneComplexity:
+        size: 1:
+        complexity: 1:
+
+  size:
+        size: 4:
+        complexity: 1:
+
+  show:
+        size: 17:
+        complexity: 1:
+
+  ASTTree:
+        size: 1:
+        complexity: 1:
+
+  ASTTree:
+        size: 1:
+        complexity: 1:
+
+  setRoot:
+        size: 1:
+        complexity: 1:
+
+  getRoot:
+        size: 1:
+        complexity: 1:
+
+  ExtractScopeInfo:
+        size: 3:
+        complexity: 1:
+
+  TreeWalk:
+        size: 14:
+        complexity: 2:
+
+  ==============================================================
+  The No.3 file is: ASTNode.cpp
+  main:
+        size: 59:
+        complexity: 1:
+
+  ==============================================================
+  The No.4 file is: FileSystem.h
+  Block:
+        size: 2:
+        complexity: 1:
+
+  name:
+        size: 2:
+        complexity: 1:
+
+  ==============================================================
+  The No.5 file is: FileSystem.cpp
+  Block:
+        size: 2:
+        complexity: 1:
+
+  back:
+        size: 3:
+        complexity: 1:
+
+  operator[]:
+        size: 5:
+        complexity: 1:
+
+  File:
+        size: 2:
+        complexity: 1:
+
+  File:
+        size: 12:
+        complexity: 3:
+
+  open:
+        size: 27:
+        complexity: 3:
+
+  getLine:
+        size: 12:
+        complexity: 1:
+
+  putLine:
+        size: 13:
+        complexity: 1:
+
+  getBlock:
+        size: 22:
+        complexity: 3:
+
+  putBlock:
+        size: 14:
+        complexity: 2:
+
+  isGood:
+        size: 9:
+        complexity: 1:
+
+  flush:
+        size: 6:
+        complexity: 1:
+
+  clear:
+        size: 6:
+        complexity: 1:
+
+  close:
+        size: 7:
+        complexity: 1:
+
+  exists:
+        size: 7:
+        complexity: 1:
+
+  copy:
+        size: 26:
+        complexity: 1:
+
+  remove:
+        size: 3:
+        complexity: 1:
+
+  FileInfo:
+        size: 11:
+        complexity: 2:
+
+  good:
+        size: 3:
+        complexity: 1:
+
+  intToString:
+        size: 6:
+        complexity: 1:
+
+  toLower:
+        size: 6:
+        complexity: 1:
+
+  toUpper:
+        size: 6:
+        complexity: 1:
+
+  getName:
+        size: 25:
+        complexity: 3:
+
+  getExt:
+        size: 15:
+        complexity: 2:
+
+  getPath:
+        size: 10:
+        complexity: 1:
+
+  getFullFileSpec:
+        size: 16:
+        complexity: 2:
+
+  fileSpec:
+        size: 16:
+        complexity: 2:
+
+  create:
+        size: 20:
+        complexity: 3:
+
+  remove:
+        size: 18:
+        complexity: 3:
+
+  exists:
+        size: 4:
+        complexity: 1:
+
+  getCurrentDirectory:
+        size: 7:
+        complexity: 1:
+
+  setCurrentDirectory:
+        size: 5:
+        complexity: 1:
+
+  match:
+        size: 25:
+        complexity: 3:
+
+  getFiles:
+        size: 20:
+        complexity: 3:
+
+  getDirectories:
+        size: 23:
+        complexity: 3:
+
+  main:
+        size: 293:
+        complexity: 1:
+
+  ==============================================================
+  The No.6 file is: MetricsAnalysis.h
   setTree:
         size: 1:
         complexity: 1:
@@ -14,7 +268,7 @@
         complexity: 1:
 
   ==============================================================
-  The No.2 file is: MetricsExecutive.h
+  The No.7 file is: MetricsExecutive.h
   MetricExecutive:
         size: 3:
         complexity: 1:
@@ -40,7 +294,21 @@
         complexity: 1:
 
   ==============================================================
-  The No.3 file is: MetricsExecutive.cpp
+  The No.8 file is: MetricsAnalysis.cpp
+  analyzeFunc:
+        size: 7:
+        complexity: 1:
+
+  TreeWalk:
+        size: 29:
+        complexity: 5:
+
+  main:
+        size: 62:
+        complexity: 2:
+
+  ==============================================================
+  The No.9 file is: MetricsExecutive.cpp
   build:
         size: 11:
         complexity: 1:
@@ -62,29 +330,315 @@
         complexity: 9:
 
   ==============================================================
-  The No.4 file is: MetricsAnalysis.cpp
-  analyzeFunc:
+  The No.10 file is: ActionsAndRules.h
+  Repository:
+        size: 8:
+        complexity: 1:
+
+  scopeStack:
+        size: 3:
+        complexity: 1:
+
+  Toker:
+        size: 3:
+        complexity: 1:
+
+  lineCount:
+        size: 3:
+        complexity: 1:
+
+  getASTTree:
+        size: 3:
+        complexity: 1:
+
+  doTest:
+        size: 9:
+        complexity: 2:
+
+  HandlePush:
+        size: 3:
+        complexity: 1:
+
+  doAction:
+        size: 16:
+        complexity: 2:
+
+  doTest:
+        size: 8:
+        complexity: 2:
+
+  HandlePop:
+        size: 3:
+        complexity: 1:
+
+  doAction:
+        size: 14:
+        complexity: 1:
+
+  isSpecialKeyWord:
+        size: 8:
+        complexity: 2:
+
+  isLambda:
+        size: 14:
+        complexity: 2:
+
+  doTest:
+        size: 13:
+        complexity: 3:
+
+  PushFunction:
+        size: 3:
+        complexity: 1:
+
+  doAction:
+        size: 27:
+        complexity: 3:
+
+  isSpecialKeyWord:
+        size: 8:
+        complexity: 2:
+
+  doTest:
+        size: 13:
+        complexity: 3:
+
+  PushCondScope:
+        size: 3:
+        complexity: 1:
+
+  doAction:
+        size: 21:
+        complexity: 1:
+
+  isWrapper:
+        size: 10:
+        complexity: 2:
+
+  doTest:
+        size: 15:
+        complexity: 4:
+
+  PushWrapperScope:
+        size: 3:
+        complexity: 1:
+
+  findType:
+        size: 17:
+        complexity: 1:
+
+  doAction:
+        size: 43:
+        complexity: 6:
+
+  isSpecialKeywords:
+        size: 10:
+        complexity: 2:
+
+  doTest:
+        size: 20:
+        complexity: 4:
+
+  PushInitializerScope:
+        size: 3:
+        complexity: 1:
+
+  doAction:
+        size: 17:
+        complexity: 1:
+
+  findBrackets:
+        size: 8:
+        complexity: 1:
+
+  NoOperator:
         size: 7:
         complexity: 1:
 
-  TreeWalk:
-        size: 29:
-        complexity: 5:
+  doTest:
+        size: 14:
+        complexity: 3:
+
+  PushLambda:
+        size: 3:
+        complexity: 1:
+
+  doAction:
+        size: 15:
+        complexity: 1:
+
+  ==============================================================
+  The No.11 file is: ConfigureParser.h
+  ConfigParseToConsole:
+        size: 1:
+        complexity: 1:
+
+  getRepo:
+        size: 1:
+        complexity: 1:
+
+  resetLineCount:
+        size: 3:
+        complexity: 1:
+
+  ==============================================================
+  The No.12 file is: Parser.h
+  IBuilder:
+        size: 1:
+        complexity: 1:
+
+  IAction:
+        size: 1:
+        complexity: 1:
+
+  IRule:
+        size: 1:
+        complexity: 1:
+
+  Parser:
+        size: 1:
+        complexity: 1:
+
+  Parser:
+        size: 1:
+        complexity: 1:
+
+  ==============================================================
+  The No.13 file is: ActionsAndRules.cpp
+  main:
+        size: 35:
+        complexity: 4:
+
+  ==============================================================
+  The No.14 file is: ConfigureParser.cpp
+  ConfigParseToConsole:
+        size: 21:
+        complexity: 1:
+
+  Attach:
+        size: 8:
+        complexity: 1:
+
+  buildBeginningOfScope:
+        size: 6:
+        complexity: 1:
+
+  buildEndOfScope:
+        size: 6:
+        complexity: 1:
+
+  buildFunctionDefinition:
+        size: 6:
+        complexity: 1:
+
+  buildCondScope:
+        size: 6:
+        complexity: 1:
+
+  buildWrapperScope:
+        size: 6:
+        complexity: 1:
+
+  buildInitializerScope:
+        size: 6:
+        complexity: 1:
+
+  buildLambdaDefinition:
+        size: 6:
+        complexity: 1:
+
+  Build:
+        size: 35:
+        complexity: 3:
 
   main:
-        size: 62:
-        complexity: 2:
+        size: 48:
+        complexity: 8:
 
   ==============================================================
-  The No.5 file is: SemiExp.h
+  The No.15 file is: Parser.cpp
+  addRule:
+        size: 3:
+        complexity: 1:
+
+  next:
+        size: 11:
+        complexity: 1:
+
+  parse:
+        size: 11:
+        complexity: 2:
+
+  addAction:
+        size: 3:
+        complexity: 1:
+
+  doActions:
+        size: 5:
+        complexity: 1:
+
+  main:
+        size: 57:
+        complexity: 8:
+
   ==============================================================
-  The No.6 file is: itokcollection.h
+  The No.16 file is: ScopeStack.h
+  size:
+        size: 1:
+        complexity: 1:
+
+  begin:
+        size: 1:
+        complexity: 1:
+
+  end:
+        size: 1:
+        complexity: 1:
+
+  push:
+        size: 3:
+        complexity: 1:
+
+  pop:
+        size: 5:
+        complexity: 1:
+
+  top:
+        size: 3:
+        complexity: 1:
+
+  showStack:
+        size: 17:
+        complexity: 3:
+
+  showStack:
+        size: 16:
+        complexity: 3:
+
+  ==============================================================
+  The No.17 file is: ScopeStack.cpp
+  show:
+        size: 13:
+        complexity: 1:
+
+  TreeWalk:
+        size: 12:
+        complexity: 2:
+
+  main:
+        size: 71:
+        complexity: 1:
+
+  ==============================================================
+  The No.18 file is: itokcollection.h
   ITokCollection:
         size: 1:
         complexity: 1:
 
   ==============================================================
-  The No.7 file is: SemiExp.cpp
+  The No.19 file is: SemiExp.h
+  ==============================================================
+  The No.20 file is: SemiExp.cpp
   SemiExp:
         size: 1:
         complexity: 1:
@@ -150,9 +704,9 @@
         complexity: 5:
 
   ==============================================================
-  The No.8 file is: Tokenizer.h
+  The No.21 file is: Tokenizer.h
   ==============================================================
-  The No.9 file is: Tokenizer.cpp
+  The No.22 file is: Tokenizer.cpp
   attach:
         size: 1:
         complexity: 1:
@@ -322,163 +876,7 @@
         complexity: 3:
 
   ==============================================================
-  The No.10 file is: FileSystem.h
-  Block:
-        size: 1:
-        complexity: 1:
-
-  name:
-        size: 1:
-        complexity: 1:
-
-  ==============================================================
-  The No.11 file is: FileSystem.cpp
-  Block:
-        size: 1:
-        complexity: 1:
-
-  back:
-        size: 3:
-        complexity: 1:
-
-  operator[]:
-        size: 5:
-        complexity: 1:
-
-  File:
-        size: 2:
-        complexity: 1:
-
-  File:
-        size: 12:
-        complexity: 3:
-
-  open:
-        size: 27:
-        complexity: 3:
-
-  getLine:
-        size: 12:
-        complexity: 1:
-
-  putLine:
-        size: 13:
-        complexity: 1:
-
-  getBlock:
-        size: 22:
-        complexity: 3:
-
-  putBlock:
-        size: 14:
-        complexity: 2:
-
-  isGood:
-        size: 9:
-        complexity: 1:
-
-  flush:
-        size: 6:
-        complexity: 1:
-
-  clear:
-        size: 6:
-        complexity: 1:
-
-  close:
-        size: 7:
-        complexity: 1:
-
-  exists:
-        size: 7:
-        complexity: 1:
-
-  copy:
-        size: 25:
-        complexity: 1:
-
-  remove:
-        size: 3:
-        complexity: 1:
-
-  FileInfo:
-        size: 11:
-        complexity: 2:
-
-  good:
-        size: 3:
-        complexity: 1:
-
-  intToString:
-        size: 6:
-        complexity: 1:
-
-  toLower:
-        size: 6:
-        complexity: 1:
-
-  toUpper:
-        size: 6:
-        complexity: 1:
-
-  getName:
-        size: 25:
-        complexity: 3:
-
-  getExt:
-        size: 15:
-        complexity: 2:
-
-  getPath:
-        size: 10:
-        complexity: 1:
-
-  getFullFileSpec:
-        size: 15:
-        complexity: 2:
-
-  fileSpec:
-        size: 16:
-        complexity: 2:
-
-  create:
-        size: 20:
-        complexity: 3:
-
-  remove:
-        size: 18:
-        complexity: 3:
-
-  exists:
-        size: 4:
-        complexity: 1:
-
-  getCurrentDirectory:
-        size: 7:
-        complexity: 1:
-
-  setCurrentDirectory:
-        size: 5:
-        complexity: 1:
-
-  match:
-        size: 25:
-        complexity: 3:
-
-  getFiles:
-        size: 20:
-        complexity: 3:
-
-  getDirectories:
-        size: 23:
-        complexity: 3:
-
-  main:
-        size: 282:
-        complexity: 16:
-
-  ==============================================================
-  The No.12 file is: Utilities.h
+  The No.23 file is: Utilities.h
   toString:
         size: 5:
         complexity: 1:
@@ -488,7 +886,7 @@
         complexity: 1:
 
   ==============================================================
-  The No.13 file is: Utilities.cpp
+  The No.24 file is: Utilities.cpp
   Title:
         size: 4:
         complexity: 1:
@@ -525,419 +923,23 @@
         size: 41:
         complexity: 2:
 
-  ==============================================================
-  The No.14 file is: Parser.h
-  IBuilder:
-        size: 1:
-        complexity: 1:
 
-  IAction:
-        size: 1:
-        complexity: 1:
 
-  IRule:
-        size: 1:
-        complexity: 1:
-
-  Parser:
-        size: 1:
-        complexity: 1:
-
-  Parser:
-        size: 1:
-        complexity: 1:
-
-  ==============================================================
-  The No.15 file is: ConfigureParser.h
-  ConfigParseToConsole:
-        size: 1:
-        complexity: 1:
-
-  getRepo:
-        size: 1:
-        complexity: 1:
-
-  resetLineCount:
-        size: 3:
-        complexity: 1:
-
-  ==============================================================
-  The No.16 file is: ActionsAndRules.h
-  Repository:
-        size: 8:
-        complexity: 1:
-
-  scopeStack:
-        size: 3:
-        complexity: 1:
-
-  Toker:
-        size: 3:
-        complexity: 1:
-
-  lineCount:
-        size: 3:
-        complexity: 1:
-
-  getASTTree:
-        size: 3:
-        complexity: 1:
-
-  doTest:
-        size: 9:
-        complexity: 2:
-
-  HandlePush:
-        size: 3:
-        complexity: 1:
-
-  doAction:
-        size: 16:
-        complexity: 2:
-
-  doTest:
-        size: 8:
-        complexity: 2:
-
-  HandlePop:
-        size: 3:
-        complexity: 1:
-
-  doAction:
-        size: 14:
-        complexity: 1:
-
-  isSpecialKeyWord:
-        size: 8:
-        complexity: 2:
-
-  isLambda:
-        size: 14:
-        complexity: 2:
-
-  doTest:
-        size: 13:
-        complexity: 3:
-
-  PushFunction:
-        size: 3:
-        complexity: 1:
-
-  doAction:
-        size: 27:
-        complexity: 3:
-
-  isSpecialKeyWord:
-        size: 8:
-        complexity: 2:
-
-  doTest:
-        size: 13:
-        complexity: 3:
-
-  PushCondScope:
-        size: 3:
-        complexity: 1:
-
-  doAction:
-        size: 21:
-        complexity: 1:
-
-  isWrapper:
-        size: 10:
-        complexity: 2:
-
-  doTest:
-        size: 15:
-        complexity: 4:
-
-  PushWrapperScope:
-        size: 3:
-        complexity: 1:
-
-  findType:
-        size: 17:
-        complexity: 1:
-
-  doAction:
-        size: 43:
-        complexity: 6:
-
-  isSpecialKeywords:
-        size: 10:
-        complexity: 2:
-
-  doTest:
-        size: 20:
-        complexity: 4:
-
-  PushInitializerScope:
-        size: 3:
-        complexity: 1:
-
-  doAction:
-        size: 17:
-        complexity: 1:
-
-  findBrackets:
-        size: 8:
-        complexity: 1:
-
-  NoOperator:
-        size: 7:
-        complexity: 1:
-
-  doTest:
-        size: 14:
-        complexity: 3:
-
-  PushLambda:
-        size: 3:
-        complexity: 1:
-
-  doAction:
-        size: 15:
-        complexity: 1:
-
-  ==============================================================
-  The No.17 file is: ActionsAndRules.cpp
-  main:
-        size: 35:
-        complexity: 4:
-
-  ==============================================================
-  The No.18 file is: ConfigureParser.cpp
-  ConfigParseToConsole:
-        size: 21:
-        complexity: 1:
-
-  Attach:
-        size: 8:
-        complexity: 1:
-
-  buildBeginningOfScope:
-        size: 6:
-        complexity: 1:
-
-  buildEndOfScope:
-        size: 6:
-        complexity: 1:
-
-  buildFunctionDefinition:
-        size: 6:
-        complexity: 1:
-
-  buildCondScope:
-        size: 6:
-        complexity: 1:
-
-  buildWrapperScope:
-        size: 6:
-        complexity: 1:
-
-  buildInitializerScope:
-        size: 6:
-        complexity: 1:
-
-  buildLambdaDefinition:
-        size: 6:
-        complexity: 1:
-
-  Build:
-        size: 35:
-        complexity: 3:
-
-  main:
-        size: 48:
-        complexity: 8:
-
-  ==============================================================
-  The No.19 file is: Parser.cpp
-  addRule:
-        size: 3:
-        complexity: 1:
-
-  next:
-        size: 11:
-        complexity: 1:
-
-  parse:
-        size: 11:
-        complexity: 2:
-
-  addAction:
-        size: 3:
-        complexity: 1:
-
-  doActions:
-        size: 5:
-        complexity: 1:
-
-  main:
-        size: 57:
-        complexity: 8:
-
-  ==============================================================
-  The No.20 file is: ASTNode.h
-  ASTNode:
-        size: 1:
-        complexity: 1:
-
-  ASTNode:
-        size: 1:
-        complexity: 1:
-
-  name:
-        size: 1:
-        complexity: 1:
-
-  setName:
-        size: 1:
-        complexity: 1:
-
-  type:
-        size: 1:
-        complexity: 1:
-
-  setType:
-        size: 1:
-        complexity: 1:
-
-  children:
-        size: 1:
-        complexity: 1:
-
-  addChildren:
-        size: 1:
-        complexity: 1:
-
-  deleteLastChildren:
-        size: 1:
-        complexity: 1:
-
-  setStartLine:
-        size: 1:
-        complexity: 1:
-
-  setEndLine:
-        size: 1:
-        complexity: 1:
-
-  complexity:
-        size: 1:
-        complexity: 1:
-
-  setComplexity:
-        size: 1:
-        complexity: 1:
-
-  addOneComplexity:
-        size: 1:
-        complexity: 1:
-
-  size:
-        size: 4:
-        complexity: 1:
-
-  show:
-        size: 17:
-        complexity: 1:
-
-  ASTTree:
-        size: 1:
-        complexity: 1:
-
-  ASTTree:
-        size: 1:
-        complexity: 1:
-
-  setRoot:
-        size: 1:
-        complexity: 1:
-
-  getRoot:
-        size: 1:
-        complexity: 1:
-
-  ExtractScopeInfo:
-        size: 3:
-        complexity: 1:
-
-  TreeWalk:
-        size: 14:
-        complexity: 2:
-
-  ==============================================================
-  The No.21 file is: ASTNode.cpp
-  main:
-        size: 59:
-        complexity: 1:
-
-  ==============================================================
-  The No.22 file is: ScopeStack.h
-  size:
-        size: 1:
-        complexity: 1:
-
-  begin:
-        size: 1:
-        complexity: 1:
-
-  end:
-        size: 1:
-        complexity: 1:
-
-  push:
-        size: 3:
-        complexity: 1:
-
-  pop:
-        size: 5:
-        complexity: 1:
-
-  top:
-        size: 3:
-        complexity: 1:
-
-  showStack:
-        size: 17:
-        complexity: 3:
-
-  showStack:
-        size: 16:
-        complexity: 3:
-
-  ==============================================================
-  The No.23 file is: ScopeStack.cpp
-  show:
-        size: 13:
-        complexity: 1:
-
-  TreeWalk:
-        size: 12:
-        complexity: 2:
-
-  main:
-        size: 71:
-        complexity: 1:
-
-
-
-File: ScopeStack.cpp need to be improved.
+File: MetricsExecutive.h need to be improved.
+    analyzeMatrics
+File: Parser.cpp need to be improved.
     main
 File: FileSystem.cpp need to be improved.
     main
-File: MetricsExecutive.h need to be improved.
-    analyzeMatrics
 File: SemiExp.cpp need to be improved.
-    main
-File: MetricsExecutive.cpp need to be improved.
     main
 File: MetricsAnalysis.cpp need to be improved.
     main
-File: Tokenizer.cpp need to be improved.
-    main
-File: Parser.cpp need to be improved.
+File: MetricsExecutive.cpp need to be improved.
     main
 File: ASTNode.cpp need to be improved.
+    main
+File: ScopeStack.cpp need to be improved.
+    main
+File: Tokenizer.cpp need to be improved.
     main

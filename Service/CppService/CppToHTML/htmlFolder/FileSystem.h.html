@@ -6,6 +6,251 @@
     <title>FileSystem.h</title>
 </head>
 <body>
-    <div>#ifndef&nbspFILESYSTEM_H<br>#define&nbspFILESYSTEM_H<br>/////////////////////////////////////////////////////////////////////////////<br>//&nbspFileSystem.h&nbsp-&nbspSupport&nbspfile&nbspand&nbspdirectory&nbspoperations&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspLinux&nbspver&nbsp1.1&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspLanguage:&nbsp&nbsp&nbsp&nbspgcc/g++&nbspv4.6.1&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspPlatform:&nbsp&nbsp&nbsp&nbspDell&nbspXPS&nbsp8300,&nbspCore&nbspi7,&nbspkubuntu&nbspv11.10&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspApplication:&nbspSummer&nbspProjects,&nbsp2012&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspAuthor:&nbsp&nbsp&nbsp&nbsp&nbsp&nbspJim&nbspFawcett,&nbspCST&nbsp4-187,&nbspSyracuse&nbspUniversity&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(315)&nbsp443-3948,&nbspjfawcett@twcny.rr.com&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>/////////////////////////////////////////////////////////////////////////////<br>/*<br>&nbsp*&nbspModule&nbspOperations:<br>&nbsp*&nbsp==================<br>&nbsp*&nbspThis&nbsppackage&nbspprovides&nbspthe&nbspnamespace&nbspFileSystem&nbspcontaining:<br>&nbsp*&nbspclasses:&nbspFile,&nbspFileInfo,&nbspPath,&nbspand&nbspDirectory.<br>&nbsp*<br>&nbsp*&nbspThe&nbspFile&nbspclass&nbspsupports&nbspopening&nbsptext&nbspand&nbspbinary&nbspfiles&nbspfor&nbspeither&nbspinput&nbsp<br>&nbsp*&nbspor&nbspoutput.&nbsp&nbspFile&nbspobjects&nbsphave&nbspnames,&nbspget&nbspand&nbspput&nbsplines&nbspof&nbsptext,&nbspget&nbspand<br>&nbsp*&nbspput&nbspblocks&nbspof&nbspbytes&nbspif&nbspbinary,&nbspcan&nbspbe&nbsptested&nbspfor&nbspoperational&nbspstate,<br>&nbsp*&nbspcleared&nbspof&nbsperrors,&nbspand&nbspoutput&nbspFile&nbspobjects&nbspcan&nbspbe&nbspflushed&nbspto&nbsptheir&nbspstreams.<br>&nbsp*<br>&nbsp*&nbspFileInfo&nbspclass&nbspaccepts&nbspa&nbspfully&nbspqualified&nbspfilespec&nbspand&nbspsupports&nbspqueries<br>&nbsp*&nbspconcerning&nbspname,&nbsptime&nbspand&nbspdate,&nbspsize,&nbspand&nbspattributes.&nbsp&nbspYou&nbspcan&nbspcompare<br>&nbsp*&nbspFileInfo&nbspobjects&nbspby&nbspname,&nbspdate,&nbspand&nbspsize.<br>&nbsp*<br>&nbsp*&nbspPath&nbspclass&nbspprovides&nbspstatic&nbspmethods&nbspto&nbspturn&nbspa&nbsprelative&nbspfilespec&nbspinto&nbspan<br>&nbsp*&nbspabsolute&nbspfilespec,&nbspreturn&nbspthe&nbsppath,&nbspname,&nbspor&nbspextension&nbspof&nbspthe&nbspfilespec,<br>&nbsp*&nbspand&nbspbuild&nbspfilespecs&nbspfrom&nbsppath&nbspand&nbspname.&nbsp&nbspPath&nbspalso&nbspprovides&nbspmethods&nbspto<br>&nbsp*&nbspconvert&nbspfilespecs&nbspto&nbspuppercase&nbspand&nbspto&nbsplowercase.<br>&nbsp*<br>&nbsp*&nbspThe&nbspDirectory&nbspclass&nbspsupports&nbspgetting&nbspfilenames&nbspor&nbspdirectories&nbspfrom&nbspa&nbsp<br>&nbsp*&nbspfully&nbspqualified&nbspfilespec,&nbspe.g.,&nbsppath&nbsp+&nbspfilename&nbsppattern&nbspusing&nbspstatic<br>&nbsp*&nbspmethods.&nbsp&nbspIt&nbspalso&nbspprovides&nbspnon-static&nbspmethods&nbspto&nbspget&nbspand&nbspset&nbspthe&nbspcurrent<br>&nbsp*&nbspdirectory.<br>&nbsp*<br>&nbsp*&nbspPublic&nbspInterface:<br>&nbsp*&nbsp=================<br>&nbsp*&nbspFile&nbspf(filespec,File::in,File::binary);<br>&nbsp*&nbspFile&nbspg(filespec,File::out,File::binary);<br>&nbsp*&nbspwhile(f.isGood())&nbsp{<br>&nbsp*&nbsp&nbsp&nbspblock&nbspb&nbsp=&nbspf.getBlock();<br>&nbsp*&nbsp&nbsp&nbspg.putBlock(b);<br>&nbsp*&nbsp}<br>&nbsp*&nbspFileInfo&nbspfi(&quot..\foobar.txt&quot);<br>&nbsp*&nbspif(fi.good())<br>&nbsp*&nbsp&nbsp&nbsp...<br>&nbsp*&nbspstd::string&nbspfilespec&nbsp=&nbsp&quot..\temp.txt&quot;<br>&nbsp*&nbspstd::string&nbspfullyqualified&nbsp=&nbspPath::getFullFileSpec(filespec);<br>&nbsp*&nbspstd::string&nbsppath&nbsp=&nbspPath::getPath(fullyqualified);<br>&nbsp*&nbspstd::string&nbspname&nbsp=&nbspPath::getName(fullyqualified);<br>&nbsp*&nbspstd::string&nbspextn&nbsp=&nbspPath::getExt(fullyqualified);<br>&nbsp*<br>&nbsp*&nbspDirectory&nbspd;<br>&nbsp*&nbspstd::string&nbspdir&nbsp=&nbspDirectory::getCurrentDirectory();<br>&nbsp*&nbspDirectory::setCurrentDirectory(dir);<br>&nbsp*&nbspstd::vector&ltstd::string&gt&nbspfiles&nbsp=&nbspDirectory::getFiles(path,&nbsppattern);<br>&nbsp*&nbspstd::vector&ltstd::string&gt&nbspdirs&nbsp=&nbspDirectory::getDirectories(path);<br>&nbsp*&nbsp<br>&nbsp*&nbspRequired&nbspFiles:<br>&nbsp*&nbsp===============<br>&nbsp*&nbspFileSystem.h,&nbspFileSystem.cpp<br>&nbsp*<br>&nbsp*&nbspBuild&nbspCommand:<br>&nbsp*&nbsp==============<br>&nbsp*&nbspg++&nbspFileSystem.cpp<br>&nbsp*<br>&nbsp*&nbspMaintenance&nbspHistory:<br>&nbsp*&nbsp====================<br>&nbsp*&nbspver&nbsp1.2&nbsp:&nbsp21&nbspJan&nbsp2015<br>&nbsp*&nbsp-&nbspchanged&nbspteststub&nbspcontents&nbspto&nbspmatch&nbspnew&nbspdirectory&nbspstructure<br>&nbsp*&nbsp-&nbspminor&nbspcleanup&nbspof&nbspcode<br>&nbsp*&nbspver&nbsp1.1&nbsp:&nbsp23&nbspFeb&nbsp2013<br>&nbsp*&nbsp-&nbspfixed&nbspbug&nbspin&nbspPath::getExt&nbspfound&nbspby&nbspYang&nbspZhou&nbspand&nbspKevin&nbspKong<br>&nbsp*&nbspver&nbsp1.0&nbsp:&nbsp06&nbspJun&nbsp2012<br>&nbsp*&nbsp-&nbspfirst&nbsprelease<br>&nbsp*/<br>#include&nbsp&ltfstream&gt<br>#include&nbsp&ltstring&gt<br>#include&nbsp&ltvector&gt<br>#include&nbsp&ltiostream&gt<br>#include&nbsp&ltsstream&gt<br>#include&nbsp&ltiomanip&gt<br>#include&nbsp&ltvector&gt<br>#include&nbsp&ltstdexcept&gt<br>#include&nbsp&ltcstdio&gt<br>//#include&nbsp&ltregex&gt&nbsp&nbsp//&nbspnot&nbspcomplete&nbspfor&nbspg++<br>#include&nbsp&ltstdlib.h&gt<br>#include&nbsp&lttime.h&gt<br>#include&nbsp&ltdirent.h&gt<br>#include&nbsp&ltsys/types.h&gt<br>#include&nbsp&ltsys/syscall.h&gt<br>#include&nbsp&ltsys/stat.h&gt<br>#include&nbsp&ltsys/sendfile.h&gt<br>#include&nbsp&ltunistd.h&gt<br>#include&nbsp&ltfcntl.h&gt<br>#include&nbsp&lterrno.h&gt<br>#include&nbsp&ltstring.h&gt<br><br>namespace&nbspFileSystem<br>{<br>&nbsp&nbsp/////////////////////////////////////////////////////////<br>&nbsp&nbsp//&nbspBlock<br>&nbsp&nbsp<br>&nbsp&nbsptypedef&nbspchar&nbspByte;<br><br>&nbsp&nbspclass&nbspBlock<br>&nbsp&nbsp{<br>&nbsp&nbsppublic:<br>&nbsp&nbsp&nbsp&nbspBlock(size_t&nbspsize=0)&nbsp:&nbspbytes_(size)&nbsp{}<br>&nbsp&nbsp&nbsp&nbspBlock(Byte*&nbspbeg,&nbspByte*&nbspend);<br>&nbsp&nbsp&nbsp&nbspvoid&nbsppush_back(Byte&nbspb);<br>&nbsp&nbsp&nbsp&nbspByte&amp&nbspoperator[](size_t&nbspi);<br>&nbsp&nbsp&nbsp&nbspByte&nbspoperator[](size_t&nbspi)&nbspconst;<br>&nbsp&nbsp&nbsp&nbspbool&nbspoperator==(const&nbspBlock&amp)&nbspconst;<br>&nbsp&nbsp&nbsp&nbspbool&nbspoperator!=(const&nbspBlock&amp)&nbspconst;<br>&nbsp&nbsp&nbsp&nbspsize_t&nbspsize()&nbspconst;<br>&nbsp&nbspprivate:<br>&nbsp&nbsp&nbsp&nbspstd::vector&ltByte&gt&nbspbytes_;<br>&nbsp&nbsp};<br><br>&nbsp&nbsp/////////////////////////////////////////////////////////<br>&nbsp&nbsp//&nbspFile<br>&nbsp&nbsp<br>&nbsp&nbspclass&nbspFile<br>&nbsp&nbsp{<br>&nbsp&nbsppublic:<br>&nbsp&nbsp&nbsp&nbspenum&nbspdirection&nbsp{&nbspin,&nbspout&nbsp};<br>&nbsp&nbsp&nbsp&nbspenum&nbsptype&nbsp{&nbsptext,&nbspbinary&nbsp};<br>&nbsp&nbsp&nbsp&nbspFile(const&nbspstd::string&amp&nbspfilespec);<br>&nbsp&nbsp&nbsp&nbspbool&nbspopen(direction&nbspdirn,&nbsptype&nbsptyp=File::text);<br>&nbsp&nbsp&nbsp&nbsp~File();<br>&nbsp&nbsp&nbsp&nbspstd::string&nbspname();<br>&nbsp&nbsp&nbsp&nbspstd::string&nbspgetLine();<br>&nbsp&nbsp&nbsp&nbspvoid&nbspputLine(const&nbspstd::string&amp&nbspline,&nbspbool&nbspwantReturn=true);<br>&nbsp&nbsp&nbsp&nbspBlock&nbspgetBlock(size_t&nbspsize);<br>&nbsp&nbsp&nbsp&nbspvoid&nbspputBlock(const&nbspBlock&amp);<br>&nbsp&nbsp&nbsp&nbspbool&nbspisGood();<br>&nbsp&nbsp&nbsp&nbspvoid&nbspclear();<br>&nbsp&nbsp&nbsp&nbspvoid&nbspflush();<br>&nbsp&nbsp&nbsp&nbspvoid&nbspclose();<br>&nbsp&nbsp&nbsp&nbspstatic&nbspbool&nbspexists(const&nbspstd::string&amp&nbspfile);<br>&nbsp&nbsp&nbsp&nbspstatic&nbspbool&nbspcopy(const&nbspstd::string&amp&nbspsrc,&nbspconst&nbspstd::string&amp&nbspdst,&nbspbool&nbspfailIfExists=false);<br>&nbsp&nbsp&nbsp&nbspstatic&nbspbool&nbspremove(const&nbspstd::string&amp&nbspfilespec);<br>&nbsp&nbspprivate:<br>&nbsp&nbsp&nbsp&nbspstd::string&nbspname_;<br>&nbsp&nbsp&nbsp&nbspstd::ifstream*&nbsppIStream;<br>&nbsp&nbsp&nbsp&nbspstd::ofstream*&nbsppOStream;<br>&nbsp&nbsp&nbsp&nbspdirection&nbspdirn_;<br>&nbsp&nbsp&nbsp&nbsptype&nbsptyp_;<br>&nbsp&nbsp&nbsp&nbspbool&nbspgood_;<br>&nbsp&nbsp};<br><br>&nbsp&nbspinline&nbspstd::string&nbspFile::name()&nbsp{&nbspreturn&nbspname_;&nbsp}<br><br>&nbsp&nbsp/////////////////////////////////////////////////////////<br>&nbsp&nbsp//&nbspFileInfo<br><br>&nbsp&nbspclass&nbspFileInfo<br>&nbsp&nbsp{<br>&nbsp&nbsppublic:<br>&nbsp&nbsp&nbsp&nbspenum&nbspdateFormat&nbsp{&nbspfullformat,&nbsptimeformat,&nbspdateformat&nbsp};<br>&nbsp&nbsp&nbsp&nbspFileInfo(const&nbspstd::string&amp&nbspfileSpec);<br>&nbsp&nbsp&nbsp&nbspbool&nbspgood();<br>&nbsp&nbsp&nbsp&nbspstd::string&nbspname()&nbspconst;<br>&nbsp&nbsp&nbsp&nbspstd::string&nbspdate(dateFormat&nbspdf=fullformat)&nbspconst;<br>&nbsp&nbsp&nbsp&nbspsize_t&nbspsize()&nbspconst;<br>&nbsp&nbsp&nbsp&nbsp<br>&nbsp&nbsp&nbsp&nbspbool&nbspisArchive()&nbspconst;<br>&nbsp&nbsp&nbsp&nbspbool&nbspisCompressed()&nbspconst;<br>&nbsp&nbsp&nbsp&nbspbool&nbspisDirectory()&nbspconst;<br>&nbsp&nbsp&nbsp&nbspbool&nbspisEncrypted()&nbspconst;<br>&nbsp&nbsp&nbsp&nbspbool&nbspisHidden()&nbspconst;<br>&nbsp&nbsp&nbsp&nbspbool&nbspisNormal()&nbspconst;<br>&nbsp&nbsp&nbsp&nbspbool&nbspisOffLine()&nbspconst;<br>&nbsp&nbsp&nbsp&nbspbool&nbspisReadOnly()&nbspconst;<br>&nbsp&nbsp&nbsp&nbspbool&nbspisSystem()&nbspconst;<br>&nbsp&nbsp&nbsp&nbspbool&nbspisTemporary()&nbspconst;<br><br>&nbsp&nbsp&nbsp&nbspbool&nbspoperator&lt(const&nbspFileInfo&amp&nbspfi)&nbspconst;<br>&nbsp&nbsp&nbsp&nbspbool&nbspoperator==(const&nbspFileInfo&amp&nbspfi)&nbspconst;<br>&nbsp&nbsp&nbsp&nbspbool&nbspoperator&gt(const&nbspFileInfo&amp&nbspfi)&nbspconst;<br>&nbsp&nbsp&nbsp&nbspbool&nbspearlier(const&nbspFileInfo&amp&nbspfi)&nbspconst;<br>&nbsp&nbsp&nbsp&nbspbool&nbsplater(const&nbspFileInfo&amp&nbspfi)&nbspconst;<br>&nbsp&nbsp&nbsp&nbspbool&nbspsmaller(const&nbspFileInfo&amp&nbspfi)&nbspconst;<br>&nbsp&nbsp&nbsp&nbspbool&nbsplarger(const&nbspFileInfo&amp&nbspfi)&nbspconst;<br>&nbsp&nbspprivate:<br>&nbsp&nbsp&nbsp&nbspbool&nbsperror_;<br>&nbsp&nbsp&nbsp&nbspstatic&nbspstd::string&nbspintToString(long&nbspi);<br>&nbsp&nbsp&nbsp&nbspstruct&nbspstat&nbspstatbuf_;<br>&nbsp&nbsp&nbsp&nbspstd::string&nbspfileSpec_;<br>&nbsp&nbsp};<br><br>&nbsp&nbsp/////////////////////////////////////////////////////////<br>&nbsp&nbsp//&nbspPath<br><br>&nbsp&nbspclass&nbspPath<br>&nbsp&nbsp{<br>&nbsp&nbsppublic:<br>&nbsp&nbsp&nbsp&nbspstatic&nbspstd::string&nbspgetFullFileSpec(const&nbspstd::string&amp&nbspfileSpec);<br>&nbsp&nbsp&nbsp&nbspstatic&nbspstd::string&nbspgetPath(const&nbspstd::string&amp&nbspfileSpec);<br>&nbsp&nbsp&nbsp&nbspstatic&nbspstd::string&nbspgetName(const&nbspstd::string&amp&nbspfileSpec,&nbspbool&nbspwithExt=true);<br>&nbsp&nbsp&nbsp&nbspstatic&nbspstd::string&nbspgetExt(const&nbspstd::string&amp&nbspfileSpec);<br>&nbsp&nbsp&nbsp&nbspstatic&nbspstd::string&nbspfileSpec(const&nbspstd::string&amp&nbsppath,&nbspconst&nbspstd::string&amp&nbspname);<br>&nbsp&nbsp&nbsp&nbspstatic&nbspstd::string&nbsptoLower(const&nbspstd::string&amp&nbspsrc);<br>&nbsp&nbsp&nbsp&nbspstatic&nbspstd::string&nbsptoUpper(const&nbspstd::string&amp&nbspsrc);<br>&nbsp&nbsp};<br>&nbsp&nbsp<br>&nbsp&nbsp/////////////////////////////////////////////////////////<br>&nbsp&nbsp//&nbspDirectory<br><br>&nbsp&nbspclass&nbspDirectory<br>&nbsp&nbsp{<br>&nbsp&nbsppublic:<br>&nbsp&nbsp&nbsp&nbspstatic&nbspbool&nbspcreate(const&nbspstd::string&amp&nbsppath);<br>&nbsp&nbsp&nbsp&nbspstatic&nbspbool&nbspremove(const&nbspstd::string&amp&nbsppath);<br>&nbsp&nbsp&nbsp&nbspstatic&nbspbool&nbspexists(const&nbspstd::string&amp&nbsppath);<br>&nbsp&nbsp&nbsp&nbspstatic&nbspstd::string&nbspgetCurrentDirectory();<br>&nbsp&nbsp&nbsp&nbspstatic&nbspbool&nbspsetCurrentDirectory(const&nbspstd::string&amp&nbsppath);<br>&nbsp&nbsp&nbsp&nbspstatic&nbspstd::vector&ltstd::string&gt&nbspgetFiles(const&nbspstd::string&amp&nbsppath=&quot.&quot,&nbspconst&nbspstd::string&amp&nbsppattern=&quot*.*&quot);<br>&nbsp&nbsp&nbsp&nbspstatic&nbspstd::vector&ltstd::string&gt&nbspgetDirectories(const&nbspstd::string&amp&nbsppath=&quot.&quot,&nbspconst&nbspstd::string&amp&nbsppattern=&quot*.*&quot);<br>&nbsp&nbspprivate:<br>&nbsp&nbsp&nbsp&nbspstatic&nbspconst&nbspint&nbspBufSize&nbsp=&nbsp255;<br>&nbsp&nbsp&nbsp&nbspchar&nbspbuffer[BufSize];<br>&nbsp&nbsp};<br>}<br><br>#endif<br></div>
+    <div>
+        <pre>
+            <code class="cpp">#ifndef FILESYSTEM_H
+#define FILESYSTEM_H
+/////////////////////////////////////////////////////////////////////////////
+// FileSystem.h - Support file and directory operations                    //
+// Linux ver 1.1                                                           //
+// Language:    gcc/g++ v4.6.1                                             //
+// Platform:    Dell XPS 8300, Core i7, kubuntu v11.10                     //
+// Application: Summer Projects, 2012                                      //
+// Author:      Jim Fawcett, CST 4-187, Syracuse University                //
+//              (315) 443-3948, jfawcett@twcny.rr.com                      //
+/////////////////////////////////////////////////////////////////////////////
+/*
+ * Module Operations:
+ * ==================
+ * This package provides the namespace FileSystem containing:
+ * classes: File, FileInfo, Path, and Directory.
+ *
+ * The File class supports opening text and binary files for either input 
+ * or output.  File objects have names, get and put lines of text, get and
+ * put blocks of bytes if binary, can be tested for operational state,
+ * cleared of errors, and output File objects can be flushed to their streams.
+ *
+ * FileInfo class accepts a fully qualified filespec and supports queries
+ * concerning name, time and date, size, and attributes.  You can compare
+ * FileInfo objects by name, date, and size.
+ *
+ * Path class provides static methods to turn a relative filespec into an
+ * absolute filespec, return the path, name, or extension of the filespec,
+ * and build filespecs from path and name.  Path also provides methods to
+ * convert filespecs to uppercase and to lowercase.
+ *
+ * The Directory class supports getting filenames or directories from a 
+ * fully qualified filespec, e.g., path + filename pattern using static
+ * methods.  It also provides non-static methods to get and set the current
+ * directory.
+ *
+ * Public Interface:
+ * =================
+ * File f(filespec,File::in,File::binary);
+ * File g(filespec,File::out,File::binary);
+ * while(f.isGood()) {
+ *   block b = f.getBlock();
+ *   g.putBlock(b);
+ * }
+ * FileInfo fi(&quot..\foobar.txt&quot);
+ * if(fi.good())
+ *   ...
+ * std::string filespec = &quot..\temp.txt&quot;
+ * std::string fullyqualified = Path::getFullFileSpec(filespec);
+ * std::string path = Path::getPath(fullyqualified);
+ * std::string name = Path::getName(fullyqualified);
+ * std::string extn = Path::getExt(fullyqualified);
+ *
+ * Directory d;
+ * std::string dir = Directory::getCurrentDirectory();
+ * Directory::setCurrentDirectory(dir);
+ * std::vector&ltstd::string&gt files = Directory::getFiles(path, pattern);
+ * std::vector&ltstd::string&gt dirs = Directory::getDirectories(path);
+ * 
+ * Required Files:
+ * ===============
+ * FileSystem.h, FileSystem.cpp
+ *
+ * Build Command:
+ * ==============
+ * g++ FileSystem.cpp
+ *
+ * Maintenance History:
+ * ====================
+ * ver 1.2 : 21 Jan 2015
+ * - changed teststub contents to match new directory structure
+ * - minor cleanup of code
+ * ver 1.1 : 23 Feb 2013
+ * - fixed bug in Path::getExt found by Yang Zhou and Kevin Kong
+ * ver 1.0 : 06 Jun 2012
+ * - first release
+ */ 
+
+#include &quot../PlatformMacro.h&quot
+#include &ltfstream&gt
+#include &ltstring&gt
+#include &ltvector&gt
+#include &ltiostream&gt
+#include &ltsstream&gt
+#include &ltiomanip&gt
+#include &ltvector&gt
+#include &ltstdexcept&gt
+#include &ltcstdio&gt
+//#include &ltregex&gt  // not complete for g++
+#include &ltstdlib.h&gt
+#include &lttime.h&gt
+#include &ltdirent.h&gt
+#include &ltsys/types.h&gt
+#include &ltsys/syscall.h&gt
+#include &ltsys/stat.h&gt
+
+#ifdef OS_Linux
+#include &ltsys/sendfile.h&gt
+#endif // OS_Linux
+
+
+#include &ltunistd.h&gt
+#include &ltfcntl.h&gt
+#include &lterrno.h&gt
+#include &ltstring.h&gt
+
+
+
+namespace FileSystem
+{
+  /////////////////////////////////////////////////////////
+  // Block
+  
+  typedef char Byte;
+
+  class Block
+  {
+  public:
+    Block(size_t size=0) : bytes_(size) {}
+    Block(Byte* beg, Byte* end);
+    void push_back(Byte b);
+    Byte&amp operator[](size_t i);
+    Byte operator[](size_t i) const;
+    bool operator==(const Block&amp) const;
+    bool operator!=(const Block&amp) const;
+    size_t size() const;
+  private:
+    std::vector&ltByte&gt bytes_;
+  };
+
+  /////////////////////////////////////////////////////////
+  // File
+  
+  class File
+  {
+  public:
+    enum direction { in, out };
+    enum type { text, binary };
+    File(const std::string&amp filespec);
+    bool open(direction dirn, type typ=File::text);
+    ~File();
+    std::string name();
+    std::string getLine();
+    void putLine(const std::string&amp line, bool wantReturn=true);
+    Block getBlock(size_t size);
+    void putBlock(const Block&amp);
+    bool isGood();
+    void clear();
+    void flush();
+    void close();
+    static bool exists(const std::string&amp file);
+    static bool copy(const std::string&amp src, const std::string&amp dst, bool failIfExists=false);
+    static bool remove(const std::string&amp filespec);
+  private:
+    std::string name_;
+    std::ifstream* pIStream;
+    std::ofstream* pOStream;
+    direction dirn_;
+    type typ_;
+    bool good_;
+  };
+
+  inline std::string File::name() { return name_; }
+
+  /////////////////////////////////////////////////////////
+  // FileInfo
+
+  class FileInfo
+  {
+  public:
+    enum dateFormat { fullformat, timeformat, dateformat };
+    FileInfo(const std::string&amp fileSpec);
+    bool good();
+    std::string name() const;
+    std::string date(dateFormat df=fullformat) const;
+    size_t size() const;
+    
+    bool isArchive() const;
+    bool isCompressed() const;
+    bool isDirectory() const;
+    bool isEncrypted() const;
+    bool isHidden() const;
+    bool isNormal() const;
+    bool isOffLine() const;
+    bool isReadOnly() const;
+    bool isSystem() const;
+    bool isTemporary() const;
+
+    bool operator&lt(const FileInfo&amp fi) const;
+    bool operator==(const FileInfo&amp fi) const;
+    bool operator&gt(const FileInfo&amp fi) const;
+    bool earlier(const FileInfo&amp fi) const;
+    bool later(const FileInfo&amp fi) const;
+    bool smaller(const FileInfo&amp fi) const;
+    bool larger(const FileInfo&amp fi) const;
+  private:
+    bool error_;
+    static std::string intToString(long i);
+    struct stat statbuf_;
+    std::string fileSpec_;
+  };
+
+  /////////////////////////////////////////////////////////
+  // Path
+
+  class Path
+  {
+  public:
+    static std::string getFullFileSpec(const std::string&amp fileSpec);
+    static std::string getPath(const std::string&amp fileSpec);
+    static std::string getName(const std::string&amp fileSpec, bool withExt=true);
+    static std::string getExt(const std::string&amp fileSpec);
+    static std::string fileSpec(const std::string&amp path, const std::string&amp name);
+    static std::string toLower(const std::string&amp src);
+    static std::string toUpper(const std::string&amp src);
+  };
+  
+  /////////////////////////////////////////////////////////
+  // Directory
+
+  class Directory
+  {
+  public:
+    static bool create(const std::string&amp path);
+    static bool remove(const std::string&amp path);
+    static bool exists(const std::string&amp path);
+    static std::string getCurrentDirectory();
+    static bool setCurrentDirectory(const std::string&amp path);
+    static std::vector&ltstd::string&gt getFiles(const std::string&amp path=&quot.&quot, const std::string&amp pattern=&quot*.*&quot);
+    static std::vector&ltstd::string&gt getDirectories(const std::string&amp path=&quot.&quot, const std::string&amp pattern=&quot*.*&quot);
+  private:
+    static const int BufSize = 255;
+    char buffer[BufSize];
+  };
+}
+
+#endif
+</code>
+        </pre>
+    </div>
+<!--load highlight.js-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/monokai-sublime.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>

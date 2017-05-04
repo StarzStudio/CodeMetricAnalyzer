@@ -1,0 +1,14 @@
+contextForType* pContext = new contextForType(typetable);
+        pContext->setCurrentFile("../TypeAnalysis/test.txt");
+        BeginningOfScope bos;
+        IncreaseCount ic(pContext);
+        bos.addAction(&ic);
+        EndOfScope eos(pContext);
+        DecreaseCount dc(pContext);
+        eos.addAction(&dc);
+        GlobalFunction gf(pContext);
+        MakeRecordForGlobalFunc mrfgf(pContext);
+        gf.addAction(&mrfgf);
+        Type t(pContext);
+        MakeRecordForType mrft(pContext);
+        t.addAction(&mrft);

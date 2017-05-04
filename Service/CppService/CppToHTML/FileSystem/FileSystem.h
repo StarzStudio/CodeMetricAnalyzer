@@ -74,7 +74,9 @@
  * - fixed bug in Path::getExt found by Yang Zhou and Kevin Kong
  * ver 1.0 : 06 Jun 2012
  * - first release
- */
+ */ 
+
+#include "../PlatformMacro.h"
 #include <fstream>
 #include <string>
 #include <vector>
@@ -91,11 +93,18 @@
 #include <sys/types.h>
 #include <sys/syscall.h>
 #include <sys/stat.h>
+
+#ifdef OS_Linux
 #include <sys/sendfile.h>
+#endif // OS_Linux
+
+
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <string.h>
+
+
 
 namespace FileSystem
 {

@@ -6,6 +6,1009 @@
     <title>FileSystem.cpp</title>
 </head>
 <body>
-    <div>/////////////////////////////////////////////////////////////////////////////<br>//&nbspFileSystem.cpp&nbsp-&nbspSupport&nbspfile&nbspand&nbspdirectory&nbspoperations&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspLinux&nbspver&nbsp1.1&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspLanguage:&nbsp&nbsp&nbsp&nbspgcc/g++&nbspv4.6.1&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspPlatform:&nbsp&nbsp&nbsp&nbspDell&nbspXPS&nbsp8300,&nbspCore&nbspi7,&nbspkubuntu&nbspv11.10&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspApplication:&nbspSummer&nbspProjects,&nbsp2012&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbspAuthor:&nbsp&nbsp&nbsp&nbsp&nbsp&nbspJim&nbspFawcett,&nbspCST&nbsp4-187,&nbspSyracuse&nbspUniversity&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>//&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(315)&nbsp443-3948,&nbspjfawcett@twcny.rr.com&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//<br>/////////////////////////////////////////////////////////////////////////////<br><br><br>#include&nbsp&quotFileSystem.h&quot<br><br>using&nbspnamespace&nbspFileSystem;<br><br>//----&lt&nbspblock&nbspconstructor&nbsptaking&nbsparray&nbspiterators&nbsp&gt-------------------------<br><br>Block::Block(Byte*&nbspbeg,&nbspByte*&nbspend)&nbsp:&nbspbytes_(beg,&nbspend)&nbsp{}<br><br>//----&lt&nbsppush&nbspback&nbspblock&nbspbyte&nbsp&gt---------------------------------------------<br><br>void&nbspBlock::push_back(Byte&nbspb)<br>{<br>&nbsp&nbspbytes_.push_back(b);<br>}<br>//----&lt&nbspnon-const&nbspindexer&nbsp&gt------------------------------------------------<br><br>Byte&amp&nbspBlock::operator[](size_t&nbspi)<br>{<br>&nbsp&nbspif(i&lt0&nbsp||&nbspbytes_.size()&nbsp&lt=&nbspi)<br>&nbsp&nbsp&nbsp&nbspthrow&nbspstd::runtime_error(&quotindex&nbspout&nbspof&nbsprange&nbspin&nbspBlock&quot);<br>&nbsp&nbspreturn&nbspbytes_[i];<br>}<br>//----&lt&nbspconst&nbspindexer&nbsp&gt----------------------------------------------------<br><br>Byte&nbspBlock::operator[](size_t&nbspi)&nbspconst<br>{<br>&nbsp&nbspif(i&lt0&nbsp||&nbspbytes_.size()&nbsp&lt=&nbspi)<br>&nbsp&nbsp&nbsp&nbspthrow&nbspstd::runtime_error(&quotindex&nbspout&nbspof&nbsprange&nbspin&nbspBlock&quot);<br>&nbsp&nbspreturn&nbspbytes_[i];<br>}<br>//----&lt&nbspequality&nbspcomparison&nbsp&gt----------------------------------------------<br><br>bool&nbspBlock::operator==(const&nbspBlock&amp&nbspblock)&nbspconst<br>{<br>&nbsp&nbspreturn&nbspbytes_&nbsp==&nbspblock.bytes_;<br>}<br>//----&lt&nbspinequality&nbspcomparison&nbsp&gt--------------------------------------------<br><br>bool&nbspBlock::operator!=(const&nbspBlock&amp&nbspblock)&nbspconst<br>{<br>&nbsp&nbspreturn&nbspbytes_&nbsp!=&nbspblock.bytes_;<br>}<br>//----&lt&nbspreturn&nbspnumber&nbspof&nbspbytes&nbspin&nbspblock&nbsp&gt----------------------------------<br><br>size_t&nbspBlock::size()&nbspconst<br>{<br>&nbsp&nbspreturn&nbspbytes_.size();<br>}<br><br>//----&lt&nbspFile&nbspconstructor&nbspopens&nbspfile&nbspstream&nbsp&gt-------------------------------<br><br>File::File(const&nbspstd::string&amp&nbspfilespec)&nbsp<br>&nbsp&nbsp&nbsp&nbsp:&nbspname_(filespec),&nbsppIStream(0),&nbsppOStream(0),&nbspdirn_(in),&nbsptyp_(text),&nbspgood_(true)<br>{<br>}<br>//----&lt&nbspFile&nbspdestructor&nbspcloses&nbspfile&nbspstream&nbsp&gt-------------------------------<br><br>File::~File()&nbsp<br>{&nbsp<br>&nbsp&nbspif(pIStream)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsppIStream-&gtclose();&nbsp<br>&nbsp&nbsp&nbsp&nbspdelete&nbsppIStream;<br>&nbsp&nbsp}<br>&nbsp&nbspif(pOStream)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsppOStream-&gtclose();<br>&nbsp&nbsp&nbsp&nbspdelete&nbsppOStream;&nbsp<br>&nbsp&nbsp}<br>}<br>//----&lt&nbspopen&nbspfor&nbspreading&nbspor&nbspwriting&nbsp&gt--------------------------------------<br><br>bool&nbspFile::open(direction&nbspdirn,&nbsptype&nbsptyp)<br>{<br>&nbsp&nbspdirn_&nbsp=&nbspdirn;<br>&nbsp&nbsptyp_&nbsp=&nbsptyp;<br>&nbsp&nbspif(dirn&nbsp==&nbspin)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsppIStream&nbsp=&nbspnew&nbspstd::ifstream;<br>&nbsp&nbsp&nbsp&nbspif(typ&nbsp==&nbspbinary)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsppIStream-&gtopen(name_.c_str(),&nbspstd::ios::in&nbsp|&nbspstd::ios::binary);<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsppIStream-&gtopen(name_.c_str(),&nbspstd::ios::in);<br>&nbsp&nbsp&nbsp&nbspif(!(*pIStream))<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspgood_&nbsp=&nbspfalse;<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//throw&nbspstd::runtime_error(&quot\n&nbsp&nbspopen&nbspfor&nbspinput&nbspfailed&nbspin&nbspFile&nbspconstructor&quot);<br>&nbsp&nbsp}<br>&nbsp&nbspelse<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsppOStream&nbsp=&nbspnew&nbspstd::ofstream;<br>&nbsp&nbsp&nbsp&nbspif(typ&nbsp==&nbspbinary)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsppOStream-&gtopen(name_.c_str(),&nbspstd::ios::out&nbsp|&nbspstd::ios::binary);<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsppOStream-&gtopen(name_.c_str(),&nbspstd::ios::out);<br>&nbsp&nbsp&nbsp&nbspif(!(*pOStream))<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspgood_&nbsp=&nbspfalse;<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//throw&nbspstd::runtime_error(&quot\n&nbsp&nbspopen&nbspfor&nbspoutput&nbspfailed&nbspin&nbspFile&nbspconstructor&quot);<br>&nbsp&nbsp}<br>&nbsp&nbspreturn&nbspgood_;<br>}<br>//----&lt&nbspreads&nbspone&nbspline&nbspof&nbspa&nbsptext&nbspfile&nbsp&gt------------------------------------<br><br>std::string&nbspFile::getLine()<br>{<br>&nbsp&nbspif(pIStream&nbsp==&nbsp0&nbsp||&nbsp!pIStream-&gtgood())<br>&nbsp&nbsp&nbsp&nbspthrow&nbspstd::runtime_error(&quotinput&nbspstream&nbspnot&nbspopen&quot);<br>&nbsp&nbspif(typ_&nbsp==&nbspbinary)<br>&nbsp&nbsp&nbsp&nbspthrow&nbspstd::runtime_error(&quotgetting&nbsptext&nbspline&nbspfrom&nbspbinary&nbspfile&quot);<br>&nbsp&nbspif(dirn_&nbsp==&nbspout)<br>&nbsp&nbsp&nbsp&nbspthrow&nbspstd::runtime_error(&quotreading&nbspoutput&nbspfile&quot);<br>&nbsp&nbspconst&nbspint&nbspBufSize&nbsp=&nbsp255;<br>&nbsp&nbspchar&nbspbuffer[BufSize];<br>&nbsp&nbsppIStream-&gtgetline(buffer,BufSize);<br>&nbsp&nbspreturn&nbspstd::string(buffer);<br>}<br>//----&lt&nbspwrites&nbspone&nbspline&nbspof&nbspa&nbsptext&nbspto&nbspa&nbspfile&nbsp&gt------------------------------<br><br>void&nbspFile::putLine(const&nbspstd::string&amp&nbsps,&nbspbool&nbspwantReturn)<br>{<br>&nbsp&nbspif(pOStream&nbsp==&nbsp0&nbsp||&nbsp!pOStream-&gtgood())<br>&nbsp&nbsp&nbsp&nbspthrow&nbspstd::runtime_error(&quotoutput&nbspstream&nbspnot&nbspopen&quot);<br>&nbsp&nbspif(typ_&nbsp==&nbspbinary)<br>&nbsp&nbsp&nbsp&nbspthrow&nbspstd::runtime_error(&quotwriting&nbsptext&nbspline&nbspto&nbspbinary&nbspfile&quot);<br>&nbsp&nbspif(dirn_&nbsp==&nbspin)<br>&nbsp&nbsp&nbsp&nbspthrow&nbspstd::runtime_error(&quotwriting&nbspinput&nbspfile&quot);<br>&nbsp&nbspfor(size_t&nbspi=0;&nbspi&lts.size();&nbsp++i)<br>&nbsp&nbsp&nbsp&nbsppOStream-&gtput(s[i]);<br>&nbsp&nbspif(wantReturn)<br>&nbsp&nbsp&nbsp&nbsppOStream-&gtput('\n');<br>&nbsp&nbsppOStream-&gtflush();<br>}<br>//----&lt&nbspreads&nbspa&nbspblock&nbspof&nbspbytes&nbspfrom&nbspbinary&nbspfile&nbsp&gt--------------------------<br><br>Block&nbspFile::getBlock(size_t&nbspsize)<br>{<br>&nbsp&nbspif(pIStream&nbsp==&nbsp0&nbsp||&nbsp!pIStream-&gtgood())<br>&nbsp&nbsp&nbsp&nbspthrow&nbspstd::runtime_error(&quotinput&nbspstream&nbspnot&nbspopen&quot);<br>&nbsp&nbspif(typ_&nbsp!=&nbspbinary)<br>&nbsp&nbsp&nbsp&nbspthrow&nbspstd::runtime_error(&quotreading&nbspbinary&nbspfrom&nbsptext&nbspfile&quot);<br>&nbsp&nbspif(dirn_&nbsp==&nbspout)<br>&nbsp&nbsp&nbsp&nbspthrow&nbspstd::runtime_error(&quotreading&nbspoutput&nbspfile&quot);<br>&nbsp&nbspBlock&nbspblk;<br>&nbsp&nbspif(pIStream)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspfor(size_t&nbspi=0;&nbspi&ltsize;&nbsp++i)<br>&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspByte&nbspb;<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsppIStream-&gtget(b);<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspif(pIStream-&gtgood())<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspblk.push_back(b);<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspbreak;<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp}<br>&nbsp&nbspreturn&nbspblk;<br>}<br>//----&lt&nbspwrites&nbspa&nbspblock&nbspof&nbspbytes&nbspto&nbspbinary&nbspfile&nbsp&gt---------------------------<br><br>void&nbspFile::putBlock(const&nbspBlock&amp&nbspblk)<br>{<br>&nbsp&nbspif(pOStream&nbsp==&nbsp0&nbsp||&nbsp!pOStream-&gtgood())<br>&nbsp&nbsp&nbsp&nbspthrow&nbspstd::runtime_error(&quotoutput&nbspstream&nbspnot&nbspopen&quot);<br>&nbsp&nbspif(typ_&nbsp!=&nbspbinary)<br>&nbsp&nbsp&nbsp&nbspthrow&nbspstd::runtime_error(&quotwriting&nbspbinary&nbspto&nbsptext&nbspfile&quot);<br>&nbsp&nbspif(dirn_&nbsp==&nbspin)<br>&nbsp&nbsp&nbsp&nbspthrow&nbspstd::runtime_error(&quotwriting&nbspinput&nbspfile&quot);<br>&nbsp&nbspif(!pOStream-&gtgood())<br>&nbsp&nbsp&nbsp&nbspreturn;<br>&nbsp&nbspfor(size_t&nbspi=0;&nbspi&ltblk.size();&nbsp++i)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsppOStream-&gtput(blk[i]);<br>&nbsp&nbsp}<br>}<br>//----&lt&nbsptests&nbspfor&nbsperror&nbspfree&nbspstream&nbspstate&nbsp&gt--------------------------------<br><br>bool&nbspFile::isGood()<br>{<br>&nbsp&nbspif(!good_)<br>&nbsp&nbsp&nbsp&nbspreturn&nbspfalse;<br>&nbsp&nbspif(pIStream)<br>&nbsp&nbsp&nbsp&nbspreturn&nbsp(good_&nbsp=&nbsppIStream-&gtgood());<br>&nbsp&nbspif(pOStream)<br>&nbsp&nbsp&nbsp&nbspreturn&nbsp(good_&nbsp=&nbsppOStream-&gtgood());<br>&nbsp&nbspreturn&nbsp(good_&nbsp=&nbspfalse);<br>}<br>//----&lt&nbspflushes&nbspoutput&nbspstream&nbspto&nbspits&nbspfile&nbsp&gt--------------------------------<br><br>void&nbspFile::flush()<br>{<br>&nbsp&nbspif(pOStream)<br>&nbsp&nbsp&nbsp&nbsppOStream-&gtflush();<br>&nbsp&nbspif(pOStream)<br>&nbsp&nbsp&nbsp&nbspreturn;<br>}<br>//----&lt&nbspclears&nbsperror&nbspstate&nbspenabling&nbspoperations&nbspagain&nbsp&gt---------------------<br><br>void&nbspFile::clear()<br>{<br>&nbsp&nbspif(pIStream)<br>&nbsp&nbsp&nbsp&nbsppIStream-&gtclear();<br>&nbsp&nbspif(pOStream)<br>&nbsp&nbsp&nbsp&nbsppOStream-&gtclear();<br>}<br>//----&lt&nbspclose&nbspfile&nbsphandle&nbsp&gt------------------------------------------------<br><br>void&nbspFile::close()<br>{<br>&nbsp&nbspFile::flush();<br>&nbsp&nbspif(pIStream)<br>&nbsp&nbsp&nbsp&nbsppIStream-&gtclose();<br>&nbsp&nbspif(pOStream)<br>&nbsp&nbsp&nbsp&nbsppOStream-&gtclose();<br>}<br>//----&lt&nbspfile&nbspexists&nbsp&gt--------------------------------------------------<br><br>bool&nbspFile::exists(const&nbspstd::string&amp&nbspfile)<br>{<br>&nbsp&nbspbool&nbspretval;<br>&nbsp&nbspstd::ifstream&nbsptest(file.c_str(),&nbspstd::ios::in);<br>&nbsp&nbspretval&nbsp=&nbsptest.good();<br>&nbsp&nbsptest.close();<br>&nbsp&nbspreturn&nbspretval;<br>}<br>//----&lt&nbspcopy&nbspfile&nbsp&gt----------------------------------------------------<br><br>bool&nbspFile::copy(const&nbspstd::string&amp&nbspsrc,&nbspconst&nbspstd::string&amp&nbspdst,&nbspbool&nbspfailIfExists)<br>{<br>&nbsp&nbspif(failIfExists&nbsp&amp&amp&nbspexists(dst))<br>&nbsp&nbsp&nbsp&nbspreturn&nbspfalse;<br>&nbsp&nbspint&nbspread_fd,&nbspwrite_fd;<br>&nbsp&nbspstruct&nbspstat&nbspstat_buf;<br>&nbsp&nbspoff_t&nbspoffset&nbsp=&nbsp0;<br><br>&nbsp&nbsp/*&nbspOpen&nbspthe&nbspinput&nbspfile.&nbsp*/<br>&nbsp&nbspread_fd&nbsp=&nbsp::open&nbsp(src.c_str(),&nbspO_RDONLY);<br>&nbsp&nbspif(read_fd&nbsp==&nbsp-1)<br>&nbsp&nbsp&nbsp&nbspreturn&nbspfalse;<br>&nbsp&nbsp/*&nbspStat&nbspthe&nbspinput&nbspfile&nbspto&nbspobtain&nbspits&nbspsize.&nbsp*/<br>&nbsp&nbspfstat&nbsp(read_fd,&nbsp&ampstat_buf);<br>&nbsp&nbsp/*&nbspOpen&nbspthe&nbspoutput&nbspfile&nbspfor&nbspwriting,&nbspwith&nbspthe&nbspsame&nbsppermissions&nbspas&nbspthe<br>&nbsp&nbsp&nbsp&nbspsource&nbspfile.&nbsp*/<br>&nbsp&nbspwrite_fd&nbsp=&nbsp::open&nbsp(dst.c_str(),&nbspO_WRONLY&nbsp|&nbspO_CREAT,&nbspstat_buf.st_mode);<br>&nbsp&nbspif(write_fd&nbsp==&nbsp-1)<br>&nbsp&nbsp&nbsp&nbspreturn&nbspfalse;<br>&nbsp&nbsp/*&nbspBlast&nbspthe&nbspbytes&nbspfrom&nbspone&nbspfile&nbspto&nbspthe&nbspother.&nbsp*/<br>&nbsp&nbspsendfile&nbsp(write_fd,&nbspread_fd,&nbsp&ampoffset,&nbspstat_buf.st_size);<br>&nbsp&nbsp/*&nbspClose&nbspup.&nbsp*/<br>&nbsp&nbsp::close&nbsp(read_fd);<br>&nbsp&nbsp::close&nbsp(write_fd);<br>&nbsp&nbspreturn&nbsptrue;<br>}<br>//----&lt&nbspremove&nbspfile&nbsp&gt--------------------------------------------------<br><br>bool&nbspFile::remove(const&nbspstd::string&amp&nbspfile)<br>{<br>&nbsp&nbspreturn&nbspstd::remove(file.c_str())&nbsp!=&nbsp-1;<br>}<br>//----&lt&nbspconstructor&nbsp&gt--------------------------------------------------<br><br>FileInfo::FileInfo(const&nbspstd::string&amp&nbspfileSpec)<br>{<br>&nbsp&nbspfileSpec_&nbsp=&nbspfileSpec;<br>&nbsp&nbspint&nbspstatus&nbsp=&nbspstat(fileSpec.c_str(),&nbsp&ampstatbuf_);<br>&nbsp&nbspif(status&nbsp!=&nbsp0)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsperror_&nbsp=&nbsptrue;<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbspstrerror(errno);<br>&nbsp&nbsp}<br>&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsperror_&nbsp=&nbspfalse;<br>}<br>//----&lt&nbspis&nbsppassed&nbspfilespec&nbspvalid?&nbsp&gt------------------------------------<br><br>bool&nbspFileInfo::good()<br>{<br>&nbsp&nbspreturn&nbsp!error_;<br>}<br>//----&lt&nbspreturn&nbspfile&nbspname&nbsp&gt---------------------------------------------<br><br>std::string&nbspFileInfo::name()&nbspconst<br>{<br>&nbsp&nbspreturn&nbspPath::getName(fileSpec_);<br>}<br>//----&lt&nbspconversion&nbsphelper&nbsp&gt--------------------------------------------<br><br>std::string&nbspFileInfo::intToString(long&nbspi)<br>{<br>&nbsp&nbspstd::ostringstream&nbspout;<br>&nbsp&nbspout.fill('0');<br>&nbsp&nbspout&nbsp&lt&lt&nbspstd::setw(2)&nbsp&lt&lt&nbspi;<br>&nbsp&nbspreturn&nbspout.str();<br>}<br>//----&lt&nbspreturn&nbspfile&nbspdate&nbsp&gt---------------------------------------------<br><br>std::string&nbspFileInfo::date(dateFormat&nbspdf)&nbspconst<br>{<br>&nbsp&nbspstruct&nbsptimespec&nbspfiletime&nbsp=&nbspstatbuf_.st_mtim;<br>&nbsp&nbsptm*&nbsppTm&nbsp=&nbsplocaltime(&ampfiletime.tv_sec);<br>&nbsp&nbspstd::string&nbspdateStr,&nbsptimeStr;<br>&nbsp&nbspdateStr&nbsp=&nbspintToString(1+pTm-&gttm_mon)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp+&nbsp'/'&nbsp+&nbspintToString(pTm-&gttm_mday)&nbsp<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp+&nbsp'/'&nbsp+&nbspintToString(1900+pTm-&gttm_year);<br>&nbsp&nbsptimeStr&nbsp=&nbspintToString(pTm-&gttm_hour)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp+&nbsp':'&nbsp+&nbspintToString(pTm-&gttm_min)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp+&nbsp':'&nbsp+&nbspintToString(pTm-&gttm_sec);<br>&nbsp&nbspif(df&nbsp==&nbspdateformat)<br>&nbsp&nbsp&nbsp&nbspreturn&nbspdateStr;<br>&nbsp&nbspif(df&nbsp==&nbsptimeformat)<br>&nbsp&nbsp&nbsp&nbspreturn&nbsptimeStr;<br>&nbsp&nbspreturn&nbspdateStr&nbsp+&nbsp&quot&nbsp&quot&nbsp+&nbsptimeStr;<br>}<br>//----&lt&nbspreturn&nbspfile&nbspsize&nbsp&gt---------------------------------------------<br><br>size_t&nbspFileInfo::size()&nbspconst<br>{<br>&nbsp&nbspreturn&nbsp(size_t)(statbuf_.st_size);<br>}<br>//----&lt&nbspis&nbsptype&nbsparchive?&nbsp&gt---------------------------------------------<br><br>bool&nbspFileInfo::isArchive()&nbspconst<br>{<br>&nbsp&nbspreturn&nbspfalse;<br>}<br>//----&lt&nbspis&nbsptype&nbspcompressed?&nbsp&gt------------------------------------------<br><br>bool&nbspFileInfo::isCompressed()&nbspconst<br>{<br>&nbsp&nbspreturn&nbspfalse;<br>}<br>//----&lt&nbspis&nbsptype&nbspdirectory?&nbsp&gt-------------------------------------------<br><br>bool&nbspFileInfo::isDirectory()&nbspconst<br>{<br>&nbsp&nbspreturn&nbspS_ISDIR(statbuf_.st_mode);<br>}<br>//----&lt&nbspis&nbsptype&nbspencrypted?&nbsp&gt---------------------------------------------<br><br>bool&nbspFileInfo::isEncrypted()&nbspconst<br>{<br>&nbsp&nbspreturn&nbspfalse;<br>}<br>//----&lt&nbspis&nbsptype&nbsphiddent?&nbsp&gt---------------------------------------------<br><br>bool&nbspFileInfo::isHidden()&nbspconst<br>{<br>&nbsp&nbspreturn&nbspPath::getName(fileSpec_)[0]&nbsp==&nbsp'.';<br>}<br>//----&lt&nbspis&nbsptype&nbspnormal?&nbsp&gt---------------------------------------------<br><br>bool&nbspFileInfo::isNormal()&nbspconst<br>{<br>&nbsp&nbspreturn&nbspS_ISREG(statbuf_.st_mode);<br>}<br>//----&lt&nbspis&nbsptype&nbspoffline?&nbsp&gt---------------------------------------------<br><br>bool&nbspFileInfo::isOffLine()&nbspconst<br>{<br>&nbsp&nbspreturn&nbspfalse;<br>}<br>//----&lt&nbspis&nbsptype&nbspreadonly?&nbsp&gt--------------------------------------------<br><br>bool&nbspFileInfo::isReadOnly()&nbspconst<br>{<br>&nbsp&nbspFile&nbsptemp(&quot./temp&quot);<br>&nbsp&nbspreturn&nbsp!temp.isGood();<br>}<br>//----&lt&nbspis&nbsptype&nbspsystem?&nbsp&gt----------------------------------------------<br><br>bool&nbspFileInfo::isSystem()&nbspconst<br>{<br>&nbsp&nbspreturn&nbspfalse;<br>}<br>//----&lt&nbspis&nbsptype&nbsptemporary?&nbsp&gt-------------------------------------------<br><br>bool&nbspFileInfo::isTemporary()&nbspconst<br>{<br>&nbsp&nbspreturn&nbspfalse;<br>}<br>//----&lt&nbspcompare&nbspnames&nbspalphabetically&nbsp&gt---------------------------------<br><br>bool&nbspFileInfo::operator&lt(const&nbspFileInfo&amp&nbspfi)&nbspconst<br>{<br>&nbsp&nbspreturn&nbspPath::getName(fileSpec_)&nbsp&lt&nbspPath::getName(fi.fileSpec_);<br>}<br>//----&lt&nbspcompare&nbspnames&nbspalphabetically&nbsp&gt---------------------------------<br><br>bool&nbspFileInfo::operator&gt(const&nbspFileInfo&amp&nbspfi)&nbspconst<br>{<br>&nbsp&nbspreturn&nbspPath::getName(fileSpec_)&nbsp&gt&nbspPath::getName(fi.fileSpec_);<br>}<br>//----&lt&nbspcompare&nbspnames&nbspalphabetically&nbsp&gt---------------------------------<br><br>bool&nbspFileInfo::operator==(const&nbspFileInfo&amp&nbspfi)&nbspconst<br>{<br>&nbsp&nbspreturn&nbspPath::getName(fileSpec_)&nbsp==&nbspPath::getName(fi.fileSpec_);<br>}<br>//----&lt&nbspcompare&nbspfile&nbsptimes&nbsp&gt-------------------------------------------<br><br>bool&nbspFileInfo::earlier(const&nbspFileInfo&amp&nbspfi)&nbspconst<br>{<br>&nbsp&nbspreturn&nbspstatbuf_.st_mtime&nbsp&lt&nbspfi.statbuf_.st_mtime;<br>}<br>//----&lt&nbspcompare&nbspfile&nbsptimes&nbsp&gt-------------------------------------------<br><br>bool&nbspFileInfo::later(const&nbspFileInfo&amp&nbspfi)&nbspconst<br>{<br>&nbsp&nbspreturn&nbspstatbuf_.st_mtime&nbsp&gt&nbspfi.statbuf_.st_mtime;<br>}<br>//----&lt&nbspsmaller&nbsp&gt------------------------------------------------------<br><br>bool&nbspFileInfo::smaller(const&nbspFileInfo&nbsp&ampfi)&nbspconst<br>{<br>&nbsp&nbspreturn&nbspsize()&nbsp&lt&nbspfi.size();<br>}<br>//----&lt&nbsplarger&nbsp&gt-------------------------------------------------------<br><br>bool&nbspFileInfo::larger(const&nbspFileInfo&nbsp&ampfi)&nbspconst<br>{<br>&nbsp&nbspreturn&nbspsize()&nbsp&gt&nbspfi.size();<br>}<br>//----&lt&nbspconvert&nbspstring&nbspto&nbsplower&nbspcase&nbspchars&nbsp&gt---------------------------<br><br>std::string&nbspPath::toLower(const&nbspstd::string&amp&nbspsrc)<br>{<br>&nbsp&nbspstd::string&nbsptemp;<br>&nbsp&nbspfor(size_t&nbspi=0;&nbspi&ltsrc.length();&nbsp++i)<br>&nbsp&nbsp&nbsp&nbsptemp&nbsp+=&nbsptolower(src[i]);<br>&nbsp&nbspreturn&nbsptemp;<br>}<br>//----&lt&nbspconvert&nbspstring&nbspto&nbspupper&nbspcase&nbspchars&nbsp&gt---------------------------<br><br>&nbsp&nbsp<br>std::string&nbspPath::toUpper(const&nbspstd::string&amp&nbspsrc)<br>{<br>&nbsp&nbspstd::string&nbsptemp;<br>&nbsp&nbspfor(size_t&nbspi=0;&nbspi&ltsrc.length();&nbsp++i)<br>&nbsp&nbsp&nbsp&nbsptemp&nbsp+=&nbsptoupper(src[i]);<br>&nbsp&nbspreturn&nbsptemp;<br>}<br>//----&lt&nbspget&nbsppath&nbspfrom&nbspfileSpec&nbsp&gt---------------------------------------<br><br>std::string&nbspPath::getName(const&nbspstd::string&nbsp&ampfileSpec,&nbspbool&nbspwithExt)<br>{<br>&nbsp&nbspsize_t&nbsppos&nbsp=&nbspfileSpec.find_last_of(&quot/&quot);<br>&nbsp&nbspif(pos&nbsp&gt=&nbspfileSpec.length())<br>&nbsp&nbsp&nbsp&nbsppos&nbsp=&nbspfileSpec.find_last_of(&quot\\&quot);<br>&nbsp&nbspif(pos&nbsp&gt=&nbspfileSpec.length())<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp//&nbspno&nbsppath&nbspprepended<br>&nbsp&nbsp&nbsp&nbspif(withExt)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspreturn&nbspfileSpec;<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//&nbspremove&nbspext<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspsize_t&nbsppos&nbsp=&nbspfileSpec.find(&quot.&quot);<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspif(pos&nbsp&gt&nbspfileSpec.size())<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspreturn&nbspfileSpec;<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspreturn&nbspfileSpec.substr(0,&nbsppos-1);<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp}<br>&nbsp&nbspsize_t&nbspend&nbsp=&nbspfileSpec.length()&nbsp-&nbsppos;<br>&nbsp&nbspstd::string&nbspname&nbsp=&nbspfileSpec.substr(pos+1,fileSpec.length()-pos);<br>&nbsp&nbspif(withExt)<br>&nbsp&nbsp&nbsp&nbspreturn&nbspname;<br>&nbsp&nbsppos&nbsp=&nbspname.find(&quot.&quot);<br>&nbsp&nbspreturn&nbspname.substr(0,pos);<br>}<br>//----&lt&nbspget&nbspextension&nbspfrom&nbspfileSpec&nbsp&gt----------------------------------<br>&nbsp&nbsp<br>std::string&nbspPath::getExt(const&nbspstd::string&amp&nbspfileSpec)<br>{<br>&nbsp&nbspsize_t&nbsppos1&nbsp=&nbspfileSpec.find_last_of('/');<br>&nbsp&nbspsize_t&nbsppos2&nbsp=&nbspfileSpec.find_last_of('\\');<br>&nbsp&nbspsize_t&nbsppos&nbsp=&nbspfileSpec.find_last_of('.');<br>&nbsp&nbsp//&nbsphandle&nbsp../&nbspor&nbsp..\\&nbspwith&nbspno&nbspextension<br>&nbsp&nbspif(pos1&nbsp&lt&nbspfileSpec.length()&nbsp||&nbsppos2&nbsp&lt&nbspfileSpec.length())<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspif(pos&nbsp&lt&nbspstd::min(pos1,&nbsppos2))<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspreturn&nbspstd::string(&quot&quot);<br>&nbsp&nbsp}<br>&nbsp&nbsp//&nbsponly&nbsp.&nbspis&nbspextension&nbspdelimiter<br>&nbsp&nbspif(0&nbsp&lt=&nbsppos&nbsp&amp&amp&nbsppos&nbsp&lt&nbspfileSpec.length())<br>&nbsp&nbsp&nbsp&nbspreturn&nbsptoLower(fileSpec.substr(pos+1,fileSpec.length()-pos));<br>&nbsp&nbspreturn&nbspstd::string(&quot&quot);<br>}<br>//----&lt&nbspget&nbsppath&nbspfrom&nbspfileSpec&nbsp&gt---------------------------------------<br><br>std::string&nbspPath::getPath(const&nbspstd::string&nbsp&ampfileSpec)<br>{<br>&nbsp&nbspsize_t&nbsppos&nbsp=&nbspfileSpec.find_last_of(&quot/&quot);<br>&nbsp&nbspif(pos&nbsp&gt=&nbspfileSpec.length())<br>&nbsp&nbsp&nbsp&nbsppos&nbsp=&nbspfileSpec.find_last_of(&quot\\&quot);<br>&nbsp&nbspif(pos&nbsp&gt=&nbspfileSpec.length())<br>&nbsp&nbsp&nbsp&nbspreturn&nbsp&quot.&quot;<br>&nbsp&nbspif(fileSpec.find(&quot.&quot,pos+1))<br>&nbsp&nbsp&nbsp&nbspreturn&nbsptoLower(fileSpec.substr(0,pos+1));<br>&nbsp&nbspreturn&nbspfileSpec;<br>}<br>//----&lt&nbspget&nbspabsoluth&nbsppath&nbspfrom&nbspfileSpec&nbsp&gt------------------------------<br><br>std::string&nbspPath::getFullFileSpec(const&nbspstd::string&nbsp&ampfileSpec)<br>{<br>&nbsp&nbspchar&nbspbuffer[PATH_MAX];<br><br>&nbsp&nbspchar&nbsp*res&nbsp=&nbsprealpath(fileSpec.c_str(),&nbspbuffer);<br>&nbsp&nbsp//realpath(getPath(fileSpec.c_str()).c_str(),&nbspbuffer);<br>&nbsp&nbsp//std::string&nbspname&nbsp=&nbspPath::getName(fileSpec);<br>&nbsp&nbsp//std::string&nbsppath&nbsp=&nbspPath::fileSpec(fullPath,&nbspname);<br>&nbsp&nbsp&nbspif&nbsp(!res)&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspreturn&nbsp&quot&quot;<br>&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbsp&nbspconst&nbspstd::string&nbspfullPath(res);<br>&nbsp&nbspif(fullPath[fullPath.size()-1]&nbsp==&nbsp'.')<br>&nbsp&nbsp&nbsp&nbspreturn&nbspfullPath.substr(0,&nbspfullPath.size()-2);<br>&nbsp&nbspreturn&nbspfullPath;<br>}<br>//----&lt&nbspcreate&nbspfile&nbspspec&nbspfrom&nbsppath&nbspand&nbspname&nbsp&gt--------------------------<br><br>std::string&nbspPath::fileSpec(const&nbspstd::string&nbsp&amppath,&nbspconst&nbspstd::string&nbsp&ampname)<br>{<br>&nbsp&nbspstd::string&nbspfs;<br>&nbsp&nbspsize_t&nbsplen&nbsp=&nbsppath.size();<br>&nbsp&nbspif(path[len-1]&nbsp==&nbsp'/'&nbsp||&nbsppath[len-1]&nbsp==&nbsp'\\')<br>&nbsp&nbsp&nbsp&nbspfs&nbsp=&nbsppath&nbsp+&nbspname;<br>&nbsp&nbspelse<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspif(path.find(&quot/&quot)&nbsp&lt&nbsppath.size())<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspfs&nbsp=&nbsppath&nbsp+&nbsp&quot/&quot&nbsp+&nbspname;<br>&nbsp&nbsp&nbsp&nbspelse&nbspif(path.find(&quot\\&quot)&nbsp&lt&nbsppath.size())<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspfs&nbsp=&nbsppath&nbsp+&nbsp&quot\\&quot&nbsp+&nbspname;<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspfs&nbsp=&nbsppath&nbsp+&nbsp&quot/&quot&nbsp+&nbspname;<br>&nbsp&nbsp}<br>&nbsp&nbspreturn&nbspfs;<br>}<br>//----&lt&nbspcreate&nbspa&nbspdirectory&nbsp&gt-----------------------------------------------<br><br>bool&nbspDirectory::create(const&nbspstd::string&amp&nbsppath)<br>{<br>&nbsp&nbspmode_t&nbspmode&nbsp=&nbsp0777;<br>&nbsp&nbspstruct&nbspstat&nbspstatbuf;<br>&nbsp&nbspint&nbsp&nbsp&nbsp&nbspstatus&nbsp=&nbsp0;<br><br>&nbsp&nbspif&nbsp(stat(path.c_str(),&nbsp&ampstatbuf)&nbsp!=&nbsp0)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp/*&nbspDirectory&nbspdoes&nbspnot&nbspexist&nbsp*/<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspif&nbsp(mkdir(path.c_str(),&nbspmode)&nbsp!=&nbsp0)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstatus&nbsp=&nbsp-1;<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstatus&nbsp=&nbspchmod(path.c_str(),&nbspmode);<br>&nbsp&nbsp}<br>&nbsp&nbspelse&nbspif&nbsp(!S_ISDIR(statbuf.st_mode))<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsperrno&nbsp=&nbspENOTDIR;<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstatus&nbsp=&nbsp-1;<br>&nbsp&nbsp}<br>&nbsp&nbspreturn(status&nbsp!=&nbsp-1);<br>}<br>//----&lt&nbspcreate&nbspa&nbspdirectory&nbsp&gt-----------------------------------------------<br><br>bool&nbspDirectory::remove(const&nbspstd::string&amp&nbsppath)<br>{<br>&nbsp&nbspmode_t&nbspmode&nbsp=&nbspS_IRUSR;<br>&nbsp&nbspstruct&nbspstat&nbspstatbuf;<br>&nbsp&nbspint&nbsp&nbsp&nbsp&nbspstatus&nbsp=&nbsp0;<br><br>&nbsp&nbspif&nbsp(stat(path.c_str(),&nbsp&ampstatbuf)&nbsp==&nbsp0)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp/*&nbspDirectory&nbspexists&nbsp*/<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspif&nbsp(rmdir(path.c_str())&nbsp!=&nbsp0)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstatus&nbsp=&nbsp-1;<br>&nbsp&nbsp}<br>&nbsp&nbspelse&nbspif&nbsp(!S_ISDIR(statbuf.st_mode))<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsperrno&nbsp=&nbspENOTDIR;<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstatus&nbsp=&nbsp-1;<br>&nbsp&nbsp}<br>&nbsp&nbspreturn(status&nbsp!=&nbsp-1);&nbsp&nbsp<br>}<br>//----&lt&nbspcreate&nbspa&nbspdirectory&nbsp&gt-----------------------------------------------<br><br>bool&nbspDirectory::exists(const&nbspstd::string&amp&nbsppath)<br>{<br>&nbsp&nbspstruct&nbspstat&nbspstatbuf;<br>&nbsp&nbspreturn&nbspstat(path.c_str(),&nbsp&ampstatbuf)&nbsp==&nbsp0;<br>}<br>//----&lt&nbspreturn&nbspname&nbspof&nbspthe&nbspcurrent&nbspdirectory&nbsp&gt-----------------------------<br><br>std::string&nbspDirectory::getCurrentDirectory()<br>{<br>&nbsp&nbspchar&nbspbuffer[PATH_MAX];<br>&nbsp&nbspstd::string&nbsppath&nbsp=&nbspgetcwd(buffer,PATH_MAX);<br>&nbsp&nbspif(path[path.size()-1]&nbsp==&nbsp'.')<br>&nbsp&nbsp&nbsp&nbspreturn&nbsppath.substr(0,path.size()-2);<br>&nbsp&nbspreturn&nbsppath;<br>}<br>//----&lt&nbspchange&nbspthe&nbspcurrent&nbspdirectory&nbspto&nbsppath&nbsp&gt-----------------------------<br><br>bool&nbspDirectory::setCurrentDirectory(const&nbspstd::string&amp&nbsppath)<br>{<br>&nbsp&nbspreturn&nbspchdir(path.c_str())&nbsp==&nbsp0;<br>&nbsp&nbsp//std::string&nbspfullPath&nbsp=&nbspPath::getFullFileSpec(path);<br>&nbsp&nbsp//int&nbspstatus&nbsp=&nbspchdir(fullPath.c_str());<br>}<br>//----&lt&nbspcheck&nbspmatch&nbsp-&nbspincomplete&nbsp&gt-----------------------------------------<br>/*<br>&nbsp*&nbspCan&nbspcorrectly&nbspresolve&nbsponly&nbspthe&nbspwild&nbspcards:<br>&nbsp*&nbsp&nbsp&nbsp&quot*.*&quot,&nbsp&quot*.someExt&quot,&nbspand&nbsp&quotsomeName.*&quot<br>&nbsp*&nbspWill&nbspcomplete&nbspwhen&nbspg++&nbspfinishes&nbspC++11&nbspregex&nbsppackage.<br>&nbsp*/<br>bool&nbspmatch(const&nbspstd::string&amp&nbspinput,&nbspconst&nbspstd::string&amp&nbsppattern)<br>{<br>&nbsp&nbsp//&nbspexact&nbspmatch&nbspor&nbsp&quot*.*&quot<br>&nbsp&nbspif(input&nbsp==&nbsppattern&nbsp||&nbsppattern&nbsp==&nbsp&quot*.*&quot)<br>&nbsp&nbsp&nbsp&nbspreturn&nbsptrue;<br>&nbsp&nbsp//&nbspattempting&nbspto&nbspmatch&nbspentire&nbspextension&nbsppattern&nbsplike&nbsp*.cpp<br>&nbsp&nbspsize_t&nbsppos&nbsp=&nbsppattern.find(&quot*.&quot);<br>&nbsp&nbspif(pos&nbsp&lt&nbsppattern.size())<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspstd::string&nbspext_in&nbsp=&nbspPath::getExt(input);<br>&nbsp&nbsp&nbsp&nbspstd::string&nbspext_pt&nbsp=&nbspPath::getExt(pattern);<br>&nbsp&nbsp&nbsp&nbspif(ext_in&nbsp==&nbspext_pt)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspreturn&nbsptrue;<br>&nbsp&nbsp}<br>&nbsp&nbsp//&nbspattempting&nbspto&nbspmatch&nbspentire&nbspname&nbsppattern&nbsplike&nbspfoo.*<br>&nbsp&nbsppos&nbsp=&nbsppattern.find(&quot.*&quot);<br>&nbsp&nbspif(pos&nbsp&lt&nbsppattern.size())<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp//&nbspreturn&nbspname&nbspwithout&nbspextension<br>&nbsp&nbsp&nbsp&nbspstd::string&nbspname_in&nbsp=&nbspPath::getName(input,&nbspfalse);<br>&nbsp&nbsp&nbsp&nbspstd::string&nbspname_pt&nbsp=&nbspPath::getName(pattern,&nbspfalse);<br>&nbsp&nbsp&nbsp&nbspif(name_in&nbsp==&nbspname_pt)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspreturn&nbsptrue;<br>&nbsp&nbsp}&nbsp&nbsp<br>&nbsp&nbspreturn&nbspfalse;<br>}<br>//----&lt&nbspget&nbspnames&nbspof&nbspall&nbspthe&nbspfiles&nbspmatching&nbsppattern&nbsp(path:name)&nbsp&gt----------<br><br>std::vector&ltstd::string&gt&nbsp<br>Directory::getFiles(const&nbspstd::string&amp&nbsppath,&nbspconst&nbspstd::string&amp&nbsppattern)<br>{<br>&nbsp&nbspstd::vector&ltstd::string&gt&nbspfiles;<br>&nbsp&nbspDIR*&nbspdir&nbsp=&nbspopendir(path.c_str());<br>&nbsp&nbspif(dir&nbsp==&nbsp0)<br>&nbsp&nbsp&nbsp&nbspreturn&nbspfiles;<br>&nbsp&nbspdirent*&nbspdp;<br>&nbsp&nbspwhile(true)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspdp&nbsp=&nbspreaddir(dir);<br>&nbsp&nbsp&nbsp&nbspif(dp&nbsp==&nbsp0)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspreturn&nbspfiles;<br>&nbsp&nbsp&nbsp&nbspif(dp-&gtd_type&nbsp==&nbsp8)<br>&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::string&nbspname&nbsp=&nbspPath::getName(dp-&gtd_name);<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspif(match(name,pattern))<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspfiles.push_back(dp-&gtd_name);<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp}<br>&nbsp&nbspreturn&nbspfiles;<br>}<br>//----&lt&nbspget&nbspnames&nbspof&nbspall&nbspdirectories&nbspmatching&nbsppattern&nbsp(path:name)&nbsp&gt--------<br><br>std::vector&ltstd::string&gt&nbsp<br>Directory::getDirectories(const&nbspstd::string&amp&nbsppath,&nbspconst&nbspstd::string&amp&nbsppattern)<br>{<br>&nbsp&nbspstd::vector&ltstd::string&gt&nbspdirs;<br>&nbsp&nbspstd::vector&ltstd::string&gt&nbspfiles;<br>&nbsp&nbspDIR*&nbspdir&nbsp=&nbspopendir(path.c_str());<br>&nbsp&nbspif(dir&nbsp==&nbsp0)<br>&nbsp&nbsp&nbsp&nbspreturn&nbspfiles;<br>&nbsp&nbspdirent*&nbspdp;<br>&nbsp&nbspwhile(true)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspdp&nbsp=&nbspreaddir(dir);<br>&nbsp&nbsp&nbsp&nbspif(dp&nbsp==&nbsp0)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspreturn&nbspfiles;<br>&nbsp&nbsp&nbsp&nbspif(dp-&gtd_type&nbsp==&nbsp4)<br>&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspif(dp-&gtd_name[0]&nbsp==&nbsp'.'&nbsp&amp&amp&nbspdp-&gtd_name[1]&nbsp==&nbsp0)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspcontinue;&nbsp&nbsp//&nbsp&quot.&quot<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspif(dp-&gtd_name[0]&nbsp==&nbsp'.'&nbsp&amp&amp&nbspdp-&gtd_name[1]&nbsp==&nbsp'.'&nbsp&amp&amp&nbspdp-&gtd_name[2]&nbsp==&nbsp0&nbsp)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspcontinue;&nbsp&nbsp//&nbsp&quot..&quot<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspfiles.push_back(dp-&gtd_name);<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp}<br>&nbsp&nbspreturn&nbspdirs;<br>}<br>//----&lt&nbsptest&nbspstub&nbsp&gt--------------------------------------------------------<br><br>#ifdef&nbspTEST_FILESYSTEM<br><br>void&nbsptitle(const&nbspstd::string&amp&nbsptitle,&nbspchar&nbspch='=')<br>{<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&quot&nbsp&lt&lt&nbsptitle;<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&quot&nbsp&lt&lt&nbspstd::string(title.size()+2,&nbspch);<br>}<br>int&nbspmain(int&nbspargc,&nbspchar*&nbspargv[])<br>{<br>&nbsp&nbsptitle(&quotDemonstrate&nbspPath&nbspClass&quot);<br><br>&nbsp&nbspstd::string&nbspfs&nbsp=&nbspPath::fileSpec(&quot.&quot,&quottemp.txt&quot);<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspPath::fileSpec(\&quot.\&quot,\&quottemp.txt\&quot)&nbsp=&nbsp&quot&nbsp&lt&lt&nbspfs;<br><br>&nbsp&nbspstd::string&nbsppath&nbsp=&nbspPath::getPath(fs);<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspPath::getPath(\&quot&quot&nbsp+&nbspfs&nbsp+&nbsp&quot\&quot)&nbsp=&nbsp&quot&nbsp&lt&lt&nbsppath;<br>&nbsp&nbsp<br>&nbsp&nbspstd::string&nbspffs&nbsp=&nbspPath::getFullFileSpec(fs);<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspPath::getFullFileSpec(\&quot&quot&nbsp+&nbspfs&nbsp+&nbsp&quot\&quot)&nbsp=&nbsp&quot&nbsp&lt&lt&nbspffs;<br>&nbsp&nbsp<br>&nbsp&nbspstd::string&nbspname&nbsp=&nbspPath::getName(fs);<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspPath::getName(\&quot&quot&nbsp+&nbspfs&nbsp+&nbsp&quot\&quot)&nbsp=&nbsp&quot&nbsp&lt&lt&nbspname;<br><br>&nbsp&nbspstd::string&nbspext&nbsp=&nbspPath::getExt(fs);<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspPath::getExt(\&quot&quot&nbsp+&nbspfs&nbsp+&nbsp&quot\&quot)&nbsp=&nbsp&quot&nbsp&lt&lt&nbspext;<br><br>&nbsp&nbspstd::string&nbspupper&nbsp=&nbspPath::toUpper(&quottemp.txt&quot);<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspPath::toUpper(\&quottemp.txt\&quot)&nbsp=&nbsp&quot&nbsp&lt&lt&nbspupper;<br><br>&nbsp&nbspstd::string&nbsplower&nbsp=&nbspPath::toLower(&quotTemp.Txt&quot);<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspPath::toLower(\&quotTemp.Txt\&quot)&nbsp=&nbsp&quot&nbsp&lt&lt&nbsplower;<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbspstd::endl;<br><br>&nbsp&nbsptitle(&quotDemonstrate&nbspDirectory&nbspclass&quot);<br><br>&nbsp&nbsp//&nbspDisplay&nbspcontents&nbspof&nbspcurrent&nbspdirectory<br><br>&nbsp&nbspDirectory&nbspd;<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspcurrent&nbspdirectory&nbspis:\n&nbsp&nbsp&nbsp&nbsp&quot&nbsp&lt&lt&nbspd.getCurrentDirectory();<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspIt&nbspcontains&nbspfiles:&quot;<br>&nbsp&nbspstd::vector&ltstd::string&gt&nbspcurrfiles&nbsp=&nbspDirectory::getFiles();<br>&nbsp&nbsp///////////////////////////////////////////////////////<br>&nbsp&nbsp//&nbspThis&nbspworks&nbsptoo<br>&nbsp&nbsp//&nbspstd::vector&ltstd::string&gt&nbspcurrfiles&nbsp=&nbspd.getFiles();&nbsp&nbsp<br>&nbsp&nbspfor(size_t&nbspi=0;&nbspi&ltcurrfiles.size();&nbsp++i)<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&nbsp&nbsp&quot&nbsp&lt&lt&nbspcurrfiles[i].c_str();<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspand&nbspcontains&nbspdirectories:&quot;<br>&nbsp&nbspstd::vector&ltstd::string&gt&nbspcurrdirs&nbsp=&nbspDirectory::getDirectories();<br>&nbsp&nbspfor(size_t&nbspi=0;&nbspi&ltcurrdirs.size();&nbsp++i)<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&nbsp&nbsp&quot&nbsp&lt&lt&nbspcurrdirs[i].c_str();<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&quot;<br><br>&nbsp&nbsp//&nbspDisplay&nbspcontents&nbspof&nbspnon-current&nbspdirectory<br><br>&nbsp&nbspstd::string&nbspselectedPath&nbsp=&nbspstd::string(getenv(&quotHOME&quot));<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspfiles&nbspresiding&nbspin&nbsp&quot&nbsp+&nbspselectedPath;<br>&nbsp&nbspcurrfiles&nbsp=&nbspd.getFiles(selectedPath,&nbsp&quot*.*&quot);<br>&nbsp&nbspfor(size_t&nbspi=0;&nbspi&ltcurrfiles.size();&nbsp++i)<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&nbsp&nbsp&quot&nbsp&lt&lt&nbspcurrfiles[i].c_str();<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&quot;<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp*.txt&nbspfiles&nbspresiding&nbspin&nbsp&quot&nbsp+&nbspselectedPath;<br>&nbsp&nbspcurrfiles&nbsp=&nbspd.getFiles(selectedPath,&nbsp&quot*.txt&quot);<br>&nbsp&nbspfor(size_t&nbspi=0;&nbspi&ltcurrfiles.size();&nbsp++i)<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&nbsp&nbsp&quot&nbsp&lt&lt&nbspcurrfiles[i].c_str();<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&quot;<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&nbspFileSystem.*&nbspfiles&nbspresiding&nbspin&nbsp&quot&nbsp+&nbspselectedPath;<br>&nbsp&nbspcurrfiles&nbsp=&nbspd.getFiles(selectedPath,&nbsp&quotFileSystem.*&quot);<br>&nbsp&nbspfor(size_t&nbspi=0;&nbspi&ltcurrfiles.size();&nbsp++i)<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&nbsp&nbsp&quot&nbsp&lt&lt&nbspcurrfiles[i].c_str();<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&quot;<br>&nbsp&nbsp<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspdirectories&nbspresiding&nbspin&nbsp&quot&nbsp+&nbspselectedPath;<br>&nbsp&nbspcurrdirs&nbsp=&nbspd.getDirectories(selectedPath);<br>&nbsp&nbspfor(size_t&nbspi=0;&nbspi&ltcurrdirs.size();&nbsp++i)<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&nbsp&nbsp&quot&nbsp&lt&lt&nbspcurrdirs[i].c_str();<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&quot;<br>&nbsp&nbsp<br>&nbsp&nbsptitle(&quotDemonstrate&nbspFileInfo&nbspClass&nbspOperations&quot,&nbsp'=');<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&quot;<br><br>&nbsp&nbspDirectory&nbsptemp;<br>&nbsp&nbspif(temp.setCurrentDirectory(&quot.&quot))<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspcurrent&nbsppath&nbspis&nbsp\&quot&quot&nbsp&lt&lt&nbsptemp.getCurrentDirectory()&nbsp&lt&lt&nbsp&quot\n&quot;<br>&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspsetCurrentDirectory(\&quot.\&quot)&nbspfailed&quot&nbsp&lt&lt&nbsp&quot\n&quot;<br>&nbsp&nbsp<br>&nbsp&nbspstd::string&nbspfn1;<br>&nbsp&nbspif(argc&nbsp&gt&nbsp1)<br>&nbsp&nbsp&nbsp&nbspfn1&nbsp=&nbspargv[1];<br>&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbspfn1&nbsp=&nbspstd::string(getenv(&quotHOME&quot))&nbsp+&nbsp&quot/NetBeansProjects/FileSystemDemo/FileSystem.h&quot;<br>&nbsp&nbsp<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspTest&nbspfile&nbspspec&nbspis:&nbsp&quot&nbsp&lt&lt&nbspfn1;<br>&nbsp&nbsp<br>&nbsp&nbspFileInfo&nbspfi(fn1);<br><br>&nbsp&nbspif(fi.good())<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspname:&nbsp&quot&nbsp&lt&lt&nbsp&quot\t&quot&nbsp&lt&lt&nbspfi.name();<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspdate:&nbsp&quot&nbsp&lt&lt&nbsp&quot\t&quot&nbsp&lt&lt&nbspfi.date();<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspdate:&nbsp&quot&nbsp&lt&lt&nbsp&quot\t&quot&nbsp&lt&lt&nbspfi.date(FileInfo::dateformat);<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspdate:&nbsp&quot&nbsp&lt&lt&nbsp&quot\t&quot&nbsp&lt&lt&nbspfi.date(FileInfo::timeformat);<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspsize:&nbsp&quot&nbsp&lt&lt&nbsp&quot\t&quot&nbsp&lt&lt&nbspfi.size()&nbsp&lt&lt&nbsp&quot&nbspbytes&quot;<br>&nbsp&nbsp&nbsp&nbspif(fi.isArchive())<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbsparchive&quot;<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbspnot&nbsparchive&quot;<br>&nbsp&nbsp&nbsp&nbspif(fi.isCompressed())<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbspcompressed&quot;<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbspnot&nbspcompressed&quot;<br>&nbsp&nbsp&nbsp&nbspif(fi.isDirectory())<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbspdirectory&quot;<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbspnot&nbspdirectory&quot;<br>&nbsp&nbsp&nbsp&nbspif(fi.isEncrypted())<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbspencrypted&quot;<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbspnot&nbspencrypted&quot;<br>&nbsp&nbsp&nbsp&nbspif(fi.isHidden())<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbsphidden&quot;<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbspnot&nbsphidden&quot;<br>&nbsp&nbsp&nbsp&nbspif(fi.isNormal())<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbspnormal&quot;<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbspnot&nbspnormal&quot;<br>&nbsp&nbsp&nbsp&nbspif(fi.isOffLine())<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbspoffline&quot;<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbspnot&nbspoffline&quot;<br>&nbsp&nbsp&nbsp&nbspif(fi.isReadOnly())<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbspreadonly&quot;<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbspnot&nbspreadonly&quot;<br>&nbsp&nbsp&nbsp&nbspif(fi.isSystem())<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbspsystem&quot;<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbspnot&nbspsystem&quot;<br>&nbsp&nbsp&nbsp&nbspif(fi.isTemporary())<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbsptemporary&quot;<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspis&nbspnot&nbsptemporary&quot;<br>&nbsp&nbsp}<br>&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspfilename&nbsp&quot&nbsp&lt&lt&nbspfn1&nbsp&lt&lt&nbsp&quot&nbspis&nbspnot&nbspvalid&nbspin&nbspthis&nbspcontext\n&quot;<br><br>&nbsp&nbspstd::string&nbspfn2;<br>&nbsp&nbspif(argc&nbsp&gt&nbsp2)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspfn1&nbsp=&nbspargv[1];<br>&nbsp&nbsp&nbsp&nbspfn2&nbsp=&nbspargv[2];<br>&nbsp&nbsp}<br>&nbsp&nbspelse<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspfn1&nbsp=&nbspstd::string(getenv(&quotHOME&quot))&nbsp+&nbsp&quot/NetBeansProjects/FileSystemDemo/FileSystem.h&quot;<br>&nbsp&nbsp&nbsp&nbspfn2&nbsp=&nbspstd::string(getenv(&quotHOME&quot))&nbsp+&nbsp&quot/NetBeansProjects/FileSystemDemo/FileSystem.cpp&quot;<br>&nbsp&nbsp}<br>&nbsp&nbspFileInfo&nbspfi1(fn1);<br>&nbsp&nbspFileInfo&nbspfi2(fn2);<br>&nbsp&nbspif(fi1.good()&nbsp&amp&amp&nbspfi2.good())<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspif(fi1&nbsp==&nbspfi1)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&quot&nbsp&lt&lt&nbspfi1.name()&nbsp&lt&lt&nbsp&quot&nbsp==&nbsp&quot&nbsp&lt&lt&nbspfi1.name();<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&quot&nbsp&lt&lt&nbspfi1.name()&nbsp&lt&lt&nbsp&quot&nbsp!=&nbsp&quot&nbsp&lt&lt&nbspfi1.name();<br>&nbsp&nbsp&nbsp&nbspif(fi1&nbsp&lt&nbspfi1)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&quot&nbsp&lt&lt&nbspfi1.name()&nbsp&lt&lt&nbsp&quot&nbsp&lt&nbsp&quot&nbsp&lt&lt&nbspfi1.name();<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&quot&nbsp&lt&lt&nbspfi1.name()&nbsp&lt&lt&nbsp&quot&nbsp&gt=&nbsp&quot&nbsp&lt&lt&nbspfi1.name();<br>&nbsp&nbsp&nbsp&nbspif(fi1&nbsp==&nbspfi2)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&quot&nbsp&lt&lt&nbspfi1.name()&nbsp&lt&lt&nbsp&quot&nbsp==&nbsp&quot&nbsp&lt&lt&nbspfi2.name();<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&quot&nbsp&lt&lt&nbspfi1.name()&nbsp&lt&lt&nbsp&quot&nbsp!=&nbsp&quot&nbsp&lt&lt&nbspfi2.name();<br>&nbsp&nbsp&nbsp&nbspif(fi1&nbsp&lt&nbspfi2)<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&quot&nbsp&lt&lt&nbspfi1.name()&nbsp&lt&lt&nbsp&quot&nbsp&lt&nbsp&quot&nbsp&lt&lt&nbspfi2.name();<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&quot&nbsp&lt&lt&nbspfi1.name()&nbsp&lt&lt&nbsp&quot&nbsp&gt=&nbsp&quot&nbsp&lt&lt&nbspfi2.name();<br>&nbsp&nbsp&nbsp&nbspif(fi1.smaller(fi2))<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&quot&nbsp&lt&lt&nbspfi1.name()&nbsp&lt&lt&nbsp&quot&nbspis&nbspsmaller&nbspthan&nbsp&quot&nbsp&lt&lt&nbspfi2.name();<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&quot&nbsp&lt&lt&nbspfi1.name()&nbsp&lt&lt&nbsp&quot&nbspis&nbspnot&nbspsmaller&nbspthan&nbsp&quot&nbsp&lt&lt&nbspfi2.name();<br>&nbsp&nbsp&nbsp&nbspif(fi1.earlier(fi2))<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&quot&nbsp&lt&lt&nbspfi1.name()&nbsp&lt&lt&nbsp&quot&nbspis&nbspearlier&nbspthan&nbsp&quot&nbsp&lt&lt&nbspfi2.name();<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&quot&nbsp&lt&lt&nbspfi1.name()&nbsp&lt&lt&nbsp&quot&nbspis&nbspnot&nbspearlier&nbspthan&nbsp&quot&nbsp&lt&lt&nbspfi2.name();<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbspstd::endl;<br>&nbsp&nbsp}<br>&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspfiles&nbsp&quot&nbsp&lt&lt&nbspfn1&nbsp&lt&lt&nbsp&quot&nbspand&nbsp&quot&nbsp&lt&lt&nbspfn2&nbsp&lt&lt&nbsp&quot&nbspare&nbspnot&nbspvalid&nbspin&nbspthis&nbspcontext\n&quot;<br>&nbsp&nbsp<br>&nbsp&nbsptitle(&quotDemonstrate&nbspFile&nbspclass&nbspoperations&quot,&nbsp'=');<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&quot;<br><br>&nbsp&nbsp//&nbspcopy&nbspbinary&nbspfile&nbspfrom&nbspone&nbspdirectory&nbspto&nbspanother<br><br>&nbsp&nbspstd::string&nbspsrcFile&nbsp=&nbspPath::getFullFileSpec(&quotFileSystem.o&quot);<br>&nbsp//&nbspstd::string&nbspsrc&nbsp=&nbspDirectory::getCurrentDirectory()&nbsp+&nbspsrcFile;<br>//&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspsrc&nbsp=&nbsp\&quot&quot&nbsp&lt&lt&nbspsrc&nbsp&lt&lt&nbsp&quot\&quot&quot;<br>&nbsp&nbspstd::string&nbspdstFile&nbsp=&nbsp&quot/copy.o&quot;<br>&nbsp&nbspstd::string&nbspdst&nbsp=&nbspstd::string(getenv(&quotHOME&quot))&nbsp+&nbsp&quot/Documents&quot&nbsp+&nbspdstFile;<br>&nbsp&nbsp<br>&nbsp&nbspFile&nbspme(srcFile);<br>&nbsp&nbspbool&nbspres&nbsp=&nbspme.open(File::in,&nbspFile::binary);<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspcopying:\n&nbsp&nbsp&nbsp&nbsp&quot&nbsp&lt&lt&nbspme.name().c_str()&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspto:\n&nbsp&nbsp&nbsp&nbsp&quot&nbsp&lt&lt&nbspdst;<br>&nbsp&nbspif(!me.isGood())<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspcan't&nbspopen&nbspfile\n&quot;<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsplooking&nbspfor:\n&nbsp&nbsp&quot;<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbspPath::getFullFileSpec(me.name())&nbsp&lt&lt&nbsp&quot\n&quot;<br>&nbsp&nbsp}<br>&nbsp&nbspelse<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspFile&nbspyou(dst);<br>&nbsp&nbsp&nbsp&nbspyou.open(File::out,&nbspFile::binary);<br>&nbsp&nbsp&nbsp&nbspif(you.isGood())<br>&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspwhile(me.isGood())<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspBlock&nbspb&nbsp=&nbspme.getBlock(1024);<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&nbsp&nbspreading&nbspblock&nbspof&nbsp&quot&nbsp&lt&lt&nbspb.size()&nbsp&lt&lt&nbsp&quot&nbspbytes&quot;<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspyou.putBlock(b);<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&nbsp&nbspwriting&nbspblock&nbspof&nbsp&quot&nbsp&lt&lt&nbspb.size()&nbsp&lt&lt&nbsp&quot&nbspbytes&quot;&nbsp<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&quot;<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbspelse<br>&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspfailed&nbspto&nbspopen&nbspdestination&nbspfile\n&quot;<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp}<br><br>&nbsp&nbsp//&nbspsave&nbspsome&nbspfilespecs&nbspof&nbsptext&nbspfiles&nbspin&nbspa&nbspvector&nbspfor&nbspFile&nbspdemonstrations<br><br>&nbsp&nbspstd::vector&ltstd::string&gt&nbspfiles;<br>&nbsp&nbspif(argc&nbsp==&nbsp1)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n\n&nbsp&nbspPlease&nbspenter,&nbspon&nbspthe&nbspcommand&nbspline,&nbspa&nbspfilename&nbspto&nbspprocess.\n&quot;<br>&nbsp&nbsp}<br><br>&nbsp&nbspfor(int&nbspi=1;&nbspi&ltargc;&nbsp++i)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspfiles.push_back(argv[i]);<br>&nbsp&nbsp}<br>&nbsp&nbspfiles.push_back(&quotFileSystem.cpp&quot);<br>&nbsp&nbspfiles.push_back(&quotFileSystem.h&quot);&nbsp//&nbspfile&nbspfrom&nbspproject&nbspdirectory<br>&nbsp&nbspfiles.push_back(&quottest.txt&quot);&nbsp&nbsp&nbsp&nbsp&nbsp//&nbspfile&nbspin&nbspexecutable's&nbspdebug&nbspdirectory<br>&nbsp&nbspfiles.push_back(&quotfoobar&quot);&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp//&nbspdoesn't&nbspexist<br><br>&nbsp&nbsp//&nbspopen&nbspeach&nbspfile&nbspand&nbspdisplay&nbspa&nbspfew&nbsplines&nbspof&nbsptext<br><br>&nbsp&nbspfor(size_t&nbspi=0;&nbspi&ltfiles.size();&nbsp++i)<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspFile&nbspfile(files[i]);<br>&nbsp&nbsp&nbsp&nbspfile.open(File::in);<br>&nbsp&nbsp&nbsp&nbspif(!file.isGood())<br>&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspCan't&nbspopen&nbspfile&nbsp&quot&nbsp&lt&lt&nbspfile.name();<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbspHere's&nbspwhat&nbspthe&nbspprogram&nbspcan't&nbspfind:\n&nbsp&nbsp&quot&nbsp&lt&lt&nbspPath::getFullFileSpec(file.name());&nbsp<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspcontinue;<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbspstd::string&nbsptemp&nbsp=&nbspstd::string(&quotProcessing&nbspfile&nbsp&quot)&nbsp+&nbspfiles[i];<br>&nbsp&nbsp&nbsp&nbsptitle(temp,&nbsp'-');<br>&nbsp&nbsp&nbsp&nbspfor(int&nbspj=0;&nbspj&lt10;&nbsp++j)<br>&nbsp&nbsp&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspif(!file.isGood())<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspbreak;<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&quot&nbsp&lt&lt&nbspfile.getLine().c_str();<br>&nbsp&nbsp&nbsp&nbsp}<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&quot;<br>&nbsp&nbsp}<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&quot;<br><br>&nbsp&nbsp//&nbspread&nbsptext&nbspfile&nbspand&nbspwrite&nbspto&nbspanother&nbsptext&nbspfile<br><br>&nbsp&nbsptitle(&quotwriting&nbspto&nbspanothertest.txt&quot,&nbsp'-');<br>&nbsp&nbspFile&nbspin(&quot./test.txt&quot);<br>&nbsp&nbspin.open(File::in);<br>&nbsp&nbspFile&nbspout(&quot./anothertest.txt&quot);<br>&nbsp&nbspout.open(File::out);<br>&nbsp&nbspwhile(in.isGood()&nbsp&amp&amp&nbspout.isGood())<br>&nbsp&nbsp{<br>&nbsp&nbsp&nbsp&nbspstd::string&nbsptemp&nbsp=&nbspin.getLine();<br>&nbsp&nbsp&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n&nbsp&nbsp&quot&nbsp&lt&lt&nbsptemp.c_str();<br>&nbsp&nbsp&nbsp&nbspout.putLine(temp);<br>&nbsp&nbsp&nbsp&nbspout.putLine(&quot\n&quot);<br>&nbsp&nbsp}<br>&nbsp&nbsp<br>&nbsp&nbspstd::cout&nbsp&lt&lt&nbsp&quot\n\n&quot;<br>}<br>#endif<br></div>
+    <div>
+        <pre>
+            <code class="cpp">/////////////////////////////////////////////////////////////////////////////
+// FileSystem.cpp - Support file and directory operations                  //
+// Linux ver 1.1                                                           //
+// Language:    gcc/g++ v4.6.1                                             //
+// Platform:    Dell XPS 8300, Core i7, kubuntu v11.10                     //
+// Application: Summer Projects, 2012                                      //
+// Author:      Jim Fawcett, CST 4-187, Syracuse University                //
+//              (315) 443-3948, jfawcett@twcny.rr.com                      //
+/////////////////////////////////////////////////////////////////////////////
+
+
+#include &quotFileSystem.h&quot
+
+using namespace FileSystem;
+
+//----&lt block constructor taking array iterators &gt-------------------------
+
+Block::Block(Byte* beg, Byte* end) : bytes_(beg, end) {}
+
+//----&lt push back block byte &gt---------------------------------------------
+
+void Block::push_back(Byte b)
+{
+  bytes_.push_back(b);
+}
+//----&lt non-const indexer &gt------------------------------------------------
+
+Byte&amp Block::operator[](size_t i)
+{
+  if(i&lt0 || bytes_.size() &lt= i)
+    throw std::runtime_error(&quotindex out of range in Block&quot);
+  return bytes_[i];
+}
+//----&lt const indexer &gt----------------------------------------------------
+
+Byte Block::operator[](size_t i) const
+{
+  if(i&lt0 || bytes_.size() &lt= i)
+    throw std::runtime_error(&quotindex out of range in Block&quot);
+  return bytes_[i];
+}
+//----&lt equality comparison &gt----------------------------------------------
+
+bool Block::operator==(const Block&amp block) const
+{
+  return bytes_ == block.bytes_;
+}
+//----&lt inequality comparison &gt--------------------------------------------
+
+bool Block::operator!=(const Block&amp block) const
+{
+  return bytes_ != block.bytes_;
+}
+//----&lt return number of bytes in block &gt----------------------------------
+
+size_t Block::size() const
+{
+  return bytes_.size();
+}
+
+//----&lt File constructor opens file stream &gt-------------------------------
+
+File::File(const std::string&amp filespec) 
+    : name_(filespec), pIStream(0), pOStream(0), dirn_(in), typ_(text), good_(true)
+{
+}
+//----&lt File destructor closes file stream &gt-------------------------------
+
+File::~File() 
+{ 
+  if(pIStream)
+  {
+    pIStream-&gtclose(); 
+    delete pIStream;
+  }
+  if(pOStream)
+  {
+    pOStream-&gtclose();
+    delete pOStream; 
+  }
+}
+//----&lt open for reading or writing &gt--------------------------------------
+
+bool File::open(direction dirn, type typ)
+{
+  dirn_ = dirn;
+  typ_ = typ;
+  if(dirn == in)
+  {
+    pIStream = new std::ifstream;
+    if(typ == binary)
+      pIStream-&gtopen(name_.c_str(), std::ios::in | std::ios::binary);
+    else
+      pIStream-&gtopen(name_.c_str(), std::ios::in);
+    if(!(*pIStream))
+      good_ = false;
+      //throw std::runtime_error(&quot\n  open for input failed in File constructor&quot);
+  }
+  else
+  {
+    pOStream = new std::ofstream;
+    if(typ == binary)
+      pOStream-&gtopen(name_.c_str(), std::ios::out | std::ios::binary);
+    else
+      pOStream-&gtopen(name_.c_str(), std::ios::out);
+    if(!(*pOStream))
+      good_ = false;
+      //throw std::runtime_error(&quot\n  open for output failed in File constructor&quot);
+  }
+  return good_;
+}
+//----&lt reads one line of a text file &gt------------------------------------
+
+std::string File::getLine()
+{
+  if(pIStream == 0 || !pIStream-&gtgood())
+    throw std::runtime_error(&quotinput stream not open&quot);
+  if(typ_ == binary)
+    throw std::runtime_error(&quotgetting text line from binary file&quot);
+  if(dirn_ == out)
+    throw std::runtime_error(&quotreading output file&quot);
+  const int BufSize = 255;
+  char buffer[BufSize];
+  pIStream-&gtgetline(buffer,BufSize);
+  return std::string(buffer);
+}
+//----&lt writes one line of a text to a file &gt------------------------------
+
+void File::putLine(const std::string&amp s, bool wantReturn)
+{
+  if(pOStream == 0 || !pOStream-&gtgood())
+    throw std::runtime_error(&quotoutput stream not open&quot);
+  if(typ_ == binary)
+    throw std::runtime_error(&quotwriting text line to binary file&quot);
+  if(dirn_ == in)
+    throw std::runtime_error(&quotwriting input file&quot);
+  for(size_t i=0; i&lts.size(); ++i)
+    pOStream-&gtput(s[i]);
+  if(wantReturn)
+    pOStream-&gtput('\n');
+  pOStream-&gtflush();
+}
+//----&lt reads a block of bytes from binary file &gt--------------------------
+
+Block File::getBlock(size_t size)
+{
+  if(pIStream == 0 || !pIStream-&gtgood())
+    throw std::runtime_error(&quotinput stream not open&quot);
+  if(typ_ != binary)
+    throw std::runtime_error(&quotreading binary from text file&quot);
+  if(dirn_ == out)
+    throw std::runtime_error(&quotreading output file&quot);
+  Block blk;
+  if(pIStream)
+  {
+    for(size_t i=0; i&ltsize; ++i)
+    {
+      Byte b;
+      pIStream-&gtget(b);
+      if(pIStream-&gtgood())
+        blk.push_back(b);
+      else
+        break;
+    }
+  }
+  return blk;
+}
+//----&lt writes a block of bytes to binary file &gt---------------------------
+
+void File::putBlock(const Block&amp blk)
+{
+  if(pOStream == 0 || !pOStream-&gtgood())
+    throw std::runtime_error(&quotoutput stream not open&quot);
+  if(typ_ != binary)
+    throw std::runtime_error(&quotwriting binary to text file&quot);
+  if(dirn_ == in)
+    throw std::runtime_error(&quotwriting input file&quot);
+  if(!pOStream-&gtgood())
+    return;
+  for(size_t i=0; i&ltblk.size(); ++i)
+  {
+    pOStream-&gtput(blk[i]);
+  }
+}
+//----&lt tests for error free stream state &gt--------------------------------
+
+bool File::isGood()
+{
+  if(!good_)
+    return false;
+  if(pIStream)
+    return (good_ = pIStream-&gtgood());
+  if(pOStream)
+    return (good_ = pOStream-&gtgood());
+  return (good_ = false);
+}
+//----&lt flushes output stream to its file &gt--------------------------------
+
+void File::flush()
+{
+  if(pOStream)
+    pOStream-&gtflush();
+  if(pOStream)
+    return;
+}
+//----&lt clears error state enabling operations again &gt---------------------
+
+void File::clear()
+{
+  if(pIStream)
+    pIStream-&gtclear();
+  if(pOStream)
+    pOStream-&gtclear();
+}
+//----&lt close file handle &gt------------------------------------------------
+
+void File::close()
+{
+  File::flush();
+  if(pIStream)
+    pIStream-&gtclose();
+  if(pOStream)
+    pOStream-&gtclose();
+}
+//----&lt file exists &gt--------------------------------------------------
+
+bool File::exists(const std::string&amp file)
+{
+  bool retval;
+  std::ifstream test(file.c_str(), std::ios::in);
+  retval = test.good();
+  test.close();
+  return retval;
+}
+#ifdef OS_Linux
+//----&lt copy file &gt----------------------------------------------------
+
+bool File::copy(const std::string&amp src, const std::string&amp dst, bool failIfExists)
+{
+  if(failIfExists &amp&amp exists(dst))
+    return false;
+  int read_fd, write_fd;
+  struct stat stat_buf;
+  off_t offset = 0;
+
+  /* Open the input file. */
+  read_fd = ::open (src.c_str(), O_RDONLY);
+  if(read_fd == -1)
+    return false;
+  /* Stat the input file to obtain its size. */
+  fstat (read_fd, &ampstat_buf);
+  /* Open the output file for writing, with the same permissions as the
+    source file. */
+  write_fd = ::open (dst.c_str(), O_WRONLY | O_CREAT, stat_buf.st_mode);
+  if(write_fd == -1)
+    return false;
+  /* Blast the bytes from one file to the other. */
+  sendfile (write_fd, read_fd, &ampoffset, stat_buf.st_size);
+  /* Close up. */
+  ::close (read_fd);
+  ::close (write_fd);
+  return true;
+}
+#endif // OS_Linux
+//----&lt remove file &gt--------------------------------------------------
+
+bool File::remove(const std::string&amp file)
+{
+  return std::remove(file.c_str()) != -1;
+}
+//----&lt constructor &gt--------------------------------------------------
+
+FileInfo::FileInfo(const std::string&amp fileSpec)
+{
+  fileSpec_ = fileSpec;
+  int status = stat(fileSpec.c_str(), &ampstatbuf_);
+  if(status != 0)
+  {
+    error_ = true;
+    std::cout &lt&lt strerror(errno);
+  }
+  else
+    error_ = false;
+}
+//----&lt is passed filespec valid? &gt------------------------------------
+
+bool FileInfo::good()
+{
+  return !error_;
+}
+//----&lt return file name &gt---------------------------------------------
+
+std::string FileInfo::name() const
+{
+  return Path::getName(fileSpec_);
+}
+//----&lt conversion helper &gt--------------------------------------------
+
+std::string FileInfo::intToString(long i)
+{
+  std::ostringstream out;
+  out.fill('0');
+  out &lt&lt std::setw(2) &lt&lt i;
+  return out.str();
+}
+#ifdef OS_Linux
+//----&lt return file date &gt---------------------------------------------
+
+std::string FileInfo::date(dateFormat df) const
+{
+  struct timespec filetime = statbuf_.st_mtim;
+  tm* pTm = localtime(&ampfiletime.tv_sec);
+  std::string dateStr, timeStr;
+  dateStr = intToString(1+pTm-&gttm_mon)
+          + '/' + intToString(pTm-&gttm_mday) 
+          + '/' + intToString(1900+pTm-&gttm_year);
+  timeStr = intToString(pTm-&gttm_hour)
+          + ':' + intToString(pTm-&gttm_min)
+          + ':' + intToString(pTm-&gttm_sec);
+  if(df == dateformat)
+    return dateStr;
+  if(df == timeformat)
+    return timeStr;
+  return dateStr + &quot &quot + timeStr;
+}
+#endif
+//----&lt return file size &gt---------------------------------------------
+
+size_t FileInfo::size() const
+{
+  return (size_t)(statbuf_.st_size);
+}
+//----&lt is type archive? &gt---------------------------------------------
+
+bool FileInfo::isArchive() const
+{
+  return false;
+}
+//----&lt is type compressed? &gt------------------------------------------
+
+bool FileInfo::isCompressed() const
+{
+  return false;
+}
+//----&lt is type directory? &gt-------------------------------------------
+
+bool FileInfo::isDirectory() const
+{
+  return S_ISDIR(statbuf_.st_mode);
+}
+//----&lt is type encrypted? &gt---------------------------------------------
+
+bool FileInfo::isEncrypted() const
+{
+  return false;
+}
+//----&lt is type hiddent? &gt---------------------------------------------
+
+bool FileInfo::isHidden() const
+{
+  return Path::getName(fileSpec_)[0] == '.';
+}
+//----&lt is type normal? &gt---------------------------------------------
+
+bool FileInfo::isNormal() const
+{
+  return S_ISREG(statbuf_.st_mode);
+}
+//----&lt is type offline? &gt---------------------------------------------
+
+bool FileInfo::isOffLine() const
+{
+  return false;
+}
+//----&lt is type readonly? &gt--------------------------------------------
+
+bool FileInfo::isReadOnly() const
+{
+  File temp(&quot./temp&quot);
+  return !temp.isGood();
+}
+//----&lt is type system? &gt----------------------------------------------
+
+bool FileInfo::isSystem() const
+{
+  return false;
+}
+//----&lt is type temporary? &gt-------------------------------------------
+
+bool FileInfo::isTemporary() const
+{
+  return false;
+}
+//----&lt compare names alphabetically &gt---------------------------------
+
+bool FileInfo::operator&lt(const FileInfo&amp fi) const
+{
+  return Path::getName(fileSpec_) &lt Path::getName(fi.fileSpec_);
+}
+//----&lt compare names alphabetically &gt---------------------------------
+
+bool FileInfo::operator&gt(const FileInfo&amp fi) const
+{
+  return Path::getName(fileSpec_) &gt Path::getName(fi.fileSpec_);
+}
+//----&lt compare names alphabetically &gt---------------------------------
+
+bool FileInfo::operator==(const FileInfo&amp fi) const
+{
+  return Path::getName(fileSpec_) == Path::getName(fi.fileSpec_);
+}
+//----&lt compare file times &gt-------------------------------------------
+
+bool FileInfo::earlier(const FileInfo&amp fi) const
+{
+  return statbuf_.st_mtime &lt fi.statbuf_.st_mtime;
+}
+//----&lt compare file times &gt-------------------------------------------
+
+bool FileInfo::later(const FileInfo&amp fi) const
+{
+  return statbuf_.st_mtime &gt fi.statbuf_.st_mtime;
+}
+//----&lt smaller &gt------------------------------------------------------
+
+bool FileInfo::smaller(const FileInfo &ampfi) const
+{
+  return size() &lt fi.size();
+}
+//----&lt larger &gt-------------------------------------------------------
+
+bool FileInfo::larger(const FileInfo &ampfi) const
+{
+  return size() &gt fi.size();
+}
+//----&lt convert string to lower case chars &gt---------------------------
+
+std::string Path::toLower(const std::string&amp src)
+{
+  std::string temp;
+  for(size_t i=0; i&ltsrc.length(); ++i)
+    temp += tolower(src[i]);
+  return temp;
+}
+//----&lt convert string to upper case chars &gt---------------------------
+
+  
+std::string Path::toUpper(const std::string&amp src)
+{
+  std::string temp;
+  for(size_t i=0; i&ltsrc.length(); ++i)
+    temp += toupper(src[i]);
+  return temp;
+}
+//----&lt get path from fileSpec &gt---------------------------------------
+
+std::string Path::getName(const std::string &ampfileSpec, bool withExt)
+{
+  size_t pos = fileSpec.find_last_of(&quot/&quot);
+  if(pos &gt= fileSpec.length())
+    pos = fileSpec.find_last_of(&quot\\&quot);
+  if(pos &gt= fileSpec.length())
+  {
+    // no path prepended
+    if(withExt)
+      return fileSpec;
+    else
+    {
+      // remove ext
+      size_t pos = fileSpec.find(&quot.&quot);
+      if(pos &gt fileSpec.size())
+        return fileSpec;
+      return fileSpec.substr(0, pos-1);
+    }
+  }
+  size_t end = fileSpec.length() - pos;
+  std::string name = fileSpec.substr(pos+1,fileSpec.length()-pos);
+  if(withExt)
+    return name;
+  pos = name.find(&quot.&quot);
+  return name.substr(0,pos);
+}
+//----&lt get extension from fileSpec &gt----------------------------------
+  
+std::string Path::getExt(const std::string&amp fileSpec)
+{
+  size_t pos1 = fileSpec.find_last_of('/');
+  size_t pos2 = fileSpec.find_last_of('\\');
+  size_t pos = fileSpec.find_last_of('.');
+  // handle ../ or ..\\ with no extension
+  if(pos1 &lt fileSpec.length() || pos2 &lt fileSpec.length())
+  {
+    if(pos &lt std::min(pos1, pos2))
+      return std::string(&quot&quot);
+  }
+  // only . is extension delimiter
+  if(0 &lt= pos &amp&amp pos &lt fileSpec.length())
+    return toLower(fileSpec.substr(pos+1,fileSpec.length()-pos));
+  return std::string(&quot&quot);
+}
+//----&lt get path from fileSpec &gt---------------------------------------
+
+std::string Path::getPath(const std::string &ampfileSpec)
+{
+  size_t pos = fileSpec.find_last_of(&quot/&quot);
+  if(pos &gt= fileSpec.length())
+    pos = fileSpec.find_last_of(&quot\\&quot);
+  if(pos &gt= fileSpec.length())
+    return &quot.&quot;
+  if(fileSpec.find(&quot.&quot,pos+1))
+    return toLower(fileSpec.substr(0,pos+1));
+  return fileSpec;
+}
+//----&lt get absoluth path from fileSpec &gt------------------------------
+
+std::string Path::getFullFileSpec(const std::string &ampfileSpec)
+{
+  char buffer[PATH_MAX];
+
+  char *res = realpath(fileSpec.c_str(), buffer);
+  //realpath(getPath(fileSpec.c_str()).c_str(), buffer);
+  //std::string name = Path::getName(fileSpec);
+  //std::string path = Path::fileSpec(fullPath, name);
+   if (!res) {
+       return &quot&quot;
+   }
+     const std::string fullPath(res);
+  if(fullPath[fullPath.size()-1] == '.')
+    return fullPath.substr(0, fullPath.size()-2);
+  return fullPath;
+}
+//----&lt create file spec from path and name &gt--------------------------
+
+std::string Path::fileSpec(const std::string &amppath, const std::string &ampname)
+{
+  std::string fs;
+  size_t len = path.size();
+  if(path[len-1] == '/' || path[len-1] == '\\')
+    fs = path + name;
+  else
+  {
+    if(path.find(&quot/&quot) &lt path.size())
+      fs = path + &quot/&quot + name;
+    else if(path.find(&quot\\&quot) &lt path.size())
+      fs = path + &quot\\&quot + name;
+    else
+      fs = path + &quot/&quot + name;
+  }
+  return fs;
+}
+//----&lt create a directory &gt-----------------------------------------------
+
+bool Directory::create(const std::string&amp path)
+{
+  mode_t mode = 0777;
+  struct stat statbuf;
+  int    status = 0;
+
+  if (stat(path.c_str(), &ampstatbuf) != 0)
+  {
+      /* Directory does not exist */
+      if (mkdir(path.c_str(), mode) != 0)
+          status = -1;
+      else
+        status = chmod(path.c_str(), mode);
+  }
+  else if (!S_ISDIR(statbuf.st_mode))
+  {
+      errno = ENOTDIR;
+      status = -1;
+  }
+  return(status != -1);
+}
+//----&lt create a directory &gt-----------------------------------------------
+
+bool Directory::remove(const std::string&amp path)
+{
+  mode_t mode = S_IRUSR;
+  struct stat statbuf;
+  int    status = 0;
+
+  if (stat(path.c_str(), &ampstatbuf) == 0)
+  {
+      /* Directory exists */
+      if (rmdir(path.c_str()) != 0)
+          status = -1;
+  }
+  else if (!S_ISDIR(statbuf.st_mode))
+  {
+      errno = ENOTDIR;
+      status = -1;
+  }
+  return(status != -1);  
+}
+//----&lt create a directory &gt-----------------------------------------------
+
+bool Directory::exists(const std::string&amp path)
+{
+  struct stat statbuf;
+  return stat(path.c_str(), &ampstatbuf) == 0;
+}
+//----&lt return name of the current directory &gt-----------------------------
+
+std::string Directory::getCurrentDirectory()
+{
+  char buffer[PATH_MAX];
+  std::string path = getcwd(buffer,PATH_MAX);
+  if(path[path.size()-1] == '.')
+    return path.substr(0,path.size()-2);
+  return path;
+}
+//----&lt change the current directory to path &gt-----------------------------
+
+bool Directory::setCurrentDirectory(const std::string&amp path)
+{
+  return chdir(path.c_str()) == 0;
+  //std::string fullPath = Path::getFullFileSpec(path);
+  //int status = chdir(fullPath.c_str());
+}
+//----&lt check match - incomplete &gt-----------------------------------------
+/*
+ * Can correctly resolve only the wild cards:
+ *   &quot*.*&quot, &quot*.someExt&quot, and &quotsomeName.*&quot
+ * Will complete when g++ finishes C++11 regex package.
+ */
+bool match(const std::string&amp input, const std::string&amp pattern)
+{
+  // exact match or &quot*.*&quot
+  if(input == pattern || pattern == &quot*.*&quot)
+    return true;
+  // attempting to match entire extension pattern like *.cpp
+  size_t pos = pattern.find(&quot*.&quot);
+  if(pos &lt pattern.size())
+  {
+    std::string ext_in = Path::getExt(input);
+    std::string ext_pt = Path::getExt(pattern);
+    if(ext_in == ext_pt)
+      return true;
+  }
+  // attempting to match entire name pattern like foo.*
+  pos = pattern.find(&quot.*&quot);
+  if(pos &lt pattern.size())
+  {
+    // return name without extension
+    std::string name_in = Path::getName(input, false);
+    std::string name_pt = Path::getName(pattern, false);
+    if(name_in == name_pt)
+      return true;
+  }  
+  return false;
+}
+//----&lt get names of all the files matching pattern (path:name) &gt----------
+
+std::vector&ltstd::string&gt 
+Directory::getFiles(const std::string&amp path, const std::string&amp pattern)
+{
+  std::vector&ltstd::string&gt files;
+  DIR* dir = opendir(path.c_str());
+  if(dir == 0)
+    return files;
+  dirent* dp;
+  while(true)
+  {
+    dp = readdir(dir);
+    if(dp == 0)
+      return files;
+    if(dp-&gtd_type == 8)
+    {
+      std::string name = Path::getName(dp-&gtd_name);
+      if(match(name,pattern))
+        files.push_back(dp-&gtd_name);
+    }
+  }
+  return files;
+}
+//----&lt get names of all directories matching pattern (path:name) &gt--------
+
+std::vector&ltstd::string&gt 
+Directory::getDirectories(const std::string&amp path, const std::string&amp pattern)
+{
+  std::vector&ltstd::string&gt dirs;
+  std::vector&ltstd::string&gt files;
+  DIR* dir = opendir(path.c_str());
+  if(dir == 0)
+    return files;
+  dirent* dp;
+  while(true)
+  {
+    dp = readdir(dir);
+    if(dp == 0)
+      return files;
+    if(dp-&gtd_type == 4)
+    {
+      if(dp-&gtd_name[0] == '.' &amp&amp dp-&gtd_name[1] == 0)
+        continue;  // &quot.&quot
+      if(dp-&gtd_name[0] == '.' &amp&amp dp-&gtd_name[1] == '.' &amp&amp dp-&gtd_name[2] == 0 )
+        continue;  // &quot..&quot
+      files.push_back(dp-&gtd_name);
+    }
+  }
+  return dirs;
+}
+//----&lt test stub &gt--------------------------------------------------------
+
+#ifdef TEST_FILESYSTEM
+
+void title(const std::string&amp title, char ch='=')
+{
+  std::cout &lt&lt &quot\n  &quot &lt&lt title;
+  std::cout &lt&lt &quot\n &quot &lt&lt std::string(title.size()+2, ch);
+}
+int main(int argc, char* argv[])
+{
+  title(&quotDemonstrate Path Class&quot);
+
+  std::string fs = Path::fileSpec(&quot.&quot,&quottemp.txt&quot);
+  std::cout &lt&lt &quot\n  Path::fileSpec(\&quot.\&quot,\&quottemp.txt\&quot) = &quot &lt&lt fs;
+
+  std::string path = Path::getPath(fs);
+  std::cout &lt&lt &quot\n  Path::getPath(\&quot&quot + fs + &quot\&quot) = &quot &lt&lt path;
+  
+  std::string ffs = Path::getFullFileSpec(fs);
+  std::cout &lt&lt &quot\n  Path::getFullFileSpec(\&quot&quot + fs + &quot\&quot) = &quot &lt&lt ffs;
+  
+  std::string name = Path::getName(fs);
+  std::cout &lt&lt &quot\n  Path::getName(\&quot&quot + fs + &quot\&quot) = &quot &lt&lt name;
+
+  std::string ext = Path::getExt(fs);
+  std::cout &lt&lt &quot\n  Path::getExt(\&quot&quot + fs + &quot\&quot) = &quot &lt&lt ext;
+
+  std::string upper = Path::toUpper(&quottemp.txt&quot);
+  std::cout &lt&lt &quot\n  Path::toUpper(\&quottemp.txt\&quot) = &quot &lt&lt upper;
+
+  std::string lower = Path::toLower(&quotTemp.Txt&quot);
+  std::cout &lt&lt &quot\n  Path::toLower(\&quotTemp.Txt\&quot) = &quot &lt&lt lower;
+  std::cout &lt&lt std::endl;
+
+  title(&quotDemonstrate Directory class&quot);
+
+  // Display contents of current directory
+
+  Directory d;
+  std::cout &lt&lt &quot\n  current directory is:\n    &quot &lt&lt d.getCurrentDirectory();
+  std::cout &lt&lt &quot\n  It contains files:&quot;
+  std::vector&ltstd::string&gt currfiles = Directory::getFiles();
+  ///////////////////////////////////////////////////////
+  // This works too
+  // std::vector&ltstd::string&gt currfiles = d.getFiles();  
+  for(size_t i=0; i&ltcurrfiles.size(); ++i)
+    std::cout &lt&lt &quot\n    &quot &lt&lt currfiles[i].c_str();
+  std::cout &lt&lt &quot\n  and contains directories:&quot;
+  std::vector&ltstd::string&gt currdirs = Directory::getDirectories();
+  for(size_t i=0; i&ltcurrdirs.size(); ++i)
+    std::cout &lt&lt &quot\n    &quot &lt&lt currdirs[i].c_str();
+  std::cout &lt&lt &quot\n&quot;
+
+  // Display contents of non-current directory
+
+  std::string selectedPath = std::string(getenv(&quotHOME&quot));
+  std::cout &lt&lt &quot\n  files residing in &quot + selectedPath;
+  currfiles = d.getFiles(selectedPath, &quot*.*&quot);
+  for(size_t i=0; i&ltcurrfiles.size(); ++i)
+    std::cout &lt&lt &quot\n    &quot &lt&lt currfiles[i].c_str();
+  std::cout &lt&lt &quot\n&quot;
+  std::cout &lt&lt &quot\n  *.txt files residing in &quot + selectedPath;
+  currfiles = d.getFiles(selectedPath, &quot*.txt&quot);
+  for(size_t i=0; i&ltcurrfiles.size(); ++i)
+    std::cout &lt&lt &quot\n    &quot &lt&lt currfiles[i].c_str();
+  std::cout &lt&lt &quot\n&quot;
+  std::cout &lt&lt &quot\n   FileSystem.* files residing in &quot + selectedPath;
+  currfiles = d.getFiles(selectedPath, &quotFileSystem.*&quot);
+  for(size_t i=0; i&ltcurrfiles.size(); ++i)
+    std::cout &lt&lt &quot\n    &quot &lt&lt currfiles[i].c_str();
+  std::cout &lt&lt &quot\n&quot;
+  
+  std::cout &lt&lt &quot\n  directories residing in &quot + selectedPath;
+  currdirs = d.getDirectories(selectedPath);
+  for(size_t i=0; i&ltcurrdirs.size(); ++i)
+    std::cout &lt&lt &quot\n    &quot &lt&lt currdirs[i].c_str();
+  std::cout &lt&lt &quot\n&quot;
+  
+  title(&quotDemonstrate FileInfo Class Operations&quot, '=');
+  std::cout &lt&lt &quot\n&quot;
+
+  Directory temp;
+  if(temp.setCurrentDirectory(&quot.&quot))
+    std::cout &lt&lt &quot\n  current path is \&quot&quot &lt&lt temp.getCurrentDirectory() &lt&lt &quot\n&quot;
+  else
+      std::cout &lt&lt &quot\n  setCurrentDirectory(\&quot.\&quot) failed&quot &lt&lt &quot\n&quot;
+  
+  std::string fn1;
+  if(argc &gt 1)
+    fn1 = argv[1];
+  else
+    fn1 = std::string(getenv(&quotHOME&quot)) + &quot/NetBeansProjects/FileSystemDemo/FileSystem.h&quot;
+  
+  std::cout &lt&lt &quot\n  Test file spec is: &quot &lt&lt fn1;
+  
+  FileInfo fi(fn1);
+
+  if(fi.good())
+  {
+    std::cout &lt&lt &quot\n  name: &quot &lt&lt &quot\t&quot &lt&lt fi.name();
+    std::cout &lt&lt &quot\n  date: &quot &lt&lt &quot\t&quot &lt&lt fi.date();
+    std::cout &lt&lt &quot\n  date: &quot &lt&lt &quot\t&quot &lt&lt fi.date(FileInfo::dateformat);
+    std::cout &lt&lt &quot\n  date: &quot &lt&lt &quot\t&quot &lt&lt fi.date(FileInfo::timeformat);
+    std::cout &lt&lt &quot\n  size: &quot &lt&lt &quot\t&quot &lt&lt fi.size() &lt&lt &quot bytes&quot;
+    if(fi.isArchive())
+      std::cout &lt&lt &quot\n  is archive&quot;
+    else
+      std::cout &lt&lt &quot\n  is not archive&quot;
+    if(fi.isCompressed())
+      std::cout &lt&lt &quot\n  is compressed&quot;
+    else
+      std::cout &lt&lt &quot\n  is not compressed&quot;
+    if(fi.isDirectory())
+      std::cout &lt&lt &quot\n  is directory&quot;
+    else
+      std::cout &lt&lt &quot\n  is not directory&quot;
+    if(fi.isEncrypted())
+      std::cout &lt&lt &quot\n  is encrypted&quot;
+    else
+      std::cout &lt&lt &quot\n  is not encrypted&quot;
+    if(fi.isHidden())
+      std::cout &lt&lt &quot\n  is hidden&quot;
+    else
+      std::cout &lt&lt &quot\n  is not hidden&quot;
+    if(fi.isNormal())
+      std::cout &lt&lt &quot\n  is normal&quot;
+    else
+      std::cout &lt&lt &quot\n  is not normal&quot;
+    if(fi.isOffLine())
+      std::cout &lt&lt &quot\n  is offline&quot;
+    else
+      std::cout &lt&lt &quot\n  is not offline&quot;
+    if(fi.isReadOnly())
+      std::cout &lt&lt &quot\n  is readonly&quot;
+    else
+      std::cout &lt&lt &quot\n  is not readonly&quot;
+    if(fi.isSystem())
+      std::cout &lt&lt &quot\n  is system&quot;
+    else
+      std::cout &lt&lt &quot\n  is not system&quot;
+    if(fi.isTemporary())
+      std::cout &lt&lt &quot\n  is temporary&quot;
+    else
+      std::cout &lt&lt &quot\n  is not temporary&quot;
+  }
+  else
+    std::cout &lt&lt &quot\n  filename &quot &lt&lt fn1 &lt&lt &quot is not valid in this context\n&quot;
+
+  std::string fn2;
+  if(argc &gt 2)
+  {
+    fn1 = argv[1];
+    fn2 = argv[2];
+  }
+  else
+  {
+    fn1 = std::string(getenv(&quotHOME&quot)) + &quot/NetBeansProjects/FileSystemDemo/FileSystem.h&quot;
+    fn2 = std::string(getenv(&quotHOME&quot)) + &quot/NetBeansProjects/FileSystemDemo/FileSystem.cpp&quot;
+  }
+  FileInfo fi1(fn1);
+  FileInfo fi2(fn2);
+  if(fi1.good() &amp&amp fi2.good())
+  {
+    if(fi1 == fi1)
+      std::cout &lt&lt &quot\n  &quot &lt&lt fi1.name() &lt&lt &quot == &quot &lt&lt fi1.name();
+    else
+      std::cout &lt&lt &quot\n  &quot &lt&lt fi1.name() &lt&lt &quot != &quot &lt&lt fi1.name();
+    if(fi1 &lt fi1)
+      std::cout &lt&lt &quot\n  &quot &lt&lt fi1.name() &lt&lt &quot &lt &quot &lt&lt fi1.name();
+    else
+      std::cout &lt&lt &quot\n  &quot &lt&lt fi1.name() &lt&lt &quot &gt= &quot &lt&lt fi1.name();
+    if(fi1 == fi2)
+      std::cout &lt&lt &quot\n  &quot &lt&lt fi1.name() &lt&lt &quot == &quot &lt&lt fi2.name();
+    else
+      std::cout &lt&lt &quot\n  &quot &lt&lt fi1.name() &lt&lt &quot != &quot &lt&lt fi2.name();
+    if(fi1 &lt fi2)
+      std::cout &lt&lt &quot\n  &quot &lt&lt fi1.name() &lt&lt &quot &lt &quot &lt&lt fi2.name();
+    else
+      std::cout &lt&lt &quot\n  &quot &lt&lt fi1.name() &lt&lt &quot &gt= &quot &lt&lt fi2.name();
+    if(fi1.smaller(fi2))
+      std::cout &lt&lt &quot\n  &quot &lt&lt fi1.name() &lt&lt &quot is smaller than &quot &lt&lt fi2.name();
+    else
+      std::cout &lt&lt &quot\n  &quot &lt&lt fi1.name() &lt&lt &quot is not smaller than &quot &lt&lt fi2.name();
+    if(fi1.earlier(fi2))
+      std::cout &lt&lt &quot\n  &quot &lt&lt fi1.name() &lt&lt &quot is earlier than &quot &lt&lt fi2.name();
+    else
+      std::cout &lt&lt &quot\n  &quot &lt&lt fi1.name() &lt&lt &quot is not earlier than &quot &lt&lt fi2.name();
+    std::cout &lt&lt std::endl;
+  }
+  else
+    std::cout &lt&lt &quot\n  files &quot &lt&lt fn1 &lt&lt &quot and &quot &lt&lt fn2 &lt&lt &quot are not valid in this context\n&quot;
+  
+  title(&quotDemonstrate File class operations&quot, '=');
+  std::cout &lt&lt &quot\n&quot;
+
+  // copy binary file from one directory to another
+
+  std::string srcFile = Path::getFullFileSpec(&quotFileSystem.o&quot);
+ // std::string src = Directory::getCurrentDirectory() + srcFile;
+//  std::cout &lt&lt &quot\n  src = \&quot&quot &lt&lt src &lt&lt &quot\&quot&quot;
+  std::string dstFile = &quot/copy.o&quot;
+  std::string dst = std::string(getenv(&quotHOME&quot)) + &quot/Documents&quot + dstFile;
+  
+  File me(srcFile);
+  bool res = me.open(File::in, File::binary);
+  std::cout &lt&lt &quot\n  copying:\n    &quot &lt&lt me.name().c_str() &lt&lt &quot\n  to:\n    &quot &lt&lt dst;
+  if(!me.isGood())
+  {
+    std::cout &lt&lt &quot\n  can't open file\n&quot;
+    std::cout &lt&lt &quot\n  looking for:\n  &quot;
+    std::cout &lt&lt Path::getFullFileSpec(me.name()) &lt&lt &quot\n&quot;
+  }
+  else
+  {
+    File you(dst);
+    you.open(File::out, File::binary);
+    if(you.isGood())
+    {
+      while(me.isGood())
+      {
+        Block b = me.getBlock(1024);
+        std::cout &lt&lt &quot\n    reading block of &quot &lt&lt b.size() &lt&lt &quot bytes&quot;
+        you.putBlock(b);
+        std::cout &lt&lt &quot\n    writing block of &quot &lt&lt b.size() &lt&lt &quot bytes&quot; 
+      }
+      std::cout &lt&lt &quot\n&quot;
+    }
+    else
+    {
+      std::cout &lt&lt &quot\n  failed to open destination file\n&quot;
+    }
+  }
+
+  // save some filespecs of text files in a vector for File demonstrations
+
+  std::vector&ltstd::string&gt files;
+  if(argc == 1)
+  {
+    std::cout &lt&lt &quot\n\n  Please enter, on the command line, a filename to process.\n&quot;
+  }
+
+  for(int i=1; i&ltargc; ++i)
+  {
+    files.push_back(argv[i]);
+  }
+  files.push_back(&quotFileSystem.cpp&quot);
+  files.push_back(&quotFileSystem.h&quot); // file from project directory
+  files.push_back(&quottest.txt&quot);     // file in executable's debug directory
+  files.push_back(&quotfoobar&quot);       // doesn't exist
+
+  // open each file and display a few lines of text
+
+  for(size_t i=0; i&ltfiles.size(); ++i)
+  {
+    File file(files[i]);
+    file.open(File::in);
+    if(!file.isGood())
+    {
+      std::cout &lt&lt &quot\n  Can't open file &quot &lt&lt file.name();
+      std::cout &lt&lt &quot\n  Here's what the program can't find:\n  &quot &lt&lt Path::getFullFileSpec(file.name()); 
+      continue;
+    }
+    std::string temp = std::string(&quotProcessing file &quot) + files[i];
+    title(temp, '-');
+    for(int j=0; j&lt10; ++j)
+    {
+      if(!file.isGood())
+        break;
+      std::cout &lt&lt &quot\n  &quot &lt&lt file.getLine().c_str();
+    }
+    std::cout &lt&lt &quot\n&quot;
+  }
+  std::cout &lt&lt &quot\n&quot;
+
+  // read text file and write to another text file
+
+  title(&quotwriting to anothertest.txt&quot, '-');
+  File in(&quot./test.txt&quot);
+  in.open(File::in);
+  File out(&quot./anothertest.txt&quot);
+  out.open(File::out);
+  while(in.isGood() &amp&amp out.isGood())
+  {
+    std::string temp = in.getLine();
+    std::cout &lt&lt &quot\n  &quot &lt&lt temp.c_str();
+    out.putLine(temp);
+    out.putLine(&quot\n&quot);
+  }
+  
+  std::cout &lt&lt &quot\n\n&quot;
+}
+#endif
+</code>
+        </pre>
+    </div>
+<!--load highlight.js-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/monokai-sublime.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>
