@@ -2,7 +2,7 @@
 #define METRICSANALYSIS_H
 ////////////////////////////////////////////////////////////////////////
 //  MetricAnalysis.h - declares new parsing rules and actions         //
-//  ver 1.2                                                           //
+//  ver 2.0                                                           //
 //  Platform:      Mac Book Pro, OS X EI Captain 10.11                //
 //  Application:   Code Analysis, 687 OOD Project2                    //
 //  Author:        Xing Zhou, Syracuse University                     //
@@ -35,6 +35,8 @@ Build commands
 
 Maintenance History:
 ====================
+ver 2.0 : 05 May 17
+- store metric info into JSON string
 ver 1.3 : 05 Mar 16
 - provide setTree function 
 ver 1.2 : 04 Mar 16
@@ -52,32 +54,63 @@ ver 1.0 : 02 Mar 16
 #include "../ASTNode/ASTNode.h"
 #include <iostream>
 #include <sstream>
+#include <unordered_map>
+#include "../rapidjson/document.h"
+#include "../rapidjson/prettywriter.h"
+#include "../rapidjson/filereadstream.h"
+#include "../rapidjson/filewritestream.h"
+#include "../rapidjson/stringbuffer.h"
 
 
-struct MetricInfo {
 
-    std::vector<std::string> overlinedFunctions;
-    std::vector<std::string> overComplexityFunctions;
-    
+struct FuncMetricInfo {
+    FuncMetricInfo(std::string in_name, int in_size, int in_complexity) :
+            name(in_name),
+            size(in_size),
+            complexity(in_complexity) {}
+
+    FuncMetricInfo() {}
+
+    std::string name;
+    int size = 0;
+    int complexity = 0;
+
 };
+
+struct FileMetricInfo {
+
+    std::vector <std::string> overlinedFunctions;
+    std::vector <std::string> overComplexityFunctions;
+    std::unordered_map <std::string, FuncMetricInfo> _funcMetricInfoCollection;
+};
+
 // provide DFS trasversal of AST to get node information
-class MetricAnalysis
-{
+class MetricAnalysis {
+
 public:
-    void setTree(ASTTree* _tree) { tree = _tree; }
+    void setTree(ASTTree *_tree) { tree = _tree; }
+
     void analyzeFunc();
-    MetricInfo metricInfo() {
-        return _metricInfo;
+
+    FileMetricInfo metricInfo() {
+        return _fileMetricInfo;
     }
-    std::ostringstream metricsResultBuf;
+
     void clean() {
-        _metricInfo = MetricInfo();
+        _fileMetricInfo = FileMetricInfo();
     }
+
+    std::string metricInfoJSON() ;
+
+
 private:
-    ASTTree* tree;
-   
-    std::string TreeWalk(ASTNode* root);
-    MetricInfo _metricInfo;
+    ASTTree *tree;
+
+    std::string TreeWalk(ASTNode *root);
+
+    FileMetricInfo _fileMetricInfo;
+
+
 };
 
 #endif

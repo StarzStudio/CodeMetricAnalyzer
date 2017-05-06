@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>testGoodFile1.h</title>
+</head>
+<body>
+    <div>
+        <pre>
+            <code class="cpp">#ifndef EXECUTIVE_H
+#define EXECUTIVE_H
+
+
+#include &quot../HTMLgenerator/HTMLgenerator.h&quot
+#include &quot../FileMgr/FileMgr.h&quot
+#include &ltnode.h&gt
+#include &ltv8.h&gt
+using namespace v8;
+
+
+void generateHTML(const FunctionCallbackInfo&ltValue&gt&amp args) {
+
+    // get tempalte html file
+	String::Utf8Value _templateFile(args[0]-&gtToString()); //convert to std::string
+	std::string templateFile = std::string(*_templateFile); 
+
+    // get destination path to store html files
+	String::Utf8Value _destHTMLFolder(args[1]-&gtToString()); //convert to std::string
+ 	std::string destHTMLFolder = std::string(*_destHTMLFolder); 
+    
+    // start path for file manager to search cpp files 
+	String::Utf8Value _searchPath(args[2]-&gtToString()); //convert to std::string
+	std::string searchPath  = std::string(*_searchPath); 
+
+	// provide patterns for file manager
+	std::vector&ltstd::string&gt searchPatterns = {&quot*.h&quot, &quot*.cpp&quot};
+
+	FileManager::IFileMgr *pFileMgr = new FileManager::FileMgr(searchPath);
+	HTMLgenerator g( templateFile, destHTMLFolder);
+	pFileMgr-&gtregForFiles(&ampg);
+	for (auto p : searchPatterns) {
+		pFileMgr-&gtaddPattern(p);
+	}
+	pFileMgr-&gtsearch();
+
+    bool isComplete = true;
+    args.GetReturnValue().Set(isComplete);
+}
+
+
+void Init(Local&ltObject&gt exports, Local&ltObject&gt module) {
+  NODE_SET_METHOD(module, &quotexports&quot, generateHTML);
+}
+
+NODE_MODULE(generateHTML, Init)
+
+
+
+#endif
+</code>
+        </pre>
+    </div>
+<!--load highlight.js-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/monokai-sublime.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>

@@ -81,99 +81,90 @@ using namespace v8;
 #endif
 
 
-class MetricExecutive 
-{
-	using Path = std::string;
-	using File = std::string;
-	using Pattern = std::string;
-	using Patterns = std::vector<std::string>;
+class MetricExecutive {
+    using Path = std::string;
+    using File = std::string;
+    using Files = std::vector<std::string>;
+    using Pattern = std::string;
+    using Patterns = std::vector<std::string>;
 public:
-	MetricExecutive(Path in_path, Patterns in_patterns) : _path(in_path), _patterns(in_patterns) {
-	
-	}
-	
+    MetricExecutive(Path in_path, Patterns in_patterns) : _path(in_path), _patterns(in_patterns) {}
+
     bool build();
-    ASTTree* generateTree(const std::string& fileName);
-    void fileSearch(const std::string& path);
-    void analyze();
-    void addPattern(std::string _pattern)
-    {
+
+    ASTTree *generateTree(const std::string &fileName);
+
+    void fileSearch(const std::string &path);
+
+    void start();
+
+    void addPattern(std::string _pattern) {
         patterns.push_back(_pattern);
     }
-    void showTree(bool _show = true) 
-    {
-        _showTree = _show;
+
+    void outStream(std::string in_content, bool stdcout_on = true) {
+        if (stdcout_on) {
+            std::cout << in_content.c_str() << std::endl;
+        }
+        // metricsResultBuf << in_content << "\n";
     }
-   std::unordered_map<std::string, MetricInfo> metricInfos() {
-        return _metricInfos;
+
+//    void store(bool into_file = true) {
+//      if (into_file) {
+//        std::ofstream metricsResult("./userUploadFiles/cppFiles/localhost/metricsResult.cpp");
+//      }
+//        // std::cout << "buf is:" << analyzer.analyzer.metricsResultBuf.str() << std::endl;
+//        std::string bufferContent = analyzer.analyzer.metricsResultBuf.str();
+//        metricsResult << bufferContent;
+//        metricsResult.close();
+//    }
+    std::vector <std::string> metricInfoCollection() {
+        return _metricInfoCollection;
     }
-    MetricAnalysis analyzer;
+
 private:
-	std::vector<std::string> _fileCollection;
-	Path _path;
-	Patterns _patterns;
-    ConfigParseToConsole* configure;
-    Parser* pParser;
-    std::vector<std::string> patterns;
-    bool _showTree;
-    std::unordered_map<std::string, MetricInfo> _metricInfos;
+    Files _fileCollection;
+    std::ostringstream metricsResultBuf;
+    MetricAnalysis analyzer;
+    Path _path;
+    Patterns _patterns;
+    ConfigParseToConsole *configure;
+    Parser *pParser;
+    Patterns patterns;
+    std::vector <std::string> _metricInfoCollection;
 };
 
 
 #ifdef NODE_ENV
 
 
- void analyzeMatrics(const FunctionCallbackInfo<Value>& args) {
-
+void analyzeMatrics(const FunctionCallbackInfo<Value>& args) {
+    Isolate* isolate = args.GetIsolate();
+    HandleScope scope(isolate);
     // start path
-	String::Utf8Value _path(args[0]->ToString()); //convert to std::string
-	std::string path  = std::string(*_path); 
+    String::Utf8Value _path(args[0]->ToString()); //convert to std::string
+    std::string path  = std::string(*_path);
 // 	std::cout << "searching path: " << FileSystem::Directory::getCurrentDirectory().c_str() << std::endl;
-	std::cout << "metrics analyzer searching path: " << path.c_str() << std::endl;
-	 std::cout << "====================================================" << std::endl;
-	
-	// provide patterns for file manager
-	std::vector<std::string> patterns = {"*.h", "*.cpp", "*.cc", "*.c", "*.C"};
+    std::cout << "metrics analyzer searching path: " << path.c_str() << std::endl;
+     std::cout << "====================================================" << std::endl;
 
-    MetricExecutive analyzer(path, patterns);
+    // provide patterns for file manager
+    std::vector<std::string> patterns = {"*.h", "*.cpp", "*.cc", "*.c", "*.C"};
 
-   // test Analyze for a given Directory
-   std::ofstream metricsResult("./userUploadFiles/cppFiles/localhost/metricsResult.cpp");
-	
-   analyzer.analyze();
-   std::unordered_map<std::string, MetricInfo> metrics =  analyzer.metricInfos();
-   analyzer.analyzer.metricsResultBuf << "\n\n\n";
-   for (auto it = metrics.begin() ; it != metrics.end() ; it++) {
-        // std::cout << "name : " << it->first << " metricinfor : func: " << std::endl;
-        if (it->second.overlinedFunctions.size() > 0 || 
-            it->second.overComplexityFunctions.size() > 0 ) {
-            std::cout << "\n\nFile: " << it->first << " need to be improved." << std::endl;
-			analyzer.analyzer.metricsResultBuf <<  "File: " << it->first << " need to be improved.\n" ;
-        }
-         if (it->second.overlinedFunctions.size() > 0 ) {
-            std::cout << "  functions that exceed 50 lines: "  << std::endl;
-            analyzer.analyzer.metricsResultBuf << "  functions that exceed 50 lines: \n";
-             for (auto e : it->second.overlinedFunctions) {
-                std::cout << "    " << e << std::endl;
-				analyzer.analyzer.metricsResultBuf <<  "    " << e << "\n";
-             }
-         }
-         if (it->second.overComplexityFunctions.size() > 0 ) {
-            std::cout << "  functions that exceed 10 complexity: "  << std::endl;
-            analyzer.analyzer.metricsResultBuf <<"  functions that exceed 10 complexity: \n" ;
-             for (auto e : it->second.overComplexityFunctions) {
-                 std::cout << "    " << e << std::endl;
-				 analyzer.analyzer.metricsResultBuf  <<  "    " << e << "\n";
-             }
-         }
-   }
-  // std::cout << "buf is:" << analyzer.analyzer.metricsResultBuf.str() << std::endl;
-   std::string bufferContent = analyzer.analyzer.metricsResultBuf.str();
-   metricsResult << bufferContent;
-   metricsResult.close();
+   MetricExecutive exe(path, patterns);
 
-    bool isComplete = true;
-    args.GetReturnValue().Set(isComplete);
+
+   exe.start();
+   std::vector<std::string> metrics =  exe.metricInfoCollection();
+
+    Local<Array> array = Array::New(isolate,metrics.size());
+
+    for (int i = 0; i < metrics.size(); i++) {
+        array->Set(i,String::NewFromUtf8(isolate, metrics[i].c_str()));
+    }
+
+
+    args.GetReturnValue().Set(array);
 }
 
 

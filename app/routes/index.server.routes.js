@@ -4,9 +4,12 @@
 
 module.exports = function(app) {
     var indexController = require('../controllers/index.server.controller');
+    var uploadController = require('../controllers/upload.server.controller');
     //app.get('/', uploadFileController.render);
 
 
     app.get('/', indexController.render);
+    app.post('/', uploadController.receiveFiles) ;
+
 };
 

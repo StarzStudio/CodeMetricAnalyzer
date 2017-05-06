@@ -1,0 +1,1 @@
+{"version":3,"sources":["project.client.module.js"],"names":[],"mappings":"AAAA;;;AAGA;AACA;;AAEA;;AACA,QAAQ,MAAR,CAAe,SAAf,EAA0B,EAA1B","file":"project.client.module-compiled.js","sourcesContent":["/**\n * Created by zhouxing on 5/6/17.\n */\n// Invoke 'strict' JavaScript mode\n'use strict';\n\n// Create the 'articles' module\nangular.module('project', []);"]}

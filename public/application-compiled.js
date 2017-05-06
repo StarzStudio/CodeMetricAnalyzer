@@ -5,7 +5,7 @@
  */
 
 var mainApplicationModuleName = 'codeAnalyzer';
-var mainApplicationModule = angular.module(mainApplicationModuleName, ['ngRoute', 'index']);
+var mainApplicationModule = angular.module(mainApplicationModuleName, ['ngResource', 'ngRoute', 'index', 'projects']);
 
 //To mark your application routes as single-page application routes, you will
 //need to use a routing scheme called Hashbangs. Hashbangs are implemented by
@@ -19,10 +19,10 @@ if (window.location.hash === '#_=_') window.location.hash = '#!';
 
 mainApplicationModule.config(['$routeProvider', function ($routeProvider) {
    $routeProvider.when('/', {
-      templateUrl: '/upload/views/FileList.client.view.html'
-   }).when('/projects', {
-      templateUrl: './projects/projects.client.html'
-   }).when('/projects/projectDetail', {
+      templateUrl: '/upload/views/uploadPage.client.view.html'
+   }).when('/project', {
+      templateUrl: 'project/project.client.html'
+   }).when('/project/projectDetail', {
       templateUrl: './projectDetail/projectDetail.client.html'
    }).otherwise({
       redirectTo: '/'

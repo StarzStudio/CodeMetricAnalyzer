@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////
 //  MetricAnalysis.cpp - declares new parsing rules and actions       //
-//  ver 1.3                                                           //
+//  ver 2.0                                                           //
 //  Platform:      Mac Book Pro, OS X EI Captain 10.11                //
 //  Application:   Code Analysis, 687 OOD Project2                    //
 //  Author:        Xing Zhou, Syracuse University                     //
@@ -12,41 +12,106 @@
 
 #include "../MetricsAnalysis/MetricsAnalysis.h"
 
+
+using namespace rapidjson;
+
+
+std::string MetricAnalysis::metricInfoJSON() {
+    Document document;
+    document.SetObject();
+    Document::AllocatorType &allocator = document.GetAllocator();
+
+    Value root(kObjectType);
+
+    Value functions(kArrayType);
+    for (auto it = this->_fileMetricInfo._funcMetricInfoCollection.begin();
+         it != this->_fileMetricInfo._funcMetricInfoCollection.end();
+         it++) {
+        Value func(kObjectType);
+        Value name(kStringType);
+        std::string name_str(it->second.name);
+        name.SetString(name_str.c_str(),
+                       name_str.size(), allocator);
+
+        func.AddMember("name", name, allocator);
+
+        Value size;
+        size.SetInt(it->second.size);
+
+        func.AddMember("size", size, allocator);
+
+        Value complexity;
+        complexity.SetInt(it->second.complexity);
+
+        func.AddMember("complexity", complexity, allocator);
+
+        functions.PushBack(func, allocator);
+    }
+
+
+    Value overlinedFunctions(kArrayType);
+    for (auto e : this->_fileMetricInfo.overlinedFunctions) {
+        Value overlinedFunc(kStringType);
+        overlinedFunc.SetString(e.c_str(),
+                                e.size(), allocator);
+
+        overlinedFunctions.PushBack(overlinedFunc, allocator);
+    }
+    Value overComplexFunctions(kArrayType);
+    for (auto e : this->_fileMetricInfo.overComplexityFunctions) {
+        Value overComlexFunc(kStringType);
+        overComlexFunc.SetString(e.c_str(),
+                                 e.size(), allocator);
+
+        overComplexFunctions.PushBack(overComlexFunc, allocator);
+    }
+
+
+    root.AddMember("functions", functions, allocator);
+    root.AddMember("overlinedFunctions", overlinedFunctions, allocator);
+    root.AddMember("overComplexFunctions", overComplexFunctions, allocator);
+
+
+    StringBuffer buffer;
+    Writer<StringBuffer> writer(buffer);
+    root.Accept(writer);
+    std::string result = buffer.GetString();
+    //std::cout << result << std::endl;
+    return result;
+}
+
 // wrapper of the TreeWalk function
-void MetricAnalysis::analyzeFunc()
-{
+void MetricAnalysis::analyzeFunc() {
     std::cout << "\n  The size and complexity of functions in this package are: ";
     std::cout << "\n  =========================================================";
     std::string travserResult = TreeWalk(tree->getRoot());
-	metricsResultBuf << travserResult;
-	std::cout << travserResult;
+    //metricsResultBuf << travserResult;
+    //std::cout << travserResult;
 }
 
 // walk through tree and display information of nodes with function type
-std::string MetricAnalysis::TreeWalk(ASTNode* root)
-{
+std::string MetricAnalysis::TreeWalk(ASTNode *root) {
     std::ostringstream temp;
-    static size_t indentLevel = 0;
-    if (root->type() == "function")
-    {
-        //if (root->size() > 50 || root->complexity() > 10)               // to test my project fucntions whether meeting requirements
-        //{
-            temp << "\n  " << root->name() << ":";
-            temp << "\n        " << "size: " << root->size() << ":";
-            if (root->size() > 50) {
-                this->_metricInfo.overlinedFunctions.push_back(root->name());
-            }
-            if (root->complexity() > 50) {
-                this->_metricInfo.overComplexityFunctions.push_back(root->name());
-            }
-            temp << "\n        " << "complexity: " << root->complexity() << ":\n";
 
-        //}
+    static size_t indentLevel = 0;
+    //std::cout << "root name:" << root->name() << root->size() << root->complexity() << std::endl;
+    if (root->type() == "function") {
+        FuncMetricInfo funcInfo(root->name(),
+                                root->size(),
+                                root->complexity());
+
+        _fileMetricInfo._funcMetricInfoCollection[root->name()] = funcInfo;
+
+        if (root->size() > 50) {
+            this->_fileMetricInfo.overlinedFunctions.push_back(root->name());
+        }
+        if (root->complexity() > 10) {
+            this->_fileMetricInfo.overComplexityFunctions.push_back(root->name());
+        }
     }
     auto iter = root->children().begin();
     ++indentLevel;
-    while (iter != root->children().end())
-    {
+    while (iter != root->children().end()) {
         temp << TreeWalk(*iter);
         ++iter;
     }
@@ -71,18 +136,18 @@ int main()
 
     ASTNode* fun1 = new ASTNode("fun1","function");
     fun1->setStartLine(22);
-    fun1->setEndLine(55);
-    fun1->setComplexity(8);
+    fun1->setEndLine(155);
+    fun1->setComplexity(22);
 
     ASTNode* fun2 = new ASTNode("fun2", "function");
     fun2->setStartLine(56);
-    fun2->setEndLine(78);
-    fun2->setComplexity(7);
+    fun2->setEndLine(178);
+    fun2->setComplexity(12);
 
     ASTNode* fun3 = new ASTNode("fun3", "function");
     fun3->setStartLine(79);
-    fun3->setEndLine(103);
-    fun3->setComplexity(6);
+    fun3->setEndLine(183);
+    fun3->setComplexity(26);
 
     ASTNode* fun4 = new ASTNode("fun4", "function");
     fun4->setStartLine(104);
@@ -105,18 +170,13 @@ int main()
     fun1->addChildren(fun2);
     fun2->addChildren(fun3);
     fun3->addChildren(fun4);
-
+    ASTTree* tree = new ASTTree(root);
 
     // create analyzer
     MetricAnalysis analyzer;
-    if (analyzer.build("./MetricsAnalysis.cpp"))
-    {
-        std::cout << "\n  analyzer go through the AST: \n";
-        analyzer.analyzeFunc();
-    }
-    else
-        std::cout << "build process failed";
-    
+    analyzer.setTree(tree);
+    analyzer.analyzeFunc();
+    analyzer.metricInfoJSON();
     std::cout << std::endl;
 
 }

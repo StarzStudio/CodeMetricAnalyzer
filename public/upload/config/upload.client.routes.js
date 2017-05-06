@@ -5,7 +5,7 @@
 //     function($routeProvider) {
 //         $routeProvider
 //             .when('/', {
-//                 templateUrl: '/upload/views/FileList.client.view.html'
+//                 templateUrl: '/upload/views/uploadPage.client.view.html'
 //             })
 //             .when('/metrics', {
 //                 templateUrl: '/upload/views/metrics.client.view.html'

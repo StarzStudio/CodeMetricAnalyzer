@@ -13,12 +13,18 @@
 #include "MetricsExecutive.h"
 
 using namespace FileSystem;
+using Path = std::string;
+using File = std::string;
+using Files = std::vector<std::string>;
+using Pattern = std::string;
+using Patterns = std::vector<std::string>;
+
+
 
 // initialization for all the parts which Executive needed
-bool MetricExecutive::build()
-{
-  
-  
+bool MetricExecutive::build() {
+
+
     // Configure the Parser and Repository
     configure = new ConfigParseToConsole();
     pParser = configure->Build();
@@ -29,28 +35,21 @@ bool MetricExecutive::build()
 }
 
 // take in a single file and generate an AST for it
-ASTTree* MetricExecutive::generateTree(const std::string& fileName)
-{
+ASTTree *MetricExecutive::generateTree(const std::string &fileName) {
     // rebuild configureConsole, mainly to reset pToker's pState pointer, if not, 
     // the initial state pointer will point to nullptr when receive a new file
     // result from reading at the end of last file 
-	if (!build())
-	{
-		std::cout << "build process failed";
-		return NULL;
-	}
-    try
-    {
-        if (pParser)
-        {
-            if (!configure->Attach(fileName))
-            {
+    if (!build()) {
+        std::cout << "build process failed";
+        return NULL;
+    }
+    try {
+        if (pParser) {
+            if (!configure->Attach(fileName)) {
                 std::cout << "\n  could not open file " << fileName << std::endl;
                 return NULL;
             }
-        }
-        else
-        {
+        } else {
             std::cout << "\n\n  Parser not built\n\n";
             return NULL;
         }
@@ -60,76 +59,69 @@ ASTTree* MetricExecutive::generateTree(const std::string& fileName)
             pParser->parse();
         std::cout << "\n";
     }
-    catch (std::exception& ex)
-    {
+    catch (std::exception &ex) {
         std::cout << "\n\n    " << ex.what() << "\n\n";
     }
 
     // get AST 
-    ASTTree* tree = configure->getRepo()->getASTTree();
+    ASTTree *tree = configure->getRepo()->getASTTree();
     // reset the line count number
     configure->resetLineCount();
     return tree;
 }
 
 // file all the files meet the pattern in a given directory
-void MetricExecutive::fileSearch(const std::string& path)
-{
-    std::cout << "Current dir: " << FileSystem::Directory::getCurrentDirectory() << std::endl;
-	std::string fpath = FileSystem::Path::getFullFileSpec(path);
-    std::cout << "path name: " << fpath << std::endl;
-	for (auto patt : _patterns)
-	{
-		std::vector<std::string> files = FileSystem::Directory::getFiles(fpath, patt);
+void MetricExecutive::fileSearch(const std::string &path) {
+    //std::cout << "Current dir: " << FileSystem::Directory::getCurrentDirectory() << std::endl;
+    std::string fpath = FileSystem::Path::getFullFileSpec(path);
+    // std::cout << "path name: " << fpath << std::endl;
+
+    for (auto patt : _patterns) {
+        std::vector <std::string> files = FileSystem::Directory::getFiles(fpath, patt);
         if (files.size() == 0) {
-         //   std::cout << "there is no files" <<  std::endl;
+            //   std::cout << "there is no files" <<  std::endl;
         }
 
-		for (auto f : files)
-		{
-			File _file = FileSystem::Path::fileSpec(fpath, f);
-            std::cout << "file name: " << _file << std::endl;
-			_fileCollection.push_back(_file);
-		}
-	}
-	std::vector<std::string> dirs = FileSystem::Directory::getDirectories(fpath);
-	for (auto d : dirs)
-	{
-		if (d == "." || d == "..")
-			continue;
-		std::string dpath = fpath + "/" + d;
-		fileSearch(dpath);
-	}
-    
+        for (auto f : files) {
+            File _file = FileSystem::Path::fileSpec(fpath, f);
+            //   std::cout << "file name: " << _file << std::endl;
+            this->_fileCollection.push_back(_file);
+        }
+    }
+    std::vector <std::string> dirs = FileSystem::Directory::getDirectories(fpath);
+    for (auto d : dirs) {
+        if (d == "." || d == "..")
+            continue;
+        std::string dpath = fpath + "/" + d;
+        fileSearch(dpath);
+    }
+
 }
 
 // analysis all the files meet the pattern in a given directory
-void MetricExecutive::analyze()
-{
+void MetricExecutive::start() {
     // do analysis
     fileSearch(_path);
-    if (_fileCollection.size() == 0)
-    {
+    if (_fileCollection.size() == 0) {
         std::cout << "whooops....can not find any file matches : (";
         return;
     }
-    for (int i = 0; i < _fileCollection.size(); i++)
-    {
+    for (int i = 0; i < _fileCollection.size(); i++) {
+        std::string currentFile = FileSystem::Path::getName(_fileCollection[i]);
         std::cout << "\n  ==============================================================";
-		std::string currentFile = FileSystem::Path::getName(_fileCollection[i]);
         std::cout << "\n  The No." << i + 1 << " file is: " << currentFile << std::endl;
-        analyzer.metricsResultBuf << "\n  ==============================================================";
-        analyzer.metricsResultBuf << "\n  The No." << i + 1 << " file is: " << currentFile;
+//        analyzer.metricsResultBuf << "\n  ==============================================================";
+//        analyzer.metricsResultBuf << "\n  The No." << i + 1 << " file is: " << currentFile;
 
-        ASTTree* tree = generateTree(_fileCollection[i]);
-        showTree(true);
-        if (_showTree)
-        {
+        ASTTree *tree = generateTree(_fileCollection[i]);
+
+        bool showTree = true;
+        if (showTree) {
             std::cout << tree->ExtractScopeInfo();
         }
         analyzer.setTree(tree);
         analyzer.analyzeFunc();
-        _metricInfos[currentFile] = analyzer.metricInfo();
+        _metricInfoCollection.push_back(analyzer.metricInfoJSON());
         analyzer.clean();
     }
 }
@@ -155,7 +147,7 @@ int main(int argc, char ** argv)
      patterns.push_back(argv[i]);
     }
 
-    MetricExecutive analyzer(path, patterns);
+    MetricExecutive exe(path, patterns);
 
 
     // test find files meeting a specific pattern given a path name
@@ -181,37 +173,41 @@ int main(int argc, char ** argv)
   
 
     // test Analyze for a given Directory
-   std::ofstream metricsResult("metricsResult.txt");
-	
+  // std::ofstream metricsResult("metricsResult.txt");
 
-   analyzer.analyze();
-   std::unordered_map<std::string, MetricInfo> metrics =  analyzer.metricInfos();
-   analyzer.analyzer.metricsResultBuf << "\n\n\n";
-   for (auto it = metrics.begin() ; it != metrics.end() ; it++) {
-        if (it->second.overlinedFunctions.size() > 0 || 
-            it->second.overComplexityFunctions.size() > 0 ) {
-            std::cout << "File: " << it->first << " need to be improved." << std::endl;
-			analyzer.analyzer.metricsResultBuf <<  "File: " << it->first << " need to be improved.\n" ;
-        }
-         if (it->second.overlinedFunctions.size() > 0 ) {
-            std::cout << "  functions that exceed 50 lines: "  << std::endl;
-             for (auto e : it->second.overlinedFunctions) {
-                std::cout << "    " << e << std::endl;
-				analyzer.analyzer.metricsResultBuf <<  "    " << e << "\n";
-             }
-         }
-         if (it->second.overComplexityFunctions.size() > 0 ) {
-            std::cout << "  functions that exceed 10 complexity: "  << std::endl;
-             for (auto e : it->second.overComplexityFunctions) {
-                 std::cout << "    " << e << std::endl;
-				 analyzer.analyzer.metricsResultBuf  <<  "    " << e << "\n";
-             }
-         }
+
+   exe.start();
+   Files metrics =  exe.metricInfoCollection();
+
+   for (auto s : metrics) {
+    std::cout << s << std::endl;
    }
+//   analyzer.analyzer.metricsResultBuf << "\n\n\n";
+//   for (auto it = metrics.begin() ; it != metrics.end() ; it++) {
+//        if (it->second.overlinedFunctions.size() > 0 ||
+//            it->second.overComplexityFunctions.size() > 0 ) {
+////            std::cout << "File: " << it->first << " need to be improved." << std::endl;
+////			analyzer.analyzer.metricsResultBuf <<  "File: " << it->first << " need to be improved.\n" ;
+//        }
+//         if (it->second.overlinedFunctions.size() > 0 ) {
+//            std::cout << "  functions that exceed 50 lines: "  << std::endl;
+//             for (auto e : it->second.overlinedFunctions) {
+////                std::cout << "    " << e << std::endl;
+////				analyzer.analyzer.metricsResultBuf <<  "    " << e << "\n";
+//             }
+//         }
+//         if (it->second.overComplexityFunctions.size() > 0 ) {
+//            std::cout << "  functions that exceed 10 complexity: "  << std::endl;
+//             for (auto e : it->second.overComplexityFunctions) {
+////                 std::cout << "    " << e << std::endl;
+////				 analyzer.analyzer.metricsResultBuf  <<  "    " << e << "\n";
+//             }
+//         }
+//   }
   // std::cout << "buf is:" << analyzer.analyzer.metricsResultBuf.str() << std::endl;
-   std::string bufferContent = analyzer.analyzer.metricsResultBuf.str();
-   metricsResult << bufferContent;
-   metricsResult.close();
+//   std::string bufferContent = analyzer.analyzer.metricsResultBuf.str();
+//   metricsResult << bufferContent;
+//   metricsResult.close();
   
 }
 #endif

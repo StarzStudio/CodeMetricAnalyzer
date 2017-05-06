@@ -34,7 +34,7 @@ void generateHTML(const FunctionCallbackInfo<Value>& args) {
 	std::string searchPath  = std::string(*_searchPath); 
 // 	std::cout << "searching path: " << FileSystem::Directory::getCurrentDirectory().c_str() << std::endl;
 	std::cout << "searching path: " << searchPath.c_str() << std::endl;
-	 std::cout << "====================================================" << std::endl;
+	std::cout << "====================================================" << std::endl;
 	
 	// provide patterns for file manager
 	std::vector<std::string> searchPatterns = {"*.h", "*.cpp"};

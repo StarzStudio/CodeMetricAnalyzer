@@ -45,6 +45,7 @@ module.exports = function () {
     require('../app/routes/upload.server.routes.js')(app);
     require('../app/routes/users.server.routes.js')(app);
     require('../app/routes/index.server.routes.js')(app);
+    require('../app/routes/project.server.routes.js')(app);
 
     app.use(express.static('./public'));
     app.use(express.static('./userUploadFiles/cppFiles'));
