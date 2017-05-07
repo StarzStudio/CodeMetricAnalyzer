@@ -53,7 +53,7 @@
 #include "Factory_TypeAnalysis.h"
 #include "../Table/Table.h"
 #include "../Table/ITable.h"
-#include "../FileMgr/FileMgr/FileSystem.h"
+#include "../FileSystem/FileSystem.h"
 
 // this is a functor which creates a parser every time before do type analysis
 class TypeAnalysis

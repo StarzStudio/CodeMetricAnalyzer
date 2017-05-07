@@ -26,7 +26,7 @@ exports.create = function (req, res) {
         let file = new File(fileInfo);
         project.files.push(file);
     }
-
+    project.name = req.body.projectName;
     //project.creator = req.user;
     project.save(function (err) {
         if (err) {
@@ -63,6 +63,7 @@ exports.projectByID = function (req, res, next, id) {
         if (!project) return next(new Error('Failed to load project '
             + id));
         req.project = project;
+
         next();
     });
 };

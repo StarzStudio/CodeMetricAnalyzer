@@ -3,6 +3,7 @@
 var uploadFiles = function uploadFiles() {
     console.log("button click");
     var files = document.querySelector("#file_input").files;
+    var projectName = document.querySelector('input[name="projectName"]').value;
     var formData = new FormData();
     var _iteratorNormalCompletion = true;
     var _didIteratorError = false;
@@ -36,6 +37,7 @@ var uploadFiles = function uploadFiles() {
         console.log("no file input, return");
         return;
     }
+    formData.append('projectName', projectName);
 
     var request = new XMLHttpRequest();
     request.onload = function () {

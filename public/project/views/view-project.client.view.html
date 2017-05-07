@@ -1,0 +1,58 @@
+<section data-ng-controller="ProjectsController" data-ng-init="findOne()">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="./projectDetail/projectDetail.client.css" rel="stylesheet">
+
+    <h1 data-ng-bind="project.name"></h1>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                <div class="menu_section">
+                    <h3>Details</h3>
+
+                    <ul class="nav nav-sidebar">
+                        <li class="active">
+                            <a href="#">
+                                <span class="sr-only">File List</span>
+                                <i class="fa fa-file-code-o"></i>
+                                <span>File List</span>
+                                <span class="fa fa-chevron-down"></span>
+                            </a>
+                        </li>
+                        <ul class="nav child_menu">
+                            <!-- The list of projects -->
+                            <li data-ng-repeat="file in project.files">
+                                <a data-ng-href="#!/projects/{{project._id}}" data-ng-bind="file.name"></a>
+                                <!--<div class="col-lg-3 col-md-4 col-xs-6 thumb">-->
+                                <!--<a class="thumbnail" href="#">-->
+                                <!--<img class="img-responsive" src="http://placehold.it/400x300" alt="">-->
+                                <!--</a>-->
+                                <!--</div>-->
+                            </li>
+                        </ul>
+                </div>
+                <div class="menu_section">
+                    <h3>Overview</h3>
+                    <ul class="nav nav-sidebar">
+                        <li>
+                            <a href="">
+                                <i class="fa fa-line-chart"></i>
+                                <span>Project Metrics</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-sidebar">
+                        <li>
+                            <a href="">
+                                <i class="fa fa-retweet"></i>
+                                <span>Dependency Graph</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</section>

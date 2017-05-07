@@ -100,7 +100,8 @@ T BlockingQueue<T>::deQ()
     // may have spurious returns so loop on !condition
 
     while (q_.size() == 0)
-        cv_.wait(l, [this]() { return q_.size() > 0; });
+        cv_.wait(l, [this]{ return q_.size() > 0; });
+   
     T temp = q_.front();
     q_.pop();
     return temp;
@@ -122,10 +123,9 @@ template <typename T>
 T& BlockingQueue<T>::front()
 {
     std::lock_guard<std::mutex> l(mtx_);
-    if (q_.size() > 0)
-        return q_.front();
-    return T();
-}
+    return q_.front();
+
+} 
 //----< remove all elements from queue >-------------------------------
 
 template <typename T>

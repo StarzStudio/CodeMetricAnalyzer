@@ -9,8 +9,8 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include "DependencyAnalysis.h"
-#include "../FileMgr/FileMgr/FileMgr.h"
-#include "../FileMgr/FileMgr/IFileMgr.h"
+#include "../FileMgr/FileMgr.h"
+#include "../FileMgr/IFileMgr.h"
 
 ITable<ResultValue>* DependencyAnalysis::analyze()
 {

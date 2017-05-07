@@ -15,7 +15,7 @@
 #include <string>
 #include <vector>
 #include "Tokenizer.h"
-#include "..\Utilities\Utilities.h"
+#include "../Utilities/Utilities.h"
 
 namespace Scanner
 {

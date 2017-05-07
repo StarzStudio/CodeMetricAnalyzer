@@ -1,10 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<section>
+    <!--<style type="text/css" media="screen">-->
+        <!--#code {-->
+            <!--position: absolute;-->
+            <!--top: 0;-->
+            <!--right: 0;-->
+            <!--bottom: 0;-->
+            <!--left: 0;-->
+        <!--}-->
+    <!--</style>-->
 
-</body>
-</html>
+    <!--code input box, must provide height, otherwise won't show-->
+    <pre id="code" class="ace_editor" style="min-height:400px">
+	<textarea class="ace_text-input">
+#include &ltcstdio&gt
+int main(){
+	int n,m;
+	scanf("%d %d",&n,&m);
+	printf("%d",n+m);
+	return 0;
+}
+    </textarea>
+</pre>
+    <script>
+        //init
+        let editor = ace.edit("code");
+
+        //language and themes (for github ref)
+        let theme = "clouds"
+        let language = "c_cpp"
+        editor.setTheme("ace/theme/" + theme);
+        editor.session.setMode("ace/mode/" + language);
+
+        // font size
+        editor.setFontSize(18);
+
+        //read only?
+        editor.setReadOnly(false);
+
+        //自动换行,设置为off关闭
+        editor.setOption("wrap", "free")
+
+        //启用提示菜单
+        ace.require("../../public/lib/ace/ext/language_tools");
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true
+        });
+    </script>
+
+</section>

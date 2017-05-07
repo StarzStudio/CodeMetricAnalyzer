@@ -12,7 +12,7 @@
 
 //----< test stub >--------------------------------------------------
 
-#ifdef zTEST_TYPETABLE
+#ifdef TEST_TABLE
 
 int main()
 {

@@ -19,24 +19,6 @@ mainApplicationModule.config(['$locationProvider',
 if (window.location.hash === '#_=_') window.location.hash = '#!'
 
 
-mainApplicationModule.config(['$routeProvider',
-       function($routeProvider) {
-          $routeProvider
-              .when('/', {
-                 templateUrl: '/upload/views/uploadPage.client.view.html'
-              })
-              .when('/project', {
-                 templateUrl: 'project/project.client.html'
-              })
-              .when('/project/projectDetail', {
-                  templateUrl: './projectDetail/projectDetail.client.html'
-              })
-              .otherwise({
-                 redirectTo: '/'
-              });
-       }
-]);
-
 angular.element(document).ready(function () {
    angular.bootstrap(document,[mainApplicationModuleName]);
 });

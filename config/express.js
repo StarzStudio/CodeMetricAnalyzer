@@ -39,12 +39,17 @@ module.exports = function () {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    require('../app/routes/upload.server.routes.js')(app);
-    require('../app/routes/users.server.routes.js')(app);
-    require('../app/routes/index.server.routes.js')(app);
-    require('../app/routes/project.server.routes.js')(app);
+    importRoutes();
 
     app.use(express.static('./public'));
     app.use(express.static('./userUploadFiles/cppFiles'));
     return app;
 };
+
+const importRoutes = function () {
+    require('../app/routes/upload.server.routes.js')(app);
+    require('../app/routes/users.server.routes.js')(app);
+    require('../app/routes/index.server.routes.js')(app);
+    require('../app/routes/project.server.routes.js')(app);
+    require('../app/routes/playground.server.routes.js')(app);
+}

@@ -66,7 +66,7 @@
 #include "../SemiExp/SemiExp.h"
 #include "../Table/ITable.h"
 #include "../Table/Table.h"
-#include "../FileMgr/FileMgr/FileSystem.h"
+#include "../FileSystem/FileSystem.h"
 
 class contextForType
 {

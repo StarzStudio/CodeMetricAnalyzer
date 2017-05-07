@@ -108,46 +108,30 @@
 
 <script type="text/javascript" src="./lib/angular/angular.js"></script>
 <script type="text/javascript" src="./lib/angular-route/angular-route.js"></script>
+<script type="text/javascript" src="./lib/angular-resource/angular-resource.min.js"></script>
 <script type="text/javascript" src="application.js"></script>
 
 
-<script type="text/javascript" src="./index/angularJS/index.client.module.js"></script>
-<script type="text/javascript" src="./index/angularJS/index.client.controller.js"></script>
-<script type="text/javascript" src="./index/angularJS/index.client.routes.js"></script>
+
+<script type="text/javascript" src="./index/index.client.module.js"></script>
+<script type="text/javascript" src="./index/controller/index.client.controller.js"></script>
+<script type="text/javascript" src="./index/routes/index.client.routes.js"></script>
 
 
 
-<script>
-    //    var app = angular.module('codeAnalyzer', []);
-    //    app.controller('upload', function($scope) {
-    //        $scope.finished = "no";
-    //        $scope.fileList = [];
-    //        let files = getCppFilePaths();
-    //        for (let f of files) {
-    //            let fileInfo = {};
-    //            fileInfo.name = f;
-    //            $scope.fileList.push(fileInfo);
-    //        }
-    //
-    //    })
-    //
-    //    const getCppFilePaths = function() {
-    //        fs.readdir(__dirname + "/../../../userUploadFiles/cppFiles/localhost", function(err, files) {
-    //            if (err) {
-    //                console.log(err);
-    //                return;
-    //            }
-    //
-    //            let results = [];
-    //            files.forEach(function (filename) {
-    //                results.push(filename);
-    //            });
-    //            return results;
-    //        });
-    //    }
+<script type="text/javascript" src="/project/projects.client.module.js"></script>
+<script type="text/javascript" src="/project/controller/projects.client.controller.js"></script>
+<script type="text/javascript" src="/project/service/projects.client.service.js"></script>
+<script type="text/javascript" src="/project/routes/projects.client.routes.js"></script>
 
-</script>
 
+<!--for playground.client.html-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js" type="text/javascript"
+        charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ext-language_tools.js" type="text/javascript"
+        charset="utf-8"></script>
+
+<!--for playground.client.html-->
 </body>
 
 </html>

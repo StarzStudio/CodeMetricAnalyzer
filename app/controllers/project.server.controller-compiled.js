@@ -33,8 +33,6 @@ exports.create = function (req, res) {
             var file = new File(fileInfo);
             project.files.push(file);
         }
-
-        //project.creator = req.user;
     } catch (err) {
         _didIteratorError = true;
         _iteratorError = err;
@@ -50,6 +48,8 @@ exports.create = function (req, res) {
         }
     }
 
+    project.name = req.body.projectName;
+    //project.creator = req.user;
     project.save(function (err) {
         if (err) {
             return res.status(400).send({
@@ -79,6 +79,7 @@ exports.projectByID = function (req, res, next, id) {
         if (err) return next(err);
         if (!project) return next(new Error('Failed to load project ' + id));
         req.project = project;
+
         next();
     });
 };

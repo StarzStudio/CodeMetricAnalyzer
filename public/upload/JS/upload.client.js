@@ -3,6 +3,7 @@
 var uploadFiles = function () {
     console.log("button click");
     var files = document.querySelector("#file_input").files;
+    var projectName = document.querySelector('input[name="projectName"]').value;
     var formData = new FormData();
     for (var file of files) {
         var name = file.name;
@@ -10,11 +11,12 @@ var uploadFiles = function () {
             formData.append(name, file);
         }
     }
-
+        
     if (files.length === 0) {
         console.log("no file input, return")
         return;
     }
+    formData.append('projectName', projectName);
 
     var request = new XMLHttpRequest();
     request.onload = function() {

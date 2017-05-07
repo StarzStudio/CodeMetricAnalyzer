@@ -59,8 +59,8 @@
 #include "../Table/Table.h"
 #include "../TypeAnalysis/TypeAnalysis.h"
 #include "../DependencyAnalysis/DependencyAnalysis.h"
-#include "../FileMgr/FileMgr/FileMgr.h"
-#include "../FileMgr/FileMgr/IFileMgr.h"
+#include "../FileMgr/FileMgr.h"
+#include "../FileMgr/IFileMgr.h"
 #include "../Tasks/Tasks.h"
 #include "../BlockingQueue/BlockingQueue.h"
 
@@ -75,7 +75,7 @@ public:
     virtual void file(const File& f)
     {
         std::cout << "\n  begin to do Type analysis on:";
-        std::cout << "\n  " << dir_ + "\\" + f + "\n";
+        std::cout << "\n  " <<  f + "\n";
 		std::cout << "  working on thread " << std::this_thread::get_id()<<std::endl;
         WorkItem  partialTypeAnalysis = [this, f]()
         {
@@ -123,7 +123,7 @@ public:
     virtual void file(const File& f)
     {
         std::cout << "  begin to do Dependency analysis on:";
-        std::cout << "\n  " << dir_ + "\\" + f + "\n";
+        std::cout << "\n  " <<  f + "\n";
 		std::cout << "\n  working on thread " << std::this_thread::get_id() << std::endl;
         // each lambda creates a unique DependencyAnalyzer
         WorkItem  partialTypeAnalysis = [this, f]()

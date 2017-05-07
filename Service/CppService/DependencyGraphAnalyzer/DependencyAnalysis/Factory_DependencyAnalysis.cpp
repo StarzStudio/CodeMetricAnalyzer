@@ -16,7 +16,7 @@
 #include "../SemiExp/SemiExp.h"
 #include "../Tokenizer/Tokenizer.h"
 #include "Factory_DependencyAnalysis.h"
-#include "../FileMgr/FileMgr/FileSystem.h"
+#include "../FileSystem/FileSystem.h"
 #include "../TypeAnalysis/TypeAnalysis.h"
 
 using namespace Scanner;

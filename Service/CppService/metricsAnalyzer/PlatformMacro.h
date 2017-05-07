@@ -1,4 +1,4 @@
-#ifdef __APPLE__
+#ifdef __MACH__
 #define OS_MAC 1
 #endif // __APPLE__
 

@@ -15,6 +15,10 @@ var FileSchema = new Schema({
 
 
 var ProjectSchema = new Schema({
+    name: {
+        type: String,
+        default: "Project with no name"
+    },
     created: {
         type: Date,
         default: Date.now

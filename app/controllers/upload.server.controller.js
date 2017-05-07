@@ -8,7 +8,7 @@ const templateHTMLPath = "./Service/CppService/CppToHTML/HTMLgenerator/template.
 const multer  = require('multer');
 
 const uploadCppPath = "userUploadFiles/cppFiles";
-const upload = multer({ dest: __dirname}).any();
+const upload = multer({ dest : __dirname}).any();
 
 var projectController = require('../controllers/project.server.controller');
 

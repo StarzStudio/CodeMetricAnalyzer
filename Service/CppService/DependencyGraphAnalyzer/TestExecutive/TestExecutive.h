@@ -12,9 +12,9 @@
 
 
 #include "../DependencyAnalysis/DependencyAnalysis.h"
-#include "../FileMgr/FileMgr/FileMgr.h"
-#include "../FileMgr/FileMgr/IFileMgr.h"
-#include "../noSQLDBAndPersist/Persist/Persist.h"
+#include "../FileMgr/FileMgr.h"
+#include "../FileMgr/IFileMgr.h"
+//#include "../noSQLDBAndPersist/Persist/Persist.h"
 
 using namespace FileManager;
 
@@ -97,28 +97,28 @@ public:
 		bigDepenTable = dependencyTableMergeEngine.getMergedTable();
 		bigDepenTable.print();
 
-		tableToNosqlDB(bigDepenTable);
+		//tableToNosqlDB(bigDepenTable);
 
 	}
 
-	void tableToNosqlDB(ITable<ResultValue>& depenTable) {
-		using namespace NoSQLDB;
-		using Data = std::string;
+	// void tableToNosqlDB(ITable<ResultValue>& depenTable) {
+	// 	using namespace NoSQLDB;
+	// 	using Data = std::string;
 
-		NoSqlDb<Data> db;
-		std::vector<std::string> key_vec(depenTable.getKeyList());
-		for (auto key : key_vec) {
-			ResultValue rv = depenTable[key];
-			Element<std::string> elem;
-			for (auto v : rv.get())
-			{
-				elem.saveChild(v);
-			}
-			db.saveRecord(key, elem);
-		}
-		Persist<Data> persist(db);
-		persist.saveToFile("dependency.txt");
-	}
+	// 	NoSqlDb<Data> db;
+	// 	std::vector<std::string> key_vec(depenTable.getKeyList());
+	// 	for (auto key : key_vec) {
+	// 		ResultValue rv = depenTable[key];
+	// 		Element<std::string> elem;
+	// 		for (auto v : rv.get())
+	// 		{
+	// 			elem.saveChild(v);
+	// 		}
+	// 		db.saveRecord(key, elem);
+	// 	}
+	// 	Persist<Data> persist(db);
+	// 	persist.saveToFile("dependency.txt");
+	// }
 
 private:
 	std::string path;

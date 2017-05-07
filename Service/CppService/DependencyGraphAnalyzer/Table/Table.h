@@ -127,7 +127,7 @@ public:
     // print the Value info in a format
     void print()
     {
-        long save = std::cout.flags();    // save format state
+        std::ios::fmtflags save = std::cout.flags();    // save format state
         std::cout.fill(' ');
         std::cout.setf(std::ios::left, std::ios::adjustfield);
         std::cout << std::setw(20) << Type;
@@ -151,7 +151,7 @@ public:
     void printHeader()
     {
         std::cout.fill(' ');
-        long save = std::cout.flags();    // save format state
+        std::ios::fmtflags save = std::cout.flags();    // save format state
         // table head
         std::cout.setf(std::ios::left, std::ios::adjustfield);
         std::cout << std::setw(20) << "Type";
@@ -253,8 +253,8 @@ void Table<Value>::addRecord(const Key& Name, const Value& record)
 template<typename Value>
 std::pair<std::string, Value> Table<Value>::getRecord(const Key& Name)
 {
-    if (table.find(Name) == table.end())
-        throw(std::exception("no name found"));
+    // if (table.find(Name) == table.end())
+    //     throw(std::exception("no name found"));
     auto it = table.begin();
     for (; it != table.end(); it++)
     {
@@ -275,16 +275,16 @@ void Table<Value>::changeValue(const Key& Name, const Value& _value)
 template<typename Value>
 Value Table<Value>::getValue(const Key& Name)
 {
-    if (table.find(Name) == table.end())
-        throw(std::exception("no name found"));
+    // if (table.find(Name) == table.end())
+    //     throw(std::exception("no name found"));
     return table[Name];
 }
 
 template<typename Value>
 Value& Table<Value>::operator[](Key name)
 {
-    if (table.find(name) == table.end())
-        throw(std::exception("no name found"));
+    // if (table.find(name) == table.end())
+    //     throw(std::exception("no name found"));
     return table[name];
 }
 
@@ -334,7 +334,7 @@ std::vector<std::string> Table<Value>::getKeyList()
 template<typename Value>
 bool Table<Value>::find(const Key& Name)
 {
-    std::map<Key, Value>::const_iterator position = table.find(Name);
+    typename std::map<Key, Value>::const_iterator position = table.find(Name);
     if (position != table.end())
         return true;
     else
@@ -354,7 +354,7 @@ void Table<Value>::printHeader()
 {
     Value value;
     std::cout.fill(' ');
-    long save = std::cout.flags();    // save format state
+    std::ios::fmtflags save = std::cout.flags();    // save format state
     std::cout.setf(std::ios::left, std::ios::adjustfield);
     std::cout << "  " << std::setw(30) << "Name";
     value.printHeader();
@@ -369,7 +369,7 @@ void Table<Value>::print()
     for (auto pair : table)
     {
         std::cout.fill(' ');
-        long save = std::cout.flags();    // save format state
+        std::ios::fmtflags save = std::cout.flags();    // save format state
         std::cout.setf(std::ios::left, std::ios::adjustfield);
         std::cout << "\n  " << std::setw(30) << pair.first;
         std::cout.flags(save);

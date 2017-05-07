@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
         patterns.push_back(argv[i]);
     }
     parallelDependencyExecutive pde(path, patterns);
-    pde.explaination();
+   // pde.explaination();
     pde.analyze();
 
     // this is to hold the program and not let the main thread die before all the
