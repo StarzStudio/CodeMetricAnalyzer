@@ -39,14 +39,14 @@ module.exports = function () {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    importRoutes();
+    importRoutes(app);
 
     app.use(express.static('./public'));
     app.use(express.static('./userUploadFiles/cppFiles'));
     return app;
 };
 
-const importRoutes = function () {
+const importRoutes = function (app) {
     require('../app/routes/upload.server.routes.js')(app);
     require('../app/routes/users.server.routes.js')(app);
     require('../app/routes/index.server.routes.js')(app);

@@ -13,34 +13,59 @@ exports.run = function (req, res, next) {
     let cppFileName = 'temp.cpp';
     fs.writeFileSync(cppFileName, cppContent);
     // run the that temp cpp file
-    let result = runCppInConsole(cppFileName);
-    res.json(result);
-    //delete cpp file
-    fs.unlinkSync(cppFileName);
+    try {
+        runCppInConsole(cppFileName, res);
+    } catch (err) {
+        console.error(err);
+    }
+
+
+
 };
+// const contentEscaping(cppContent) {
+//
+// }
 
-const runCppInConsole = function (cppFileName) {
+const runCppInConsole = function (cppFileName, res) {
 
-    cppProgram = spawn(`g++ -std=c++14 ${cppFileName}`);
+    const process = require('child_process');
+    let result = {};
+    complieCppFile(process, cppFileName, result, res);
 
-    let result;
-// 捕获标准输出并将其打印到控制台
-    cppProgram.stdout.on('data', function (data) {
-        console.log('standard output:\n' + data);
-        result.stdout = data;
-    });
 
-// 捕获标准错误输出并将其打印到控制台
-    cppProgram.stderr.on('data', function (data) {
-        console.log('standard error output:\n' + data);
-        result.stderr = data;
-    });
-
-// 注册子进程关闭事件
-    cppProgram.on('exit', function (code, signal) {
-        console.log('child process eixt ,exit:' + code);
-    });
-    return result;
 };
-
+const complieCppFile = function(process, cppFileName, result, res) {
+    process.exec('g++-4.9 -std=c++14 -o tempExe temp.cpp', function (error, stdout, stderr) {
+        if (error !== null) {
+            console.log('exec error: ' + error);
+        }
+        console.log('complie stdout: ' + stdout);
+        console.log('complie stderr: ' + stderr);
+        result.complieStdout = stdout || "";
+        result.complieStderr = stderr || "";
+        runCppFile(process, result, res, cppFileName);
+    });
+}
+const runCppFile = function(process, result, res, cppFileName) {
+    let exeFileName = './tempExe';
+    process.execFile(exeFileName,null, function (error,stdout,stderr) {
+        if (error !== null) {
+            console.log('exec error: ' + error);
+        }
+        console.log('run stdout: ' + stdout);
+        console.log('run stderr: ' + stderr);
+        result.runStdout = stdout || "";
+        result.runStderr = stderr || "";
+        
+        res.json(result);
+        //delete cpp file
+        deleteFile(cppFileName);
+        deleteFile(exeFileName);
+    });
+}
+const deleteFile = function (fileName) {
+    if (fs.existsSync(fileName))  {
+        fs.unlinkSync(fileName);
+    }
+}
 

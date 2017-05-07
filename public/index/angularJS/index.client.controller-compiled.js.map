@@ -1,1 +1,0 @@
-{"version":3,"sources":["index.client.controller.js"],"names":[],"mappings":";;AAAA;;;AAGA,QAAQ,MAAR,CAAe,OAAf,EAAwB,UAAxB,CAAmC,kBAAnC,EAAuD,UAAS,MAAT,EAAiB,CAEvE,CAFD","file":"index.client.controller-compiled.js","sourcesContent":["/**\n * Created by zhouxing on 5/3/17.\n */\nangular.module('index').controller('uploadController', function($scope) {\n\n});\n"]}

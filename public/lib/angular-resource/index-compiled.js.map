@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.js"],"names":[],"mappings":";;AAAA,QAAQ,oBAAR;AACA,OAAO,OAAP,GAAiB,YAAjB","file":"index-compiled.js","sourcesContent":["require('./angular-resource');\nmodule.exports = 'ngResource';\n"]}
