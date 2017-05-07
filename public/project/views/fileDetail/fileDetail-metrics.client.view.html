@@ -19,5 +19,41 @@
 
             </tbody>
         </table>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+
+                <th>functions over 50 lines</th>
+
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="overLinedfunc in currentFileMetric.overlinedFunctions">
+
+                <td>{{overLinedfunc}}</td>
+            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+
+                <th>functions over 10 complexity</th>
+
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="overComplexityFunc in currentFileMetric.overComplexFunctions">
+
+                <td>{{overComplexityFunc}}</td>
+            </tr>
+
+            </tbody>
+        </table>
+
     </div>
 </section>

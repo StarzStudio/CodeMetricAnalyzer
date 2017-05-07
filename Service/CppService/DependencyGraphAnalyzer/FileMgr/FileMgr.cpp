@@ -45,18 +45,18 @@ int main()
 {
     Utils::Title("MT3Q6 - Demonstrating FileMgr");
     putline();
-    /* Utils::title("Base class behavior");
-     FileMgr fm("../..");
+    //Utils::title("Base class behavior");
+     FileMgr fm(".");
      fm.addPattern("*.h");
      fm.addPattern("*.cpp");
      fm.find();
-     putline();*/
+     //putline();
 
-    Utils::title("Derived class behavior");
-    AppSpecificFileMgr asfm;
-    asfm.addPattern("*.cpp");
+    // Utils::title("Derived class behavior");
+    // AppSpecificFileMgr asfm;
+    // asfm.addPattern("*.cpp");
 
-    asfm.find("..\\..");
+    // asfm.find("../..");
     putline();
 
     std::cout << "\n\n";

@@ -61,7 +61,7 @@ int main()
     //std::string fileSpec = "..\\ParallelDependencyAnalysis\\ParallelDependencyAnalysis.h";
     //std::string fileSpec = "..\\ParallelDependencyAnalysis\\ParallelDependencyAnalysis.cpp";
     //std::string fileSpec = "..\\DependencyAnalysis\\RuleActionForDependency.h";
-    std::string fileSpec = "test2.txt";
+    std::string fileSpec = "./TypeAnalysis/test2.txt";
 
     //std::string fileSpec = "../TypeAnalysis/test2.txt";
     TypeAnalysis analyzer(fileSpec);

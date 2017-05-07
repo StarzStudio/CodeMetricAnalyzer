@@ -48,7 +48,7 @@ ITable<ResultValue>* DependencyAnalysis::analyze()
 
 // ------------------< test stub > ---------------
 
-#ifdef  zTEST_DEPENDENCYANALYSIS
+#ifdef  TEST_DEPENDENCYANALYSIS
 #define zSOURCE1   // multiple source files
 #define SOURCE2   // single source file
 #define SINGLE
@@ -143,7 +143,7 @@ int main()
 #ifdef SOURCE2  //single table
 	
 	//TypeAnalysis ta("RuleActionForDependency.h");
-	TypeAnalysis ta("../ParallelDependencyExecutive/ParallelDependencyExecutive.cpp");
+	TypeAnalysis ta("./ParallelDependencyExecutive/ParallelDependencyExecutive.cpp");
 	ITable<TypeValue>* pSingleTypeTable = ta.analyze();
 	pSingleTypeTable->print();
 #endif

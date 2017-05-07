@@ -22,11 +22,14 @@ int main(int argc, char *argv[])
 	using Patterns = std::vector<Pattern>;
 
 	Path path;
+	std::cout << path ;
+
 	Patterns patterns;
 	path = argv[1];
 	for (int i = 2; i < argc; i++)
 	{
 		patterns.push_back(argv[i]);
+		std::cout << argv[i] << std::endl;
 	}
 
 	SingleThreadExecutive exe(path, patterns);

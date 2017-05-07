@@ -109,6 +109,8 @@ class FileMgr
     // gather relative path
     void find(const Path &path = "")
     {
+
+        
         // std::cout << "file manager is search relative path: " << path.c_str() << std::endl;
         // 	std::cout << "Filemanager current path: " << FileSystem::Directory::getCurrentDirectory().c_str() << std::endl;
         std::string fpath = FileSystem::Path::getFullFileSpec(path);
@@ -119,6 +121,7 @@ class FileMgr
             std::vector<std::string> files = FileSystem::Directory::getFiles(fpath, patt);
             for (auto f : files)
             {
+                std::cout << "find in file:" << f << std::endl;
                 File _file = FileSystem::Path::fileSpec(fpath, f);
                 file(_file);
             }

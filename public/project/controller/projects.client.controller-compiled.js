@@ -45,31 +45,11 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$routePa
             "overLinedFunc": [],
             "overComplexityFunc": []
         };
+        var files = $scope.project.files;
 
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
-
-        try {
-            for (var _iterator = $scope.project.files[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                var f = _step.value;
-
-                $scope.projectMetrics.overLinedFunc = $scope.projectMetrics.overLinedFunc.concat(f.metrics.overlinedFunctions);
-                $scope.projectMetrics.overComplexityFunc = $scope.projectMetrics.overComplexityFunc.concat(f.metrics.overComplexFunctions);
-            }
-        } catch (err) {
-            _didIteratorError = true;
-            _iteratorError = err;
-        } finally {
-            try {
-                if (!_iteratorNormalCompletion && _iterator.return) {
-                    _iterator.return();
-                }
-            } finally {
-                if (_didIteratorError) {
-                    throw _iteratorError;
-                }
-            }
+        for (var i = 0; files.length; i++) {
+            $scope.projectMetrics.overLinedFunc = $scope.projectMetrics.overLinedFunc.concat(JSON.parse(files[i].metrics).overlinedFunctions);
+            $scope.projectMetrics.overComplexityFunc = $scope.projectMetrics.overComplexityFunc.concat(JSON.parse(files[i].metrics).overComplexFunctions);
         }
     };
 

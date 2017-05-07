@@ -4,21 +4,37 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>function name</th>
+
                 <th>functions over 50 lines</th>
-                <th>functions over 10 complexity</th>
+
 
             </tr>
             </thead>
             <tbody>
-            <tr data-ng-repeat="metric in file.metrics">
+            <tr data-ng-repeat="overLinedfunc in projectMetrics.overLinedFunc">
 
-                <td>{{metric.name}}</td>
-                <td>{{metric.overlined}}</td>
-                <td>{{file.}}</td>
+                <td>{{overLinedfunc}}</td>
             </tr>
 
             </tbody>
         </table>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+
+                <th>functions over 10 complexity</th>
+
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="overComplexityFunc in projectMetrics.overComplexityFunc">
+
+                <td>{{overComplexityFunc}}</td>
+            </tr>
+
+            </tbody>
+        </table>
+
     </div>
 </section>

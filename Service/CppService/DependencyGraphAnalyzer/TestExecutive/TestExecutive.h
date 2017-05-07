@@ -26,7 +26,8 @@ public:
 
 	virtual void file(const File& f)
 	{
-		std::cout << "\n  " << dir_ + "\\" + f + "\n";
+		//std::cout << "\n  " << dir_ + "/" + f + "\n";
+			std::cout << "\n  " <<  f + "\n";
 		TypeAnalysis typeAnalyzer(f);
 		pTable typetable = typeAnalyzer.analyze();
 		//typetable->print();
@@ -52,7 +53,7 @@ public:
 
 	virtual void file(const File& f)
 	{
-		std::cout << "\n  " << dir_ + "\\" + f + "\n";
+	//	std::cout << "\n  " << dir_ + "\\" + f + "\n";
 		DependencyAnalysis da(f, typeTable);
 		pDepenTable depenTable = da.analyze();
 		DependencyTableMergeEngine->merge(depenTable);
