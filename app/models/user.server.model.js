@@ -2,18 +2,20 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-    firstName: {
-        type: String,
-        required: 'first name cannot be blank'
-    },
-    lastName: {
-        type: String,
-        required: 'last name cannot be blank'
-    },
+    // firstName: {
+    //     type: String,
+    //     required: 'first name cannot be blank'
+    // },
+    // lastName: {
+    //     type: String,
+    //     required: 'last name cannot be blank'
+    // },
+    name : String,
     created: {
         type: Date,
         default: Date.now
     },
+    //projectIds: [String]
 });
 
 mongoose.model('User', UserSchema);

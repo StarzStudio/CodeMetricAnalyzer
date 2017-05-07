@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /**
  * Created by zhouxing on 5/4/17.
@@ -25,7 +25,11 @@ var ProjectSchema = new Schema({
         default: Date.now
     },
     files: [FileSchema],
-    dependency: String
+    dependency: String,
+    creator: {
+        type: String,
+        default: "Anonymous"
+    }
 });
 
 mongoose.model('File', FileSchema);

@@ -25,10 +25,10 @@ var ProjectSchema = new Schema({
     },
     files: [FileSchema],
     dependency: String,
-    // creator: {
-    //     type: Schema.ObjectId,
-    //     ref: 'User'
-    // }
+    creator: {
+        type: String,
+        default: "Anonymous"
+    }
 });
 
 

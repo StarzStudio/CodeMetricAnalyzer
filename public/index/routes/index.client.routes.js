@@ -9,7 +9,10 @@ angular.module('index').config(['$routeProvider',
                 templateUrl: '/upload/views/uploadPage.client.view.html'
             })
             .when('/playground', {
-               templateUrl: '/playground/views/playground.client.html'
+               templateUrl: '/playground/views/playground.client.view.html'
+            })
+            .when('/community', {
+                templateUrl: '/community/views/community.client.view.html'
             })
             .otherwise({
                 redirectTo: '/'

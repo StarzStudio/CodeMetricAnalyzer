@@ -4,7 +4,7 @@
 
 const mainApplicationModuleName = 'codeAnalyzer';
 const mainApplicationModule = angular.module(mainApplicationModuleName,
-    ['ngResource', 'ngRoute', 'index', 'projects', 'playground']);
+    ['ngResource', 'ngRoute', 'index', 'projects', 'playground', 'users']);
 
 //To mark your application routes as single-page application routes, you will
 //need to use a routing scheme called Hashbangs. Hashbangs are implemented by

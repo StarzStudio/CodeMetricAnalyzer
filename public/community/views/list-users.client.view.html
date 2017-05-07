@@ -1,0 +1,36 @@
+<section data-ng-controller="ProjectsController" data-ng-init="find()">
+
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-12">
+                <h1 class="page-header">All users:</h1>
+            </div>
+            <ul>
+                <!-- The list of projects -->
+                <li data-ng-repeat="user in users">
+                    <a data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.name"></a>
+                    <!--<div class="col-lg-3 col-md-4 col-xs-6 thumb">-->
+                    <!--<a class="thumbnail" href="#">-->
+                    <!--<img class="img-responsive" src="http://placehold.it/400x300" alt="">-->
+                    <!--</a>-->
+                    <!--</div>-->
+                </li>
+            </ul>
+            <!-- If there are no articles in the list, suggest the user's create a new article -->
+            <div data-ng-hide="!users || users.length">
+                No users yet, come on and join us! <a href="/#!/signIn"><b><i>Sign In Now</i></b></a>
+            </div>
+        </div>
+
+        <hr>
+
+
+    </div>
+    <!-- /.container -->
+
+
+</section>

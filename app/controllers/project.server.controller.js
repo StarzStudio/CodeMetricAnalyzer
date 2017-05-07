@@ -4,6 +4,8 @@
 const mongoose = require('mongoose');
 const Project = mongoose.model('Project');
 const File = mongoose.model('File');
+const userController = require('../controllers/users.server.controller');
+const uuid = require('node-uuid');
 
 const getErrorMessage = function (err) {
     if (err.errors) {
@@ -26,17 +28,36 @@ exports.create = function (req, res) {
         let file = new File(fileInfo);
         project.files.push(file);
     }
-    project.name = req.body.projectName;
-    //project.creator = req.user;
+    if(req.body.projectName === "") {
+        project.name = "Anonymous";
+    } else {
+        project.name = req.body.projectName;
+    }
+    //let uuidString = uuid.v1();
+    project.creator = req.ip;
+        //project.creator = req.user;
     project.save(function (err) {
         if (err) {
             return res.status(400).send({
                 message: getErrorMessage(err)
             });
         } else {
-            res.json(project);
+            //res.status(200).json(project);
+
         }
     });
+
+    userController.alongSave( req, res);
+    // req.user.projectIds.push(project._id);
+    //
+    // User.findByIdAndUpdate(req.user.id, req.user, function(err, user) {
+    //     if (err) {
+    //         console.log(err);
+    //     } else {
+    //         console.log(user);
+    //     }
+    // });
+
 };
 
 
@@ -45,7 +66,7 @@ exports.create = function (req, res) {
 
 exports.list = function (req, res) {
     console.log("in list");
-    Project.find().sort('-created').exec(function (err, projects) {
+    Project.find({ creator: req.ip}).sort('-created').exec(function (err, projects) {
         if (err) {
             return res.status(400).send({
                 message: getErrorMessage(err)

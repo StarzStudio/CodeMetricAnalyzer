@@ -12,6 +12,36 @@ exports.create = function(req, res, next) {
     });
 };
 
+exports.alongSave = function(req, res) {
+    let userName = req.ip;
+    User.findOne({'name':userName}, function(err, user) {
+        if (err) {
+            console.log(err);
+        }
+
+        if(user) {
+            console.log('this is an old user');
+            res.status(200).json(user);
+        } else {
+            var newuser = new User();
+            newuser.name = userName;
+            newuser.save(function(err) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    console.log('this is an new user');
+                    console.log(newuser);
+                    res.status(200).json(newuser);
+                }
+            });
+        }
+
+    });
+
+
+};
+
 exports.list = function(req, res, next) {
     User.find({}, function(err, users) {
         if (err) {
