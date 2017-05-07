@@ -5,10 +5,10 @@
 angular.module('users').config(['$routeProvider',
     function($routeProvider) {
         $routeProvider
-            .when('/users', {
+            .when('/community', {
                 templateUrl: '/community/views/list-users.client.view.html'
             })
-            .when('/users/:userId', {
+            .when('/community/:userId', {
                 templateUrl: '/community/views/view-user.client.view.html'
             })
             .otherwise({

@@ -1,0 +1,23 @@
+<section data-ng-controller="ProjectsController">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>function name</th>
+                <th>lines</th>
+                <th>complexity</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="function in currentFileMetric.functions">
+
+                <td>{{function.name}}</td>
+                <td>{{function.size}}</td>
+                <td>{{function.complexity}}</td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+</section>

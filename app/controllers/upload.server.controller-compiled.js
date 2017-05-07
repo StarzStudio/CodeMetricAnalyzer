@@ -30,7 +30,7 @@ exports.receiveFiles = function (req, res, next) {
         }
 
         //var userIP = req.ip || 'anonymous';
-        var userIP = req.hostname;
+        var userIP = req.ip;
         makeUserSpecDir(userIP); // generate a dir for each user
         var cppFilePaths = [];
         var htmlFilePaths = [];
@@ -95,7 +95,7 @@ var makeUserSpecDir = function makeUserSpecDir(userIP) {
 // fs.rename(oldPath, newPath,callback);
 var renameFile = function renameFile(file, userIP, cppFilePaths, htmlFilePaths) {
     var cppPath = __dirname + ('/../../' + uploadCppPath + '/' + userIP + '/') + file.originalname;
-    var htmlPath = __dirname + ('/../../' + uploadCppPath + '/' + userIP + '/') + file.originalname + '.html';
+    var htmlPath = '/' + userIP + '/' + file.originalname + '.html';
     fs.renameSync(file.path, cppPath);
     cppFilePaths.push(cppPath);
     htmlFilePaths.push(htmlPath);

@@ -7,7 +7,7 @@
 
 // Create the 'articles' controller
 
-angular.module('users').controller('UsersController', ['$scope', '$routeParams', '$location', 'Users', function ($scope, $routeParams, $location, Users) {
+angular.module('users').controller('UsersController', ['$scope', '$routeParams', '$location', 'Users', 'Projects', function ($scope, $routeParams, $location, Users, Projects) {
 
     //Create a new controller method for creating new articles
     // $scope.create = function() {
@@ -39,7 +39,7 @@ angular.module('users').controller('UsersController', ['$scope', '$routeParams',
         $scope.user = Users.get({
             userId: $routeParams.userId
         });
-        var userName = $scope.user.name;
+        $scope.user.projects = Projects.query();
     };
 
     // // Create a new controller method for updating a single article

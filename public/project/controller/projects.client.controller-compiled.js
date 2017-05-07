@@ -40,8 +40,46 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$routePa
         $scope.project = Projects.get({
             projectId: $routeParams.projectId
         });
+
+        $scope.projectMetrics = {
+            "overLinedFunc": [],
+            "overComplexityFunc": []
+        };
+
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+            for (var _iterator = $scope.project.files[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                var f = _step.value;
+
+                $scope.projectMetrics.overLinedFunc = $scope.projectMetrics.overLinedFunc.concat(f.metrics.overlinedFunctions);
+                $scope.projectMetrics.overComplexityFunc = $scope.projectMetrics.overComplexityFunc.concat(f.metrics.overComplexFunctions);
+            }
+        } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion && _iterator.return) {
+                    _iterator.return();
+                }
+            } finally {
+                if (_didIteratorError) {
+                    throw _iteratorError;
+                }
+            }
+        }
     };
 
+    $scope.clickFile = function (file) {
+        var currentFile = file;
+        $scope.currentFileMetric = JSON.parse(currentFile.metrics);
+        $scope.currentFileURL = currentFile.fileURL;
+        console.log($scope.currentFileMetric);
+        $scope.show = 0;
+    };
     // // Create a new controller method for updating a single article
     // $scope.update = function() {
     //     // Use the article '$update' method to send an appropriate PUT request
@@ -74,6 +112,10 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$routePa
     //         });
     //     }
     // };
+
+    // $scope.showMetrics = function() {
+    //     $scope.projectMetrics =
+    // }
 }]);
 
 //# sourceMappingURL=projects.client.controller-compiled.js.map

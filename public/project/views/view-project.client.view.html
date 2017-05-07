@@ -1,4 +1,4 @@
-<section data-ng-controller="ProjectsController" data-ng-init="findOne()">
+<section data-ng-controller="ProjectsController" data-ng-init="findOne();$scope.show=1">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="./projectDetail/projectDetail.client.css" rel="stylesheet">
 
@@ -12,7 +12,7 @@
 
                     <ul class="nav nav-sidebar">
                         <li class="active">
-                            <a href="#">
+                            <a href="">
                                 <span class="sr-only">File List</span>
                                 <i class="fa fa-file-code-o"></i>
                                 <span>File List</span>
@@ -22,7 +22,7 @@
                         <ul class="nav child_menu">
                             <!-- The list of projects -->
                             <li data-ng-repeat="file in project.files">
-                                <a data-ng-href="#!/projects/{{project._id}}" data-ng-bind="file.name"></a>
+                                <a ng-click="clickFile(file)" data-ng-bind="file.name"></a>
                                 <!--<div class="col-lg-3 col-md-4 col-xs-6 thumb">-->
                                 <!--<a class="thumbnail" href="#">-->
                                 <!--<img class="img-responsive" src="http://placehold.it/400x300" alt="">-->
@@ -52,7 +52,14 @@
                 </div>
             </div>
 
-
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <div ng-show="show==0" data-ng-click="showFileInfos()"
+                     ng-include="'./project/views/fileDetail/view-project-fileDetail.client.view.html'"></div>
+                <div ng-show="show==1" data-ng-click="showMetrics()"
+                     ng-include="'./project/views/metricDetail/view-project-metricDetail.client.view.html'"></div>
+                <div ng-show="show==2" data-ng-click="showDeps()"
+                     ng-include="'./project/views/dependencyDetail/view-project-dependencyDetail.client.view.html'"></div>
+            </div>
         </div>
     </div>
 </section>

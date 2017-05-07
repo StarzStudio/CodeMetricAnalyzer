@@ -32,7 +32,7 @@ exports.receiveFiles = function (req, res, next) {
         }
 
         //var userIP = req.ip || 'anonymous';
-        var userIP = req.hostname;
+        var userIP = req.ip;
         makeUserSpecDir(userIP);               // generate a dir for each user
         var cppFilePaths = [];
         var htmlFilePaths = [];
@@ -104,7 +104,7 @@ const makeUserSpecDir = function(userIP) {
 // fs.rename(oldPath, newPath,callback);
 const renameFile = function (file, userIP, cppFilePaths, htmlFilePaths) {
     let cppPath =  __dirname + `/../../${uploadCppPath}/${userIP}/`  + file.originalname;
-    let htmlPath =  __dirname + `/../../${uploadCppPath}/${userIP}/`  + file.originalname + '.html';
+    let htmlPath = `/${userIP}/`  + file.originalname + '.html';
     fs.renameSync(file.path, cppPath);
     cppFilePaths.push(cppPath);
     htmlFilePaths.push(htmlPath);

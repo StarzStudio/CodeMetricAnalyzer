@@ -41,8 +41,27 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$routePa
             $scope.project = Projects.get({
                 projectId: $routeParams.projectId
             });
+
+            $scope.projectMetrics = {
+                "overLinedFunc" : [],
+                "overComplexityFunc" : []
+            };
+
+            for (let f of $scope.project.files) {
+                $scope.projectMetrics.overLinedFunc = $scope.projectMetrics.overLinedFunc.concat(f.metrics.overlinedFunctions);
+                $scope.projectMetrics.overComplexityFunc = $scope.projectMetrics.overComplexityFunc.concat(f.metrics.overComplexFunctions);
+            }
+
+
         };
 
+        $scope.clickFile = function(file){
+            let currentFile = file;
+            $scope.currentFileMetric = JSON.parse(currentFile.metrics);
+            $scope.currentFileURL = currentFile.fileURL;
+            console.log( $scope.currentFileMetric);
+            $scope.show = 0;
+        };
         // // Create a new controller method for updating a single article
         // $scope.update = function() {
         //     // Use the article '$update' method to send an appropriate PUT request
@@ -75,5 +94,9 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$routePa
         //         });
         //     }
         // };
+
+        // $scope.showMetrics = function() {
+        //     $scope.projectMetrics =
+        // }
     }
 ]);

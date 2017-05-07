@@ -29,6 +29,7 @@ var uploadFiles = function () {
     request.onreadystatechange = function () { // state change, callback
         if (request.readyState === 4) { // state: done
             if (request.status === 200) {
+
                 // success, get the return text
                 return success(request.responseText);
             } else {
@@ -36,6 +37,9 @@ var uploadFiles = function () {
                 return fail(request.status);
             }
         } else {
+            if(confirm('go to project page？')) {
+                location.href='#!/projects';
+            }
             console.log("http request is still ongoing");
     }
     }

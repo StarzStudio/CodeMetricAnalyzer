@@ -1,4 +1,4 @@
-<section data-ng-controller="ProjectsController" data-ng-init="find()">
+<section data-ng-controller="UsersController" data-ng-init="find()">
 
 
     <!-- Page Content -->
@@ -12,7 +12,7 @@
             <ul>
                 <!-- The list of projects -->
                 <li data-ng-repeat="user in users">
-                    <a data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.name"></a>
+                    <a data-ng-href="#!/community/{{user._id}}" data-ng-bind="user.name"></a>
                     <!--<div class="col-lg-3 col-md-4 col-xs-6 thumb">-->
                     <!--<a class="thumbnail" href="#">-->
                     <!--<img class="img-responsive" src="http://placehold.it/400x300" alt="">-->
@@ -22,7 +22,7 @@
             </ul>
             <!-- If there are no articles in the list, suggest the user's create a new article -->
             <div data-ng-hide="!users || users.length">
-                No users yet, come on and join us! <a href="/#!/signIn"><b><i>Sign In Now</i></b></a>
+                No users yet, come on and join us! <a href="/#!/signIn"><b><i>Sign Up Now</i></b></a>
             </div>
         </div>
 

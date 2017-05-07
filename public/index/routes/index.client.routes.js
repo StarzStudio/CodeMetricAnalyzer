@@ -11,9 +11,6 @@ angular.module('index').config(['$routeProvider',
             .when('/playground', {
                templateUrl: '/playground/views/playground.client.view.html'
             })
-            .when('/community', {
-                templateUrl: '/community/views/community.client.view.html'
-            })
             .otherwise({
                 redirectTo: '/'
             });

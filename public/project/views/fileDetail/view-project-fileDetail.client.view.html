@@ -1,0 +1,13 @@
+<section data-ng-init="showSource=true">
+    <ul class="nav nav-tabs">
+        <!--<li class="active">-->
+        <li>
+            <a href="" ng-click="showSource=true">Source</a>
+        </li>
+        <li>
+            <a href="" ng-click="showSource=false">Metrics</a>
+        </li>
+    </ul>
+    <div ng-show="showSource"  ng-include="'./project/views/fileDetail/fileDetail-source.client.view.html'"></div>
+    <div ng-show="!showSource"  ng-include="'./project/views/fileDetail/fileDetail-metrics.client.view.html'"></div>
+</section>
