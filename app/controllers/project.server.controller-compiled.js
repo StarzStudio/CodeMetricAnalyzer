@@ -92,7 +92,7 @@ exports.list = function (req, res) {
     //         res.json(projects);
     //     }
     // });
-    Project.find().sort('-created').exec(function (err, projects) {
+    Project.find({ creator: req.ip }).sort('-created').exec(function (err, projects) {
         if (err) {
             return res.status(400).send({
                 message: getErrorMessage(err)
