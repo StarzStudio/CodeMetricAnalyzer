@@ -66,7 +66,16 @@ exports.create = function (req, res) {
 
 exports.list = function (req, res) {
     console.log("in list");
-    Project.find({ creator: req.ip}).sort('-created').exec(function (err, projects) {
+    // Project.find({ creator: req.ip}).sort('-created').exec(function (err, projects) {
+    //     if (err) {
+    //         return res.status(400).send({
+    //             message: getErrorMessage(err)
+    //         });
+    //     } else {
+    //         res.json(projects);
+    //     }
+    // });
+    Project.find().sort('-created').exec(function (err, projects) {
         if (err) {
             return res.status(400).send({
                 message: getErrorMessage(err)

@@ -48,7 +48,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$routePa
             };
             let files = $scope.project.files;
 
-            for (let i = 0 ; files.length; i++) {
+            for (let i = 0 ; i < files.length; i++) {
                 $scope.projectMetrics.overLinedFunc = $scope.projectMetrics.overLinedFunc.concat(JSON.parse(files[i].metrics).overlinedFunctions);
                 $scope.projectMetrics.overComplexityFunc = $scope.projectMetrics.overComplexityFunc.concat(JSON.parse(files[i].metrics).overComplexFunctions);
             }
