@@ -9,9 +9,9 @@ module.exports = function(app) {
         .get(projects.list)
         .post(projects.create);
     app.route('/api/projects/:projectId')
-        .get(projects.read);
+        .get(projects.read)
         // .put(projects.update)
-        // .delete(projects.delete);
+        .delete(projects.delete);
     app.param('projectId', projects.projectByID);
 };
 

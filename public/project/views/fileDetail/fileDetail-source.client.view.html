@@ -1,9 +1,14 @@
 <section data-ng-controller="ProjectsController">
+
     <div class="container">
 
-        <div class="row">
-
-            <iframe height="500" frameborder="0" class="col-sm-9  col-md-10 main" src={{currentFileURL}}></iframe>
+        <div compile='currentFileConent' id="fileSource" class="col-sm-9  col-md-10 main" class="row">
+            <div>
+                <pre>
+                    <code class="cpp"></code>
+                 </pre>
+            </div>
         </div>
     </div>
+
 </section>

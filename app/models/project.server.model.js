@@ -3,13 +3,17 @@
  */
 const mongoose = require('mongoose'),
     Schema = mongoose.Schema;
+
+
+
+
 var FileSchema = new Schema({
     created: {
         type: Date,
-        default: Date.now
+        default: Date.now()
     },
     name: String,
-    fileURL: String,
+    htmlContent: String,
     metrics: String
 });
 
@@ -21,14 +25,15 @@ var ProjectSchema = new Schema({
     },
     created: {
         type: Date,
-        default: Date.now
+        default: Date.now()
     },
     files: [FileSchema],
     dependency: String,
     creator: {
         type: String,
         default: "Anonymous"
-    }
+    },
+    size : Number
 });
 
 

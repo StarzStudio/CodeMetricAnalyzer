@@ -50,21 +50,19 @@ exports.receiveFiles = function (req, res, next) {
 
         // store all the files metrics in JSON format in an array
         var fileMetricsJSON = analyzeCodeMetrics( searchPath);
+        var htmlContentCollection = generateHTML(templateHTMLPath, destHTMLPath, searchPath);
         let fileInfos = [];
         for (let i = 0; i < fileMetricsJSON.length; i++) {
             let fileInfo = {};
-            fileInfo.name = req.files[i].originalname;
-            fileInfo.fileURL = htmlFilePaths[i];
-            fileInfo.metrics = fileMetricsJSON[i];
+            fileInfo.name = JSON.parse(fileMetricsJSON[i]).fileName;
+            fileInfo.htmlContent = htmlContentCollection[i];
+            fileInfo.metrics = JSON.stringify(JSON.parse(fileMetricsJSON[i]).metricValue);
             fileInfos.push(fileInfo);
         }
 
 
-
         // this step should be after analyzeCodeMetrics(), because it need to wait analyzeCodeMetrics generate
         // metricsResult.cpp, then make it to .html
-        generateHTML(templateHTMLPath, destHTMLPath, searchPath);
-
 
 
         // delete all the cpp files eventually
@@ -74,12 +72,23 @@ exports.receiveFiles = function (req, res, next) {
        // res.status(200).redirect('index/!#/projects');
 
         req.fileInfos = fileInfos;
+
+        getProjectSize(req);
+
         projectController.create(req, res);
 
     })
 
 
 };
+
+const getProjectSize = function (req) {
+    let size = 0;
+    for (let f of req.files) {
+        size += f.size;
+    }
+    req.projectSize = size;
+}
 
 const analyzeCodeMetrics = function (path) {
     let result = metricAnalyzer(path);

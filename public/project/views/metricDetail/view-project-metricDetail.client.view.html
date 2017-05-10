@@ -1,4 +1,4 @@
-<section>
+<section data-ng-controller="ProjectsController" data-ng-init="calculateTotalBadFunc()">
     <!--table-->
     <div class="table-responsive">
         <table class="table table-striped">
@@ -6,14 +6,12 @@
             <tr>
 
                 <th>functions over 50 lines</th>
-
-
             </tr>
             </thead>
             <tbody>
-            <tr data-ng-repeat="overLinedfunc in projectMetrics.overLinedFunc">
+            <tr data-ng-repeat="f in overLinedFunc">
 
-                <td>{{overLinedfunc}}</td>
+                <td>{{f}}</td>
             </tr>
 
             </tbody>
@@ -28,9 +26,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr data-ng-repeat="overComplexityFunc in projectMetrics.overComplexityFunc">
+            <tr data-ng-repeat="f in overComplexityFunc">
 
-                <td>{{overComplexityFunc}}</td>
+                <td>{{f}}</td>
             </tr>
 
             </tbody>

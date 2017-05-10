@@ -2,7 +2,6 @@
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="./projectDetail/projectDetail.client.css" rel="stylesheet">
 
-    <h1 data-ng-bind="project.name"></h1>
 
     <div class="container-fluid">
         <div class="row">
@@ -30,12 +29,13 @@
                                 <!--</div>-->
                             </li>
                         </ul>
+                    </ul>
                 </div>
                 <div class="menu_section">
                     <h3>Overview</h3>
                     <ul class="nav nav-sidebar">
                         <li>
-                            <a href="">
+                            <a ng-href="">
                                 <i class="fa fa-line-chart"></i>
                                 <span>Project Metrics</span>
                             </a>
@@ -50,9 +50,22 @@
                         </li>
                     </ul>
                 </div>
+                <div class="menu_section">
+                    <h3>Operations</h3>
+                    <ul class="nav nav-sidebar">
+                        <li>
+                            <a ng-click="delete()">
+                                <i class="fa fa-trash-o"></i>
+                                <span>Delete this project</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
             </div>
 
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <h1 data-ng-bind="'Project: ' + project.name"></h1>
                 <div ng-show="show==0" data-ng-click="showFileInfos()"
                      ng-include="'./project/views/fileDetail/view-project-fileDetail.client.view.html'"></div>
                 <div ng-show="show==1" data-ng-click="showMetrics()"

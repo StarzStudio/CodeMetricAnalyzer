@@ -48,18 +48,19 @@ exports.receiveFiles = function (req, res, next) {
 
         // store all the files metrics in JSON format in an array
         var fileMetricsJSON = analyzeCodeMetrics(searchPath);
+        var htmlContentCollection = generateHTML(templateHTMLPath, destHTMLPath, searchPath);
         var fileInfos = [];
         for (var _i = 0; _i < fileMetricsJSON.length; _i++) {
             var fileInfo = {};
-            fileInfo.name = req.files[_i].originalname;
-            fileInfo.fileURL = htmlFilePaths[_i];
-            fileInfo.metrics = fileMetricsJSON[_i];
+            fileInfo.name = JSON.parse(fileMetricsJSON[_i]).fileName;
+            fileInfo.htmlContent = htmlContentCollection[_i];
+            fileInfo.metrics = JSON.stringify(JSON.parse(fileMetricsJSON[_i]).metricValue);
             fileInfos.push(fileInfo);
         }
 
         // this step should be after analyzeCodeMetrics(), because it need to wait analyzeCodeMetrics generate
         // metricsResult.cpp, then make it to .html
-        generateHTML(templateHTMLPath, destHTMLPath, searchPath);
+
 
         // delete all the cpp files eventually
         deleteFiles(cppFilePaths);
@@ -68,8 +69,41 @@ exports.receiveFiles = function (req, res, next) {
         // res.status(200).redirect('index/!#/projects');
 
         req.fileInfos = fileInfos;
+
+        getProjectSize(req);
+
         projectController.create(req, res);
     });
+};
+
+var getProjectSize = function getProjectSize(req) {
+    var size = 0;
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+        for (var _iterator = req.files[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var f = _step.value;
+
+            size += f.size;
+        }
+    } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+    } finally {
+        try {
+            if (!_iteratorNormalCompletion && _iterator.return) {
+                _iterator.return();
+            }
+        } finally {
+            if (_didIteratorError) {
+                throw _iteratorError;
+            }
+        }
+    }
+
+    req.projectSize = size;
 };
 
 var analyzeCodeMetrics = function analyzeCodeMetrics(path) {
@@ -102,13 +136,13 @@ var renameFile = function renameFile(file, userIP, cppFilePaths, htmlFilePaths) 
 };
 
 var deleteFiles = function deleteFiles(newFilePaths) {
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
+    var _iteratorNormalCompletion2 = true;
+    var _didIteratorError2 = false;
+    var _iteratorError2 = undefined;
 
     try {
-        for (var _iterator = newFilePaths[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var _path = _step.value;
+        for (var _iterator2 = newFilePaths[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            var _path = _step2.value;
 
             fs.unlinkSync(_path);
         }
@@ -116,16 +150,16 @@ var deleteFiles = function deleteFiles(newFilePaths) {
         // fs.renameSync(metricsResultFile + ".cpp.html" , metricsResultFile + ".html");
         // fs.unlinkSync(metricsResultFile + ".cpp");
     } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
     } finally {
         try {
-            if (!_iteratorNormalCompletion && _iterator.return) {
-                _iterator.return();
+            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                _iterator2.return();
             }
         } finally {
-            if (_didIteratorError) {
-                throw _iteratorError;
+            if (_didIteratorError2) {
+                throw _iteratorError2;
             }
         }
     }

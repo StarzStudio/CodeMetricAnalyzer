@@ -21,4 +21,13 @@ angular.element(document).ready(function () {
    angular.bootstrap(document, [mainApplicationModuleName]);
 });
 
+// Create the 'projects' module
+
+angular.module('index', []);
+angular.module('upload', []);
+angular.module('playground', []);
+angular.module('projects', ['hljs']);
+
+angular.module('users', []);
+
 //# sourceMappingURL=application-compiled.js.map

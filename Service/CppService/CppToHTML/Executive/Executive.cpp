@@ -24,5 +24,10 @@ int main(int argc, char **argv)
 		pFileMgr->addPattern(p);
 	}
 	pFileMgr->search();
+
+	std::vector<std::string> htmlContentCollection = g.HTMLContentCollection();
+	for (auto e : htmlContentCollection) {
+		std::cout << e << std::endl;
+	}
 	return 0;
 }

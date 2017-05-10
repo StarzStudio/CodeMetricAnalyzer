@@ -1,1 +1,1 @@
-{"version":3,"sources":["index.client.module.js"],"names":[],"mappings":";;AAAA;;;AAGA,QAAQ,MAAR,CAAe,OAAf,EAAwB,EAAxB","file":"index.client.module-compiled.js","sourcesContent":["/**\n * Created by zhouxing on 5/3/17.\n */\nangular.module('index', []);"]}
+{"version":3,"sources":["index.client.module.js"],"names":[],"mappings":"AAAA","file":"index.client.module-compiled.js","sourcesContent":["/**\n * Created by zhouxing on 5/3/17.\n */\n"]}

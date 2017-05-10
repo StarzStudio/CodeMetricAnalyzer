@@ -119,6 +119,7 @@ void MetricExecutive::start() {
         if (showTree) {
             std::cout << tree->ExtractScopeInfo();
         }
+        analyzer.setFileName(currentFile);
         analyzer.setTree(tree);
         analyzer.analyzeFunc();
         _metricInfoCollection.push_back(analyzer.metricInfoJSON());

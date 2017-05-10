@@ -1,6 +1,6 @@
 .PHONY:clean
 complier = g++
-target = dependencyAnalyzer
+target = generator
 cflags = -std=c++14 -Wall
 deps = $(shell find ./ -name "*.h")
 src = $(shell find ./ -name "*.cpp")

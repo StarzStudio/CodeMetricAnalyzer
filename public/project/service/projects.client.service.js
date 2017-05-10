@@ -4,10 +4,13 @@
 angular.module('projects').factory('Projects', ['$resource', function($resource) {
     // Use the '$resource' service to return an article '$resource' object
     return $resource('api/projects/:projectId', {
-        articleId: '@_id'
+        projectId: '@_id'
     }, {
         update: {
             method: 'PUT'
         }
     });
 }]);
+
+
+

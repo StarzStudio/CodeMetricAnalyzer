@@ -35,6 +35,7 @@ exports.create = function (req, res) {
     }
     //let uuidString = uuid.v1();
     project.creator = req.ip;
+    project.size = req.projectSize;
         //project.creator = req.user;
     project.save(function (err) {
         if (err) {
@@ -117,16 +118,16 @@ exports.read = function(req, res) {
 //     });
 //     next();
 // };
-//
-// exports.delete = function(req, res) {
-//     var article = req.article;
-//     article.remove(function(err) {
-//         if (err) {
-//             return res.status(400).send({
-//                 message: getErrorMessage(err)
-//             });
-//         } else {
-//             res.json(article);
-//         }
-//     });
-// };
+
+exports.delete = function(req, res) {
+    var project = req.project;
+    project.remove(function(err) {
+        if (err) {
+            return res.status(400).send({
+                message: getErrorMessage(err)
+            });
+        } else {
+            res.json(project);
+        }
+    });
+};

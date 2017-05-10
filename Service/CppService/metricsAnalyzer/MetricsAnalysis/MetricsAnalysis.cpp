@@ -21,7 +21,7 @@ std::string MetricAnalysis::metricInfoJSON() {
     document.SetObject();
     Document::AllocatorType &allocator = document.GetAllocator();
 
-    Value root(kObjectType);
+    Value metricValue(kObjectType);
 
     Value functions(kArrayType);
     for (auto it = this->_fileMetricInfo._funcMetricInfoCollection.begin();
@@ -67,11 +67,16 @@ std::string MetricAnalysis::metricInfoJSON() {
     }
 
 
-    root.AddMember("functions", functions, allocator);
-    root.AddMember("overlinedFunctions", overlinedFunctions, allocator);
-    root.AddMember("overComplexFunctions", overComplexFunctions, allocator);
+    metricValue.AddMember("functions", functions, allocator);
+    metricValue.AddMember("overlinedFunctions", overlinedFunctions, allocator);
+    metricValue.AddMember("overComplexFunctions", overComplexFunctions, allocator);
 
+    Value root(kObjectType);
 
+     Value fileName(kStringType);
+        fileName.SetString(this->_currentFile.c_str(), this->_currentFile.size(), allocator);
+    root.AddMember("fileName", fileName, allocator);
+    root.AddMember("metricValue", metricValue, allocator);
     StringBuffer buffer;
     Writer<StringBuffer> writer(buffer);
     root.Accept(writer);

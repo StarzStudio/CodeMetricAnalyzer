@@ -21,10 +21,21 @@ void HTMLgenerator::transferFileType(File in_fileName) {
 	replaceSymbol(cppFileContent);
 	File shortName = FileSystem::Path::getName(in_fileName);
 	std::vector<File> placeholder = { shortName, cppFileContent };
-	File htmlFileContent = injectPlaceHolderIntoTemplate(placeholder);
+	File htmlFileContent = injectPlaceHolderIntoTemplate(cppFileContent);
 	File htmlFileName = getHTMLFileName(in_fileName);
 	storeFileContent(htmlFileName, htmlFileContent);
 	//removeFile(in_fileName);
+}
+
+File HTMLgenerator::getHTMLFileContent(File in_fileName) {
+	File cppFileContent = this->readFileContent(in_fileName);
+	
+	replaceSymbol(cppFileContent);
+
+	File shortName = FileSystem::Path::getName(in_fileName);
+	File htmlFileContent = injectPlaceHolderIntoTemplate(cppFileContent);
+		std::cout << cppFileContent << std::endl;
+	return htmlFileContent;
 }
 
 void HTMLgenerator::replaceSymbol(File& cppFileContent) {
@@ -59,16 +70,13 @@ inline void HTMLgenerator::storeFileContent(File in_htmlFileName, File in_htmlCo
 
 // inject placeholder into html template
 
-inline File HTMLgenerator::injectPlaceHolderIntoTemplate(std::vector<File> in_placeholder) {
+inline File HTMLgenerator::injectPlaceHolderIntoTemplate(File in_placeholder) {
 	File htmlContent = _templateHTML;
-	File fileName = in_placeholder[0];
-	File fileContent = in_placeholder[1];
-
-	size_t posOfFileName = htmlContent.find(std::string("</title>"));
-	htmlContent.insert(posOfFileName, fileName);
+	// size_t posOfFileName = htmlContent.find(std::string("</title>"));
+	// htmlContent.insert(posOfFileName, fileName);
 
 	size_t posOfFileContent = htmlContent.find(std::string("</code>"));
-	htmlContent.insert(posOfFileContent, fileContent);
+	htmlContent.insert(posOfFileContent, in_placeholder);
 	return htmlContent;
 }
 

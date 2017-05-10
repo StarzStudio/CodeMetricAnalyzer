@@ -1,12 +1,17 @@
 <section id="upload" class="upload-section" ng-controller="uploadController">
+    <link href="./upload/css/upload.css" rel="stylesheet">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
                 <h1>C++ Code Master</h1>
-                <p><strong>Usage Instructions:</strong> upload all the *.h, *.cpp files in a C++ project, the server
-                    will store and display all the file content, anaylze and show the metrics and dependency
-                    relationship information for you</p>
-                <br><br><br><br>
+                <div class="Intro">
+                    <p><strong>Usage Instructions:</strong></p>
+                    <p>Upload source files in a C++ project, <br> the website
+                        will show the metrics information for you!</p>
+                    <p>You can select your C++ source files for multiple times.<br><br>
+                        Each time, you can select multiple files. <br><br>
+                        After you are done, please click 'Submit' button</p>
+                </div>
                 <!--<input type="file" name="uploadCppFiles" id="file_input" multiple />-->
                 <!--<div class="form-group col-md-12 has-feedback" id="file">-->
                 <!--<label for="" class="control-label col-md-4">Choose all files in your project:</label>-->
@@ -19,27 +24,28 @@
                 <!--</div>-->
 
 
-                <input id="file_input" type="file" style="display:none" multiple>
-                <div class="input-append">
-                    <input id="photoCover" class="input-large" type="text" style="height:30px;width: 300px;">
-                    <a class="btn" onclick="$('input[id=file_input]').click();">Browse</a>
-                </div>
                 <br>
+                <label for="projectNameTextField">Project Name * : </label>
+                <input id="projectNameTextField" type="text" name="projectName" placeholder="">
 
-                <input type="text" name="projectName" placeholder="please enter your project name here"
-                       style="height:30px;width: 300px;">
+                <div class="buttonArea">
+                    <input id="file_input" type="file" style="display:none" multiple>
+                    <span class="input-append">
+                    <!--<input id="photoCover" class="input-large" type="text" style="height:30px;width: 300px;">-->
+                    <a class="btn" onclick="$('input[id=file_input]').click();">Select C++ files</a>
+                </span>
+
+                    <button id="submitButton" type="button">Submit</button>
+                </div>
+
+                <textarea id="fileNameTextarea" disabled name="fileNameTextarea"
+                          laceholder="selected file name will be presented here"></textarea>
 
 
-                <br><br>
-                <button type="button" onclick="uploadFiles()">Submit</button>
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        $('input[id=file_input]').change(function() {
-//                $('#photoCover').val($(this).val());
-            $('#photoCover').val("Now, Please click submit button");
-        });
-    </script>
 
+
+    <script type="text/javascript" src="./upload/JS/upload.client.js"></script>
 </section>

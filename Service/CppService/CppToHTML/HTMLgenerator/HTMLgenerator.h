@@ -62,16 +62,21 @@ public:
 
 	// transfer from cpp source text to html content
 	void transferFileType(File in_fileName);
+	File getHTMLFileContent(File in_fileName);
 	virtual void execute(const File & in_fileName) {
 		
 	//	std::cout << in_fileName.c_str() << std::endl;
 		if (in_fileName.find(".cpp") != std::string::npos ||
 			in_fileName.find(".h") != std::string::npos) {
-			transferFileType(in_fileName);
+				//std::cout << "scan fiel :" << in_fileName << std::endl;
+			htmlContentCollection.push_back(getHTMLFileContent(in_fileName));
 		}
 	}
+	std::vector<std::string> HTMLContentCollection() {
+		return htmlContentCollection;
+	}
 private:
-
+	std::vector<std::string> htmlContentCollection;
 	// given file path, read in its content
 	void replaceSymbol(File& cppFileContent) ;
 	//void HTMLgenerator::removeFile (const std::string& in_filename);
@@ -86,7 +91,7 @@ private:
 	// store file content
 	void storeFileContent(File in_htmlFileName, File in_htmlContent);
 	// inject placeholder into html template
-	File injectPlaceHolderIntoTemplate(std::vector<File> in_placeholder);
+	File injectPlaceHolderIntoTemplate(File in_placeholder);
 	// change \n to <br> , space tpo &nbsp
 	void replaceSymbol(File& in_FileContent, File in_old, File in_new);
 	// transfer cpp file name to html file name 

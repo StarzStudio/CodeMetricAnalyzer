@@ -8,39 +8,47 @@
         /*left: 0;*/
         /*}*/
         #submit_input {
-            margin:20px 20px;
-            width:200px;
+            margin: 20px 20px;
+            width: 200px;
             float: right;
         }
+
         #outputField {
-            margin:0px 20px;
+            margin: 0px 20px;
         }
     </style>
-    <form data-ng-submit="create()" novalidate>
-        <!--code input box, must provide height, otherwise won't show-->
-        <pre id="code" class="ace_editor" style="min-height: 50%">
+
+    <div class="container-fluid">
+        <div class="row">
+            <form data-ng-submit="create()" novalidate>
+                <!--code input box, must provide height, otherwise won't show-->
+                <pre id="code" class="ace_editor" style="min-height: 400px">
 	        <textarea class="ace_text-input">
  // Currently, only C++ code is supported.
- #include &ltstring&gt
+ #include &ltiostream&gt
  using namespace std;
  int main() {
-   cout << "hello guys in DO course";
+   cout << "hello world";
    return 0;
  }
              </textarea>
         </pre>
-        <input id='submit_input' type="submit" value="Run">
+                <input id='submit_input' type="submit" value="Run">
 
-    </form>
-    <!-- The error message element -->
-    <div data-ng-show="error">
-        <strong data-ng-bind="error"></strong>
+            </form>
+            <!-- The error message element -->
+            <div data-ng-show="error">
+                <strong data-ng-bind="error"></strong>
+            </div>
+        </div>
     </div>
-    <div id="outputField" data-ng-show="complieOutput || runOutput">
-        <p>Output:</p>
-        <p>==================================================</p>
-        <p data-ng-bind="complieOutput" ></p>
-        <p data-ng-bind="runOutput" ></p>
+    <div class="row">
+        <div id="outputField" data-ng-show="complieOutput || runOutput">
+            <p>Output:</p>
+            <p>==================================================</p>
+            <p data-ng-bind="complieOutput"></p>
+            <p data-ng-bind="runOutput"></p>
+        </div>
     </div>
     <script>
         //init

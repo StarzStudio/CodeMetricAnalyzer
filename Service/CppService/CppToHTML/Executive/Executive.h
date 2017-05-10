@@ -17,7 +17,8 @@ using namespace v8;
 
 
 void generateHTML(const FunctionCallbackInfo<Value>& args) {
-
+	 Isolate* isolate = args.GetIsolate();
+    HandleScope scope(isolate);
     // get tempalte html file
 	String::Utf8Value _templateFile(args[0]->ToString()); //convert to std::string
 	std::string templateFile = std::string(*_templateFile); 
@@ -47,8 +48,15 @@ void generateHTML(const FunctionCallbackInfo<Value>& args) {
 	}
 	pFileMgr->search();
 
-    bool isComplete = true;
-    args.GetReturnValue().Set(isComplete);
+	std::vector<std::string> htmlContentCollection = g.HTMLContentCollection();
+	 Local<Array> array = Array::New(isolate,htmlContentCollection.size());
+
+    for (int i = 0; i < htmlContentCollection.size(); i++) {
+        array->Set(i,String::NewFromUtf8(isolate, htmlContentCollection[i].c_str()));
+    }
+
+
+    args.GetReturnValue().Set(array);
 }
 
 

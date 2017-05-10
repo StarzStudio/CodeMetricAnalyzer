@@ -78,7 +78,7 @@ struct FuncMetricInfo {
 };
 
 struct FileMetricInfo {
-
+    std::string fileName;
     std::vector <std::string> overlinedFunctions;
     std::vector <std::string> overComplexityFunctions;
     std::unordered_map <std::string, FuncMetricInfo> _funcMetricInfoCollection;
@@ -86,7 +86,7 @@ struct FileMetricInfo {
 
 // provide DFS trasversal of AST to get node information
 class MetricAnalysis {
-
+    using File = std::string;
 public:
     void setTree(ASTTree *_tree) { tree = _tree; }
 
@@ -102,8 +102,11 @@ public:
 
     std::string metricInfoJSON() ;
 
-
+    void setFileName(File currentFile) {
+        _currentFile = currentFile;
+    }
 private:
+    File _currentFile;
     ASTTree *tree;
 
     std::string TreeWalk(ASTNode *root);

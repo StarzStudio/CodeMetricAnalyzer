@@ -4,8 +4,4 @@
 // Invoke 'strict' JavaScript mode
 'use strict';
 
-// Create the 'articles' module
-
-angular.module('projects', []);
-
 //# sourceMappingURL=projects.client.module-compiled.js.map
