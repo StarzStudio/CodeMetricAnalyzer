@@ -28,7 +28,7 @@ void Block::push_back(Byte b)
 Byte& Block::operator[](size_t i)
 {
   if(i<0 || bytes_.size() <= i)
-    throw std::runtime_error("index out of range in Block");
+   // throw std::runtime_error("index out of range in Block");
   return bytes_[i];
 }
 //----< const indexer >----------------------------------------------------
@@ -36,7 +36,7 @@ Byte& Block::operator[](size_t i)
 Byte Block::operator[](size_t i) const
 {
   if(i<0 || bytes_.size() <= i)
-    throw std::runtime_error("index out of range in Block");
+   // throw std::runtime_error("index out of range in Block");
   return bytes_[i];
 }
 //----< equality comparison >----------------------------------------------
