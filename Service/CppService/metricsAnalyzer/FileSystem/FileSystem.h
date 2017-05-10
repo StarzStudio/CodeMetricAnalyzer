@@ -140,9 +140,9 @@ namespace FileSystem
     bool open(direction dirn, type typ=File::text);
     ~File();
     std::string name();
-    std::string getLine();
+    //std::string getLine();
     void putLine(const std::string& line, bool wantReturn=true);
-    Block getBlock(size_t size);
+   // Block getBlock(size_t size);
     void putBlock(const Block&);
     bool isGood();
     void clear();
