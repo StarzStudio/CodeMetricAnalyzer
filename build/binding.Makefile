@@ -3,4 +3,4 @@
 export builddir_name ?= ./build/.
 .PHONY: all
 all:
-	$(MAKE) cppToHTML metricAnalyzer
+	$(MAKE) metricAnalyzer cppToHTML

@@ -11,10 +11,11 @@
             	   	    "Service/CppService/CppToHTML/Utilities/Utilities.cpp",
             			],
             			'cflags' : [
-            			    '-std=c++14',
+            			    '-std=c++11',
             			    '-fpermissive',
-            			    'fexceptions'
+				'-fexceptions'
             			],
+				'cflags_cc': ['-fexceptions'],
             			  'conditions': [
                                              [ 'OS=="mac"', {
 
@@ -46,10 +47,11 @@
                    "Service/CppService/metricsAnalyzer/Utilities/Utilities.cpp",
              ],
              'cflags' : [
-                 '-std=c++14',
+                 '-std=c++11',
                 '-fpermissive',
-                'fexceptions'
+             '-fexceptions'
              ],
+'cflags_cc': ['-fexceptions'],
               'conditions': [
                      [ 'OS=="mac"', {
 

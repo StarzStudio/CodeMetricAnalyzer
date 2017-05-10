@@ -229,7 +229,7 @@ ConsumeState* ConsumeState::nextState()
         return _pEatPunctuator;
     if (!_pIn->good())                     // end of stream
         return _pEatWhitespace;
-    throw(std::logic_error("invalid type"));
+   // throw(std::logic_error("invalid type"));
 }
 // return number of newlines collected from stream 
 size_t ConsumeState::currentLineCount()
