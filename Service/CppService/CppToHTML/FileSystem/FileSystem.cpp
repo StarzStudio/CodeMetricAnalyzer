@@ -114,11 +114,11 @@ bool File::open(direction dirn, type typ)
 std::string File::getLine()
 {
   if(pIStream == 0 || !pIStream->good())
-    throw std::runtime_error("input stream not open");
+    //throw std::runtime_error("input stream not open");
   if(typ_ == binary)
-    throw std::runtime_error("getting text line from binary file");
+   // throw std::runtime_error("getting text line from binary file");
   if(dirn_ == out)
-    throw std::runtime_error("reading output file");
+   // throw std::runtime_error("reading output file");
   const int BufSize = 255;
   char buffer[BufSize];
   pIStream->getline(buffer,BufSize);
@@ -129,11 +129,11 @@ std::string File::getLine()
 void File::putLine(const std::string& s, bool wantReturn)
 {
   if(pOStream == 0 || !pOStream->good())
-    throw std::runtime_error("output stream not open");
+   // throw std::runtime_error("output stream not open");
   if(typ_ == binary)
-    throw std::runtime_error("writing text line to binary file");
+   // throw std::runtime_error("writing text line to binary file");
   if(dirn_ == in)
-    throw std::runtime_error("writing input file");
+   // throw std::runtime_error("writing input file");
   for(size_t i=0; i<s.size(); ++i)
     pOStream->put(s[i]);
   if(wantReturn)
@@ -145,11 +145,11 @@ void File::putLine(const std::string& s, bool wantReturn)
 Block File::getBlock(size_t size)
 {
   if(pIStream == 0 || !pIStream->good())
-    throw std::runtime_error("input stream not open");
+   // throw std::runtime_error("input stream not open");
   if(typ_ != binary)
-    throw std::runtime_error("reading binary from text file");
+   // throw std::runtime_error("reading binary from text file");
   if(dirn_ == out)
-    throw std::runtime_error("reading output file");
+   // throw std::runtime_error("reading output file");
   Block blk;
   if(pIStream)
   {
@@ -170,11 +170,11 @@ Block File::getBlock(size_t size)
 void File::putBlock(const Block& blk)
 {
   if(pOStream == 0 || !pOStream->good())
-    throw std::runtime_error("output stream not open");
+  //  throw std::runtime_error("output stream not open");
   if(typ_ != binary)
-    throw std::runtime_error("writing binary to text file");
+   // throw std::runtime_error("writing binary to text file");
   if(dirn_ == in)
-    throw std::runtime_error("writing input file");
+   // throw std::runtime_error("writing input file");
   if(!pOStream->good())
     return;
   for(size_t i=0; i<blk.size(); ++i)
