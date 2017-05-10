@@ -111,19 +111,19 @@ bool File::open(direction dirn, type typ)
 }
 //----< reads one line of a text file >------------------------------------
 
-std::string File::getLine()
-{
-  if(pIStream == 0 || !pIStream->good())
-    //throw std::runtime_error("input stream not open");
-  if(typ_ == binary)
-   // throw std::runtime_error("getting text line from binary file");
-  if(dirn_ == out)
-   // throw std::runtime_error("reading output file");
-  const int BufSize = 255;
-  char buffer[BufSize];
-  pIStream->getline(buffer,BufSize);
-  return std::string(buffer);
-}
+// std::string File::getLine()
+// {
+//   if(pIStream == 0 || !pIStream->good())
+//     //throw std::runtime_error("input stream not open");
+//   if(typ_ == binary)
+//    // throw std::runtime_error("getting text line from binary file");
+//   if(dirn_ == out)
+//    // throw std::runtime_error("reading output file");
+//   const int BufSize = 255;
+//   char buffer[BufSize];
+//   pIStream->getline(buffer,BufSize);
+//   return std::string(buffer);
+// }
 //----< writes one line of a text to a file >------------------------------
 
 void File::putLine(const std::string& s, bool wantReturn)
@@ -142,29 +142,29 @@ void File::putLine(const std::string& s, bool wantReturn)
 }
 //----< reads a block of bytes from binary file >--------------------------
 
-Block File::getBlock(size_t size)
-{
-  if(pIStream == 0 || !pIStream->good())
-   // throw std::runtime_error("input stream not open");
-  if(typ_ != binary)
-   // throw std::runtime_error("reading binary from text file");
-  if(dirn_ == out)
-   // throw std::runtime_error("reading output file");
-  Block blk;
-  if(pIStream)
-  {
-    for(size_t i=0; i<size; ++i)
-    {
-      Byte b;
-      pIStream->get(b);
-      if(pIStream->good())
-        blk.push_back(b);
-      else
-        break;
-    }
-  }
-  return blk;
-}
+// Block File::getBlock(size_t size)
+// {
+//   if(pIStream == 0 || !pIStream->good())
+//    // throw std::runtime_error("input stream not open");
+//   if(typ_ != binary)
+//    // throw std::runtime_error("reading binary from text file");
+//   if(dirn_ == out)
+//    // throw std::runtime_error("reading output file");
+//   Block blk;
+//   if(pIStream)
+//   {
+//     for(size_t i=0; i<size; ++i)
+//     {
+//       Byte b;
+//       pIStream->get(b);
+//       if(pIStream->good())
+//         blk.push_back(b);
+//       else
+//         break;
+//     }
+//   }
+//   return blk;
+// }
 //----< writes a block of bytes to binary file >---------------------------
 
 void File::putBlock(const Block& blk)
