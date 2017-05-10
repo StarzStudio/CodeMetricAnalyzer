@@ -95,6 +95,10 @@ const analyzeCodeMetrics = function (path) {
     return result;
 }
 const makeUserSpecDir = function(userIP) {
+    let userUploadFileStoragePath =  __dirname + `/../../${uploadCppPath}`;
+    if (!fs.existsSync(userUploadFileStoragePath)) {
+        fs.mkdirSync(userUploadFileStoragePath);
+    }
     let path =__dirname + `/../../${uploadCppPath}/${userIP}`;
     console.log(`user's storage path: ${path}`);
     if (!fs.existsSync(path)) {
