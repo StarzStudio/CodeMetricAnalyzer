@@ -91,9 +91,9 @@ angular.module('projects').controller('ProjectsController', ['$scope',  '$routeP
             if(confirm('Delete this project?')) {
                 // If an project was sent to the method, delete it
                 if (project) {
-                    // Use the project '$remove' method to delete the article
+                    // Use the project '$remove' method to delete the project
                     project.$remove(function() {
-                        // Remove the article from the articles list
+                        // Remove the project from the projects list
                         for (var i in $scope.projects) {
                             if ($scope.projects[i] === project) {
                                 $scope.projects.splice(i, 1);
@@ -101,7 +101,6 @@ angular.module('projects').controller('ProjectsController', ['$scope',  '$routeP
                         }
                     });
                 } else {
-                    // Otherwise, use the article '$remove' method to delete the article
                     $scope.project.$remove(function() {
                         $location.path('#!/projects');
                     });
@@ -112,8 +111,11 @@ angular.module('projects').controller('ProjectsController', ['$scope',  '$routeP
 
         };
 
-        // $scope.showMetrics = function() {
-        //     $scope.projectMetrics =
-        // }
+        $scope.showMetrics = function() {
+            console.log("in showMetrics() function");
+
+            $scope.show = 1;
+           // $scope.calculateTotalBadFunc()
+        }
     }
 ]);
