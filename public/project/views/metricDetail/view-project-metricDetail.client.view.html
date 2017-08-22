@@ -9,6 +9,13 @@
             </tr>
             </thead>
             <tbody>
+            <tr>
+                <td>
+                    <span style="color:green" ng-show="overLinedFunc.length < 1">
+                No functions over size requirement</span>
+                </td>
+            </tr>
+
             <tr data-ng-repeat="f in overLinedFunc">
 
                 <td>{{f}}</td>
@@ -26,6 +33,12 @@
             </tr>
             </thead>
             <tbody>
+            <tr>
+                <td>
+                    <span style="color:green" ng-show="overComplexityFunc.length < 1">
+                No functions over complexity requirement</span>
+                </td>
+            </tr>
             <tr data-ng-repeat="f in overComplexityFunc">
 
                 <td>{{f}}</td>

@@ -30,12 +30,18 @@
             </tr>
             </thead>
             <tbody>
+            <tr>
+                <td>
+                    <span style="color:green" ng-show="currentFileMetric.overlinedFunctions.length < 1">
+                No functions over size requirement</span>
+                </td>
+            </tr>
             <tr data-ng-repeat="overLinedfunc in currentFileMetric.overlinedFunctions">
 
                 <td style="color: #843534">{{overLinedfunc}}</td>
             </tr>
-
             </tbody>
+
         </table>
         <table class="table table-striped">
             <thead>
@@ -47,11 +53,16 @@
             </tr>
             </thead>
             <tbody>
+            <tr>
+                <td>
+                    <span style="color:green" ng-show="currentFileMetric.overComplexFunctions.length < 1">
+                No functions over complexity requirement</span>
+                </td>
+            </tr>
             <tr data-ng-repeat="overComplexityFunc in currentFileMetric.overComplexFunctions">
 
                 <td style="color: #FF9900">{{overComplexityFunc}}</td>
             </tr>
-
             </tbody>
         </table>
 

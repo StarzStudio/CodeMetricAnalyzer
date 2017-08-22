@@ -53,6 +53,7 @@ angular.module('projects').controller('ProjectsController', ['$scope',  '$routeP
 
             let currentFile = file;
             $scope.currentFileMetric = JSON.parse(currentFile.metrics);
+            console.log($scope.currentFileMetric.overComplexFunctions.length);
             $scope.currentFileContent = currentFile.htmlContent;
             let sourceContainer = angular.element( document.querySelector('#fileSource'));
             sourceContainer.empty();
@@ -115,7 +116,14 @@ angular.module('projects').controller('ProjectsController', ['$scope',  '$routeP
             console.log("in showMetrics() function");
 
             $scope.show = 1;
-           // $scope.calculateTotalBadFunc()
+            // $scope.calculateTotalBadFunc()
         }
+        $scope.showDependencies = function() {
+            // console.log("in showMetrics() function");
+
+            $scope.show = 2;
+            // $scope.calculateTotalBadFunc()
+        }
+
     }
 ]);
